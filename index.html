@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Privé Watch — Seçkin ikinci el lüks saat koleksiyonu. Rolex, Patek Philippe, Audemars Piguet ve daha fazlası.">
+  <title>Privé Watch — Seçkin Lüks Saatler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    /* ─── TOKENS ────────────────────────────── */
+    :root {
+      --gold:   #C9A54A; --gold-l: #E2C87A; --gold-d: #8A6E2A;
+      --s0: #080808; --s1: #0c0b09; --s2: #131109; --s3: #1a1810; --s4: #0a0908;
+      --text: #EDE8DF; --muted: #7A7060; --dim: #3E3A30;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--s0); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.75; overflow-x: hidden; cursor: none; }
+
+    /* Cursor */
+    #cursor { position: fixed; z-index: 9998; pointer-events: none; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); transform: translate(-50%,-50%); transition: width .3s, height .3s; }
+    #cursor-ring { position: fixed; z-index: 9997; pointer-events: none; width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(201,165,74,.55); transform: translate(-50%,-50%); transition: transform .18s cubic-bezier(.16,1,.3,1), width .4s, height .4s, border-color .3s, background .3s; }
+    body.hovering #cursor { width: 5px; height: 5px; background: var(--gold-l); }
+    body.hovering #cursor-ring { width: 44px; height: 44px; border-color: rgba(201,165,74,.9); background: rgba(201,165,74,.06); }
+
+    /* Grain */
+    body::after { content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: .022; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 300px; }
+
+    h1,h2,h3 { font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: -.02em; line-height: 1.05; }
+    .label { font-size: 9.5px; font-weight: 400; letter-spacing: .35em; text-transform: uppercase; color: var(--gold); }
+    .gline { width: 36px; height: 1px; background: rgba(201,165,74,.5); }
+
+    .shimmer { background: linear-gradient(100deg,var(--gold-d) 0%,var(--gold) 30%,var(--gold-l) 50%,var(--gold) 70%,var(--gold-d) 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmer 5s linear infinite; }
+    @keyframes shimmer { from{background-position:0% center} to{background-position:200% center} }
+    @keyframes scrollPulse { 0%,100%{opacity:.3;transform:scaleY(.6)} 50%{opacity:.8;transform:scaleY(1)} }
+
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 1s cubic-bezier(.16,1,.3,1), transform 1s cubic-bezier(.16,1,.3,1); }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .d1{transition-delay:.12s}.d2{transition-delay:.24s}.d3{transition-delay:.36s}.d4{transition-delay:.48s}.d5{transition-delay:.6s}
+
+    /* ─── NAV ───────────────────────────────── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      padding: 20px 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(8,8,8,.65) 0%, transparent 100%);
+      border-bottom: 1px solid transparent;
+      transition: background .5s, border-color .5s, padding .4s, backdrop-filter .5s;
+    }
+    #nav.scrolled {
+      background: rgba(8,8,8,.97);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom-color: rgba(201,165,74,.14);
+      padding-top: 12px; padding-bottom: 12px;
+    }
+    .nav-logo { height: 44px; width: auto; mix-blend-mode: screen; filter: contrast(4); transition: opacity .3s; }
+    .nav-logo:hover { opacity: .85; }
+    .nav-link { font-size: 10.5px; font-weight: 400; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); text-decoration: none; position: relative; padding-bottom: 3px; transition: color .3s; cursor: none; }
+    .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--gold); transition: width .35s cubic-bezier(.16,1,.3,1); }
+    .nav-link:hover { color: var(--gold-l); }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ─── BUTTONS (background-gradient fill — text always visible) ── */
+    .btn {
+      position: relative; display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px;
+      font-family: 'DM Sans', sans-serif; font-size: 10.5px; font-weight: 400;
+      letter-spacing: .18em; text-transform: uppercase; text-decoration: none; cursor: none;
+    }
+    .btn-o {
+      border: 1px solid var(--gold); color: var(--gold);
+      background: linear-gradient(to right, var(--gold) 50%, transparent 50%);
+      background-size: 200% 100%; background-position: 100%;
+      transition: background-position .45s cubic-bezier(.16,1,.3,1), color .45s;
+    }
+    .btn-o:hover { background-position: 0%; color: var(--s0); }
+    .btn-f {
+      border: 1px solid var(--gold); color: var(--s0);
+      background: linear-gradient(to right, var(--gold-l) 50%, var(--gold) 50%);
+      background-size: 200% 100%; background-position: 100%;
+      transition: background-position .45s cubic-bezier(.16,1,.3,1);
+    }
+    .btn-f:hover { background-position: 0%; }
+    .btn:active { transform: scale(.975); }
+    .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+    /* ─── HERO ──────────────────────────────── */
+    .hero {
+      min-height: 100vh; position: relative; overflow: hidden;
+      display: grid; grid-template-columns: 55fr 45fr;
+      background: radial-gradient(ellipse at 20% 60%, rgba(201,165,74,.04) 0%, transparent 55%), linear-gradient(145deg,#0a0907 0%,#080808 60%,#06060a 100%);
+    }
+    .hero-left { display: flex; flex-direction: column; justify-content: flex-end; padding: 140px 64px 100px; position: relative; z-index: 2; }
+    .hero-right { position: relative; overflow: hidden; }
+    .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s cubic-bezier(.4,0,.2,1); }
+    .hero-slide.active { opacity: 1; }
+    .hero-slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; transform: scale(1.04); }
+    .hero-right::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(105deg,var(--s0) 0%,rgba(8,8,8,.55) 38%,transparent 65%); pointer-events: none; }
+    .hero-right::after { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top,var(--s0) 0%,transparent 28%); pointer-events: none; }
+    .hero-bg-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-family: 'Cormorant Garamond',serif; font-size: clamp(80px,16vw,240px); font-weight: 300; color: rgba(255,255,255,.015); white-space: nowrap; letter-spacing: -.05em; pointer-events: none; user-select: none; z-index: 0; }
+
+    .annotation { position: absolute; z-index: 3; display: flex; align-items: center; pointer-events: none; }
+    .annotation-box { border: 1px solid rgba(201,165,74,.55); background: rgba(8,8,8,.88); backdrop-filter: blur(12px); padding: 10px 16px; white-space: nowrap; }
+    .annotation-label { font-size: 8.5px; letter-spacing: .28em; color: var(--gold); margin-bottom: 3px; text-transform: uppercase; }
+    .annotation-value { font-family: 'Cormorant Garamond',serif; font-size: 15px; font-weight: 400; color: var(--text); line-height: 1; }
+    .annotation-price-value { display: inline-flex; align-items: baseline; gap: 5px; line-height: 1; }
+    .annotation-price-amount { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; color: var(--text); letter-spacing: .01em; }
+    .annotation-price-currency { font-family: 'DM Sans', sans-serif; font-size: 9px; font-weight: 400; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); opacity: .85; }
+    .annotation-line { width: 44px; height: 1px; background: rgba(201,165,74,.45); flex-shrink: 0; }
+    .annotation-line-v { width: 1px; height: 28px; background: rgba(201,165,74,.45); flex-shrink: 0; align-self: flex-start; }
+    .ann-price { bottom: 38%; left: 40%; flex-direction: row; }
+    .ann-material { top: 26%; right: 64px; flex-direction: row-reverse; }
+    .ann-cert { bottom: 22%; right: 72px; flex-direction: column; align-items: flex-end; }
+    .hero-watch-meta { position: absolute; bottom: 80px; right: 56px; z-index: 2; text-align: right; }
+    .hero-dots { position: absolute; bottom: 36px; right: 56px; z-index: 4; display: flex; gap: 8px; align-items: center; }
+    .hero-dot { width: 32px; height: 2px; background: rgba(201,165,74,.18); cursor: none; position: relative; overflow: hidden; border-radius: 1px; flex-shrink: 0; }
+    .hero-dot.active { background: rgba(201,165,74,.25); }
+    .hero-dot::after { content: ''; position: absolute; top: 0; left: 0; height: 100%; width: 0; background: var(--gold); border-radius: 1px; }
+    .hero-dot.active::after { animation: dotFill 5s linear forwards; }
+    @keyframes dotFill { from { width: 0; } to { width: 100%; } }
+
+    .trust-row { display: flex; gap: 0; padding-top: 28px; border-top: 1px solid rgba(201,165,74,.1); margin-top: 8px; }
+    .trust-item { flex: 1; display: flex; align-items: flex-start; gap: 12px; padding-right: 24px; }
+    .trust-item + .trust-item { padding-left: 24px; border-left: 1px solid rgba(201,165,74,.1); }
+    .trust-item:last-child { padding-right: 0; }
+    .trust-icon { width: 30px; height: 30px; flex-shrink: 0; border: 1px solid rgba(201,165,74,.25); display: flex; align-items: center; justify-content: center; color: var(--gold); margin-top: 2px; }
+    .trust-title { font-family: 'Cormorant Garamond',serif; font-size: 14px; font-weight: 400; color: var(--text); line-height: 1.2; margin-bottom: 3px; }
+    .trust-desc { font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+    /* ─── MARQUEE ───────────────────────────── */
+    .marquee-wrap { overflow: hidden; border-top: 1px solid rgba(201,165,74,.1); border-bottom: 1px solid rgba(201,165,74,.1); padding: 13px 0; background: var(--s1); }
+    .marquee-track { display: flex; width: max-content; animation: marquee 28s linear infinite; }
+    .marquee-track:hover { animation-play-state: paused; }
+    .marquee-item { display: flex; align-items: center; gap: 32px; padding: 0 32px; font-size: 10px; letter-spacing: .28em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+    .marquee-item .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ─── EXPANDABLE GALLERY ─────────────────── */
+    .expgal-section {
+      padding: 100px 0 80px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(201,165,74,.05) 0%, transparent 60%),
+        linear-gradient(to bottom, #080808, #0d0c09);
+      overflow: hidden;
+    }
+    .expgal-header {
+      text-align: center;
+      padding: 0 24px;
+      margin-bottom: 52px;
+    }
+    .expgal-header h2 { font-size: clamp(32px, 4.5vw, 60px); line-height: 1; }
+    .expgal-header h2 em { color: var(--gold); font-style: italic; }
+    .expgal-header p { color: var(--muted); font-size: 14.5px; line-height: 1.85; max-width: 480px; margin: 18px auto 0; }
+    /* Stack state */
+    .expgal-stack { position: relative; height: 340px; display: flex; align-items: center; justify-content: center; cursor: none; }
+    .expgal-stack-photo {
+      position: absolute;
+      width: 220px; height: 280px;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 6px solid rgba(8,8,8,.95);
+      box-shadow: 0 24px 64px rgba(0,0,0,.55), 0 4px 16px rgba(0,0,0,.4);
+      transition: transform .55s cubic-bezier(.16,1,.3,1), opacity .45s ease, box-shadow .4s;
+      will-change: transform;
+    }
+    .expgal-stack-photo img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; user-select: none; }
+    .expgal-stack-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(8,8,8,.3)); pointer-events: none; }
+    .expgal-stack-photo:hover { box-shadow: 0 32px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(201,165,74,.25); }
+    /* Grid state */
+    .expgal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 0 56px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .expgal-grid-photo {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 4px;
+      border: 1px solid rgba(201,165,74,.08);
+      transition: border-color .35s, transform .4s cubic-bezier(.16,1,.3,1);
+      cursor: none;
+    }
+    .expgal-grid-photo:hover { border-color: rgba(201,165,74,.3); transform: translateY(-3px); }
+    .expgal-grid-photo img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .7s cubic-bezier(.16,1,.3,1); }
+    .expgal-grid-photo:hover img { transform: scale(1.06); }
+    .expgal-cta-card {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 4px;
+      border: 1px solid rgba(201,165,74,.2);
+      background: var(--s3);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+    }
+    .expgal-cta-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+    /* CTA below stack */
+    .expgal-stack-cta { text-align: center; margin-top: 32px; }
+    .expgal-back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: none; border: none; color: var(--muted);
+      font-family: 'DM Sans', sans-serif; font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase;
+      cursor: none; transition: color .3s; margin-bottom: 24px;
+      padding: 10px 0;
+    }
+    .expgal-back-btn:hover { color: var(--gold-l); }
+    .expgal-back-btn svg { transition: transform .3s; }
+    .expgal-back-btn:hover svg { transform: translateX(-3px); }
+    @media (max-width: 900px) {
+      .expgal-grid { grid-template-columns: repeat(2, 1fr); padding: 0 24px; }
+      .expgal-stack-photo { width: 160px; height: 210px; }
+      .expgal-stack { height: 260px; }
+    }
+
+    /* ─── GALLERY GRID ──────────────────────── */
+    .gallery-section {
+      padding: 100px 0 80px;
+      background: radial-gradient(ellipse at 80% 30%, rgba(201,165,74,.035) 0%, transparent 55%),
+        radial-gradient(ellipse at 15% 70%, rgba(201,165,74,.02) 0%, transparent 50%),
+        linear-gradient(to bottom, #0a0908, #080807);
+    }
+    .gallery-header { padding: 0 56px; margin-bottom: 48px; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+    .gallery-title { font-family: 'Cormorant Garamond',serif; font-size: clamp(42px,5.5vw,80px); font-weight: 300; letter-spacing: -.03em; line-height: 1; }
+    .gallery-title em { color: var(--gold); font-style: italic; }
+
+    .gallery-filters { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; padding: 0 56px; margin-bottom: 40px; }
+    .gallery-filter-btn {
+      font-family: 'DM Sans',sans-serif; font-size: 10px; font-weight: 400; letter-spacing: .28em;
+      text-transform: uppercase; color: var(--muted); background: none; border: none; cursor: none;
+      padding: 4px 0; position: relative; transition: color .3s;
+    }
+    .gallery-filter-btn::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--gold); transition: width .35s cubic-bezier(.16,1,.3,1); }
+    .gallery-filter-btn:hover { color: var(--gold-l); }
+    .gallery-filter-btn:hover::after { width: 100%; }
+    .gallery-filter-btn.active { color: var(--gold); }
+    .gallery-filter-btn.active::after { width: 100%; }
+    .gallery-filter-count { font-size: 8.5px; color: var(--muted); opacity: .6; margin-left: 4px; }
+
+    .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 56px; }
+    .gallery-card { position: relative; overflow: hidden; background: var(--s2); border: 1px solid rgba(201,165,74,.07); transition: border-color .4s, transform .4s cubic-bezier(.16,1,.3,1); cursor: none; }
+    .gallery-card:hover { border-color: rgba(201,165,74,.22); transform: translateY(-3px); }
+    .gallery-card.hidden { display: none; }
+    .gallery-card.filtering { animation: cardReveal .4s cubic-bezier(.16,1,.3,1) forwards; }
+    @keyframes cardReveal { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+    .gallery-card-img-wrap { position: relative; aspect-ratio: 1; overflow: hidden; cursor: none; }
+    .gallery-card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.16,1,.3,1); }
+    .gallery-card:hover .gallery-card-img-wrap img { transform: scale(1.06); }
+    .gallery-card-overlay {
+      position: absolute; inset: 0;
+      background: rgba(8,8,8,.75);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+      opacity: 0; transition: opacity .3s;
+    }
+    .gallery-card:hover .gallery-card-overlay { opacity: 1; }
+    .gallery-card-overlay-icon { width: 44px; height: 44px; border: 1px solid rgba(201,165,74,.5); display: flex; align-items: center; justify-content: center; color: var(--gold); }
+    .gallery-card-overlay-title { font-family: 'Cormorant Garamond',serif; font-size: 17px; font-weight: 400; color: var(--text); text-align: center; padding: 0 16px; }
+
+    .gallery-card-body { padding: 18px 18px 20px; }
+    .gallery-brand { font-size: 9px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 5px; }
+    .gallery-model { font-family: 'Cormorant Garamond',serif; font-size: 18px; font-weight: 400; color: var(--text); margin-bottom: 3px; line-height: 1.2; }
+    .gallery-ref { font-size: 10px; letter-spacing: .1em; color: var(--muted); margin-bottom: 0; }
+    .gallery-card-body-price { padding-top: 2px; }
+    .gallery-price { display: inline-flex; align-items: center; gap: 8px; }
+    .gallery-price-amount { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: var(--text); letter-spacing: .01em; }
+    .gallery-price-currency { font-size: 10px; font-weight: 400; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); opacity: .85; }
+    .gallery-price-line { display: block; width: 100%; height: 1px; background: linear-gradient(90deg, rgba(201,165,74,.2), transparent); margin-top: 10px; margin-bottom: 14px; }
+
+    /* Watch placeholder in gallery */
+    .gallery-placeholder { aspect-ratio: 1; background: radial-gradient(circle at center, #201d12 15%, #131109 55%, #090807 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; position: relative; overflow: hidden; }
+    .gallery-placeholder::before { content: ''; position: absolute; width: 62%; aspect-ratio: 1; border-radius: 50%; border: 1px solid rgba(201,165,74,.2); }
+    .gallery-placeholder::after { content: ''; position: absolute; width: 44%; aspect-ratio: 1; border-radius: 50%; border: 1px solid rgba(201,165,74,.1); }
+    .gallery-ph-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(201,165,74,.45); position: relative; z-index: 1; }
+    .gallery-ph-brand { font-family: 'Cormorant Garamond',serif; font-size: 20px; font-style: italic; color: rgba(201,165,74,.72); position: relative; z-index: 1; }
+    .gallery-ph-model { font-size: 8px; letter-spacing: .3em; text-transform: uppercase; color: rgba(201,165,74,.38); position: relative; z-index: 1; text-align: center; padding: 0 20px; }
+
+    /* Gallery show more */
+    .gallery-card.gallery-extra { display: none; }
+    .gallery-card.gallery-extra.gallery-extra-open { display: block; }
+    .gallery-showmore-wrap { text-align: center; padding: 40px 56px 0; }
+    .gallery-showmore-btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 36px; font-family: 'DM Sans', sans-serif; font-size: 10.5px; font-weight: 400; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,165,74,.35); background: transparent; cursor: none; transition: background .4s, color .4s, border-color .4s; }
+    .gallery-showmore-btn:hover { background: rgba(201,165,74,.08); border-color: var(--gold); }
+    .gallery-showmore-btn svg { transition: transform .35s cubic-bezier(.16,1,.3,1); }
+    .gallery-showmore-btn.open svg { transform: rotate(180deg); }
+    @media (max-width: 900px) { .gallery-showmore-wrap { padding: 32px 24px 0; } }
+
+    /* Gallery CTA band */
+    .gallery-cta { margin: 40px 56px 0; padding: 32px 44px; background: var(--s2); border: 1px solid rgba(201,165,74,.1); display: flex; align-items: center; justify-content: space-between; gap: 40px; position: relative; overflow: hidden; }
+    .gallery-cta::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg,transparent,var(--gold),transparent); }
+    .gallery-cta-title { font-family: 'Cormorant Garamond',serif; font-size: 22px; font-weight: 400; color: var(--text); margin-bottom: 6px; }
+    .gallery-cta-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* ─── LIGHTBOX ──────────────────────────── */
+    .lightbox { position: fixed; inset: 0; z-index: 2000; background: rgba(4,4,4,.96); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; backdrop-filter: blur(12px); }
+    .lightbox.open { opacity: 1; pointer-events: auto; }
+    .lightbox-inner { position: relative; max-width: 680px; width: 90%; }
+    .lightbox-img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+    .lightbox-placeholder { width: 100%; aspect-ratio: 1; background: radial-gradient(circle at center, #201d12 15%, #0c0b08 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; position: relative; }
+    .lightbox-placeholder::before { content: ''; position: absolute; width: 55%; aspect-ratio: 1; border-radius: 50%; border: 1px solid rgba(201,165,74,.2); }
+    .lightbox-placeholder .lp-brand { font-family: 'Cormorant Garamond',serif; font-size: 28px; font-style: italic; color: rgba(201,165,74,.7); position: relative; z-index: 1; }
+    .lightbox-placeholder .lp-model { font-size: 9px; letter-spacing: .35em; text-transform: uppercase; color: rgba(201,165,74,.4); position: relative; z-index: 1; }
+    .lightbox-info { padding: 20px 0; text-align: center; }
+    .lightbox-brand { font-size: 9px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .lightbox-model { font-family: 'Cormorant Garamond',serif; font-size: 22px; color: var(--text); margin-bottom: 4px; }
+    .lightbox-ref { font-size: 11px; color: var(--muted); margin-bottom: 14px; }
+    .lightbox-price { display: inline-flex; align-items: center; gap: 8px; margin-top: 2px; }
+    .lightbox-price-amount { font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; color: var(--text); letter-spacing: .01em; }
+    .lightbox-price-currency { font-size: 10px; font-weight: 400; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); opacity: .85; }
+    .lightbox-close { position: absolute; top: -48px; right: 0; background: none; border: none; color: var(--muted); cursor: none; font-size: 18px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(201,165,74,.2); transition: border-color .3s, color .3s; }
+    .lightbox-close:hover { border-color: var(--gold); color: var(--gold); }
+    .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); background: none; border: 1px solid rgba(201,165,74,.25); color: var(--muted); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: none; transition: border-color .3s, color .3s, background .3s; }
+    .lightbox-nav:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,165,74,.06); }
+    .lightbox-prev { left: -64px; }
+    .lightbox-next { right: -64px; }
+    .lightbox-link { display: inline-flex; align-items: center; gap: 6px; font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(201,165,74,.3); padding-bottom: 2px; margin-top: 16px; transition: border-color .3s; cursor: none; }
+    .lightbox-link:hover { border-color: var(--gold); }
+
+    /* ─── ABOUT ─────────────────────────────── */
+    .about-section { padding: 112px 56px; background: radial-gradient(ellipse at 60% 40%, rgba(201,165,74,.03) 0%, transparent 60%), linear-gradient(to bottom, #0d0c0a 0%, #0b0a08 100%); display: grid; grid-template-columns: 1fr 1fr; gap: 96px; align-items: center; }
+    .img-frame { position: relative; }
+    .img-frame::before { content: ''; position: absolute; top: -18px; left: -18px; right: 18px; bottom: 18px; border: 1px solid rgba(201,165,74,.12); pointer-events: none; }
+    .corner-tl { position: absolute; top: -18px; left: -18px; width: 56px; height: 56px; border-top: 1px solid rgba(201,165,74,.5); border-left: 1px solid rgba(201,165,74,.5); }
+    .corner-br { position: absolute; bottom: -1px; right: -1px; width: 56px; height: 56px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+    .about-badges { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; margin-top: 40px; border: 1px solid rgba(201,165,74,.1); }
+    .about-badge { padding: 20px 18px; background: rgba(201,165,74,.03); border-right: 1px solid rgba(201,165,74,.08); display: flex; flex-direction: column; gap: 5px; transition: background .3s; }
+    .about-badge:last-child { border-right: none; }
+    .about-badge:hover { background: rgba(201,165,74,.06); }
+    .about-badge-icon { color: var(--gold); margin-bottom: 4px; }
+    .about-badge-title { font-family: 'Cormorant Garamond',serif; font-size: 15px; font-weight: 400; color: var(--text); }
+    .about-badge-sub { font-size: 8.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+
+    /* ─── PRIVÉ BENTO ───────────────────────────── */
+    .prive-bento-outer { margin-bottom: 72px; border: 1px solid rgba(201,165,74,.1); border-radius: 4px; overflow: hidden; position: relative; background: var(--s2); }
+    .prive-bento-container { height: 220px; position: relative; overflow: hidden; cursor: grab; user-select: none; }
+    .prive-bento-container:active { cursor: grabbing; }
+    .prive-bento-rows { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-around; padding: 16px 0; }
+    .prive-bento-reveal { pointer-events: none; clip-path: circle(48px at 50% 50%); }
+    .pb-row { overflow: hidden; display: flex; align-items: center; }
+    .pb-row-inner { display: flex; gap: 10px; width: max-content; }
+    .pb-row-1 .pb-row-inner { animation: pbLeft 28s linear infinite; }
+    .pb-row-2 .pb-row-inner { animation: pbRight 22s linear infinite; }
+    .pb-row-3 .pb-row-inner { animation: pbLeft 32s linear infinite; }
+    @keyframes pbLeft { from { transform: translateX(0); } to { transform: translateX(-33.333%); } }
+    @keyframes pbRight { from { transform: translateX(-33.333%); } to { transform: translateX(0); } }
+    .pb-tag { display: inline-flex; align-items: center; gap: 7px; padding: 6px 14px; border-radius: 100px; border: 1px solid rgba(201,165,74,.12); background: rgba(8,8,8,.5); white-space: nowrap; font-size: 11px; font-weight: 400; letter-spacing: .06em; color: rgba(237,232,223,.35); flex-shrink: 0; }
+    .pb-tag svg { flex-shrink: 0; opacity: .5; }
+    .prive-bento-reveal .pb-tag { background: var(--s0); color: var(--gold); border-color: rgba(201,165,74,.5); font-weight: 500; transform: scale(1.1); box-shadow: 0 2px 12px rgba(201,165,74,.15); }
+    .prive-bento-reveal .pb-tag svg { opacity: 1; }
+    .pb-fade-l, .pb-fade-r { position: absolute; top: 0; bottom: 0; width: 80px; z-index: 10; pointer-events: none; }
+    .pb-fade-l { left: 0; background: linear-gradient(to right, var(--s2), transparent); }
+    .pb-fade-r { right: 0; background: linear-gradient(to left, var(--s2), transparent); }
+    .pb-lens-wrap { position: absolute; z-index: 20; pointer-events: none; left: 50%; top: 50%; margin-left: -46px; margin-top: -46px; }
+    .prive-bento-caption { padding: 28px 36px 32px; border-top: 1px solid rgba(201,165,74,.08); }
+    .prive-bento-caption h3 { font-family: 'Cormorant Garamond',serif; font-size: clamp(22px,2.5vw,32px); font-weight: 300; color: var(--text); margin-bottom: 8px; line-height: 1.1; }
+    .prive-bento-caption p { font-size: 13.5px; color: var(--muted); line-height: 1.85; max-width: 560px; }
+    @media (max-width: 900px) { .prive-bento-container { height: 180px; } .prive-bento-caption { padding: 20px 24px 24px; } }
+
+    /* ─── FEATURES ──────────────────────────── */
+    .feat-section { padding: 112px 64px; background: radial-gradient(ellipse at 30% 70%, rgba(201,165,74,.025) 0%, transparent 55%), linear-gradient(to bottom right,#080808 0%,#0c0a07 50%,#080808 100%); }
+    .feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; max-width: 1360px; margin: 0 auto; }
+    .feat-card { padding: 48px 44px; background: var(--s2); border: 1px solid rgba(201,165,74,.06); position: relative; overflow: hidden; transition: border-color .5s, background .5s; }
+    .feat-card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg,transparent,var(--gold),transparent); transform: scaleX(0); transition: transform .5s cubic-bezier(.16,1,.3,1); }
+    .feat-card:hover { border-color: rgba(201,165,74,.2); background: rgba(22,22,16,.9); }
+    .feat-card:hover::before { transform: scaleX(1); }
+    .feat-num { font-family: 'Cormorant Garamond',serif; font-size: 56px; font-weight: 300; color: rgba(201,165,74,.16); line-height: 1; margin-bottom: 24px; transition: color .4s; }
+    .feat-card:hover .feat-num { color: rgba(201,165,74,.48); }
+    .feat-title { font-family: 'Cormorant Garamond',serif; font-size: 26px; font-weight: 400; color: var(--text); margin-bottom: 14px; line-height: 1.2; }
+    .feat-desc { font-size: 13.5px; color: var(--muted); line-height: 1.85; }
+    .feat-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); text-decoration: none; cursor: none; transition: gap .3s; }
+    .feat-link:hover { gap: 12px; }
+    .feat-link svg { transition: transform .3s; }
+    .feat-link:hover svg { transform: translateX(3px); }
+
+    /* ─── TESTIMONIALS COLUMNS ──────────────── */
+    .testi-section {
+      padding: 112px 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(201,165,74,.04) 0%, transparent 60%),
+        linear-gradient(to bottom, #0e0d0a 0%, #0b0a08 100%);
+      border-top: 1px solid rgba(201,165,74,.08);
+      overflow: hidden;
+    }
+    .testi-header { text-align: center; max-width: 560px; margin: 0 auto 64px; padding: 0 24px; }
+    .testi-badge { display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(201,165,74,.25); padding: 5px 18px; margin-bottom: 24px; }
+    .testi-columns { display: flex; justify-content: center; gap: 16px; max-height: 680px; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom,transparent 0%,black 12%,black 88%,transparent 100%); mask-image: linear-gradient(to bottom,transparent 0%,black 12%,black 88%,transparent 100%); padding: 0 24px; }
+    .testi-col { flex: 0 0 300px; display: flex; flex-direction: column; gap: 14px; }
+    .testi-col-inner { display: flex; flex-direction: column; gap: 14px; }
+    .testi-col:nth-child(1) .testi-col-inner { animation: testiScroll 18s linear infinite; }
+    .testi-col:nth-child(2) .testi-col-inner { animation: testiScroll 22s linear infinite; }
+    .testi-col:nth-child(3) .testi-col-inner { animation: testiScroll 20s linear infinite; }
+    @keyframes testiScroll { 0%{transform:translateY(0)} 100%{transform:translateY(-50%)} }
+    .testi-card { background: var(--s2); border: 1px solid rgba(201,165,74,.08); padding: 24px; border-radius: 2px; transition: border-color .4s; }
+    .testi-card:hover { border-color: rgba(201,165,74,.25); }
+    .testi-stars { display: flex; gap: 3px; margin-bottom: 14px; }
+    .testi-star { color: var(--gold); font-size: 11px; }
+    .testi-text { font-size: 13px; color: var(--muted); line-height: 1.85; margin-bottom: 18px; font-style: italic; }
+    .testi-person { display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(255,255,255,.04); padding-top: 14px; }
+    .testi-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(201,165,74,.25); flex-shrink: 0; }
+    .testi-name { font-family: 'Cormorant Garamond',serif; font-size: 14px; font-weight: 400; color: var(--text); line-height: 1.2; }
+    .testi-role { font-size: 9.5px; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+
+    /* ─── CONTACT ───────────────────────────── */
+    .contact-section { padding: 112px 56px; background: linear-gradient(to bottom,#0b0a08 0%,#0d0c0a 100%); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; border-top: 1px solid rgba(201,165,74,.08); }
+    .cinfo { display: flex; align-items: flex-start; gap: 18px; padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+    .cinfo:last-of-type { border-bottom: none; }
+    .cicon { width: 44px; height: 44px; flex-shrink: 0; border: 1px solid rgba(201,165,74,.2); display: flex; align-items: center; justify-content: center; color: var(--gold); }
+    .map-wrap { border: 1px solid rgba(201,165,74,.12); overflow: hidden; }
+    .map-bar { padding: 14px 20px; background: var(--s2); border-top: 1px solid rgba(201,165,74,.08); display: flex; align-items: center; justify-content: space-between; }
+
+    /* ─── FOOTER ────────────────────────────── */
+    footer { background: radial-gradient(ellipse at 50% 100%, rgba(201,165,74,.03) 0%, transparent 60%), #090807; border-top: 1px solid rgba(201,165,74,.12); padding: 72px 56px 36px; }
+    .footer-logo { height: 42px; width: auto; mix-blend-mode: screen; filter: contrast(4); display: block; margin-bottom: 20px; }
+    .rule { border: none; height: 1px; background: linear-gradient(90deg,transparent,rgba(201,165,74,.3),transparent); }
+
+
+    /* ─── MOBILE ────────────────────────────── */
+    .mob-menu { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: none; padding: 4px; }
+    .mob-menu span { display: block; width: 22px; height: 1px; background: var(--muted); transition: background .3s; }
+    .mob-menu:hover span { background: var(--gold-l); }
+    .mob-nav { display: none; position: fixed; inset: 0; z-index: 490; background: rgba(8,8,8,.98); backdrop-filter: blur(20px); flex-direction: column; align-items: center; justify-content: center; gap: 40px; }
+    .mob-nav.open { display: flex; }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--s0); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-d); border-radius: 2px; }
+
+    /* ─── RESPONSIVE ────────────────────────── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: 100svh; }
+      .hero-right, .annotation { display: none; }
+      .hero-left { padding: 110px 24px 80px; justify-content: center; }
+      .about-section, .contact-section { grid-template-columns: 1fr; }
+      .feat-grid { grid-template-columns: 1fr; }
+      .feat-card { padding: 36px 28px; }
+      #nav { padding: 18px 24px; }
+      .mob-menu { display: flex; }
+      .desk-links { display: none !important; }
+      .nav-worldclocks { display: none !important; }
+      .gallery-header, .gallery-filters, .gallery-cta { padding-left: 24px; padding-right: 24px; }
+      .gallery-grid { grid-template-columns: 1fr; padding: 0 24px; gap: 4px; }
+      .gallery-cta { flex-direction: column; align-items: flex-start; }
+      footer, .feat-section, .about-section, .contact-section { padding-left: 24px !important; padding-right: 24px !important; }
+      .testi-col:nth-child(2), .testi-col:nth-child(3) { display: none; }
+      /* Footer mobile */
+      .footer-cols { grid-template-columns: 1fr !important; gap: 32px !important; }
+      .footer-divider { display: none !important; }
+      footer { padding: 56px 24px 28px !important; }
+      footer .rule { margin-bottom: 20px; }
+      footer > div > div:last-child { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+    @media (min-width: 901px) and (max-width: 1100px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .testi-col:nth-child(3) { display: none; }
+    }
+    /* ─── NEW COMPONENTS (Limelight Nav, Carousel, Location Tag) ─── */
+    .limelight-nav { position: relative; display: inline-flex; align-items: center; border-radius: 8px; background: rgba(8,8,8,0.4); border: 1px solid rgba(201,165,74,.15); padding: 4px; }
+    .ll-link { position: relative; z-index: 20; padding: 10px 20px; font-size: 10.5px; font-weight: 400; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .3s; cursor: none; }
+    .ll-link:hover, .ll-link.active { color: var(--gold-l); }
+    .limelight-indicator { position: absolute; top: -1px; z-index: 10; height: 3px; border-radius: 4px; background: var(--gold); box-shadow: 0 10px 15px rgba(201,165,74,0.5); transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1), width 0.4s cubic-bezier(0.25, 1, 0.5, 1); pointer-events: none; opacity: 0; }
+    .limelight-indicator.ready { opacity: 1; }
+    .limelight-indicator::after { content:''; position:absolute; top:3px; left:-30%; width:160%; height:50px; background:linear-gradient(to bottom, rgba(201,165,74,0.2), transparent); clip-path:polygon(15% 100%, 35% 0%, 65% 0%, 85% 100%); pointer-events: none; }
+
+    .carousel-logo { display:flex; align-items:center; justify-content:center; padding:16px 32px; border-radius:8px; background:var(--s2); border:1px solid rgba(201,165,74,.05); font-family:'Cormorant Garamond',serif; font-size:22px; color:rgba(237,232,223,.6); white-space:nowrap; transition:color .3s, border-color .3s, transform .3s; cursor:none; }
+    .carousel-logo:hover { color:var(--gold); border-color:rgba(201,165,74,.2); transform:scale(1.05); }
+    @keyframes marquee-logos { from{transform:translateX(0)} to{transform:translateX(-33.333%)} }
+
+    .location-tags-container { display:flex; gap:16px; margin-top:24px; flex-wrap:wrap; }
+    /* Nav world clocks */
+    .nav-worldclocks { display:flex; align-items:center; gap:10px; padding:6px 14px; border:1px solid rgba(201,165,74,.12); background:rgba(8,8,8,.35); border-radius:6px; }
+    .nwc-item { display:flex; align-items:center; gap:7px; cursor:none; position:relative; }
+    .nwc-pulse { position:relative; display:flex; align-items:center; justify-content:center; width:6px; height:6px; flex-shrink:0; }
+    .nwc-pulse .pulse-ring { position:absolute; width:100%; height:100%; border-radius:50%; background:#10B981; opacity:.75; animation:pulse 2s cubic-bezier(0.4,0,0.6,1) infinite; }
+    .nwc-pulse .pulse-dot { position:relative; width:6px; height:6px; border-radius:50%; background:#10B981; }
+    .nwc-text-wrap { display:flex; flex-direction:column; gap:1px; }
+    .nwc-city { font-size:8px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); line-height:1; }
+    .nwc-time { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:500; color:var(--text); letter-spacing:.04em; line-height:1; transition:color .3s; }
+    .nwc-item.hovered .nwc-time { color:var(--gold); }
+    .nwc-sep { width:1px; height:22px; background:rgba(201,165,74,.12); flex-shrink:0; }
+    .location-tag { position:relative; display:inline-flex; align-items:center; gap:12px; border-radius:999px; border:1px solid rgba(201,165,74,.15); background:rgba(8,8,8,.5); padding:8px 16px; transition:all .5s ease-out; cursor:none; overflow:hidden; }
+    .location-tag:hover { border-color:rgba(201,165,74,.4); background:rgba(8,8,8,.8); box-shadow:0 0 20px rgba(201,165,74,.05); }
+    .loc-pulse { position:relative; display:flex; align-items:center; justify-content:center; width:8px; height:8px; }
+    .pulse-ring { position:absolute; width:100%; height:100%; border-radius:50%; background:#10B981; opacity:.75; animation:pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    .pulse-dot { position:relative; width:8px; height:8px; border-radius:50%; background:#10B981; }
+    .loc-text-wrap { position:relative; display:flex; align-items:center; height:20px; overflow:hidden; width:90px; }
+    .loc-city { position:absolute; left:0; font-size:12px; font-weight:400; color:var(--text); transition:all .5s; transform:translateY(0); opacity:1; white-space:nowrap; }
+    .loc-time { position:absolute; left:0; font-size:12px; font-weight:400; color:var(--text); transition:all .5s; transform:translateY(100%); opacity:0; white-space:nowrap; }
+    .location-tag.hovered .loc-city { transform:translateY(-100%); opacity:0; }
+    .location-tag.hovered .loc-time { transform:translateY(0); opacity:1; }
+    .loc-arrow { width:12px; height:12px; color:var(--muted); transition:all .3s; transform:translateX(0) rotate(0); opacity:0.5; }
+    .location-tag.hovered .loc-arrow { transform:translateX(2px) rotate(-45deg); opacity:1; color:var(--gold); }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform:scale(1); } 50% { opacity: .5; transform:scale(1.5); } }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+
+<div class="mob-nav" id="mobNav">
+  <button id="mobClose" style="position:absolute;top:24px;right:24px;background:none;border:none;color:var(--muted);font-size:24px;cursor:none;">✕</button>
+  <a href="#koleksiyon" class="nav-link" onclick="closeMob()">Koleksiyon</a>
+  <a href="#hakkimizda" class="nav-link" onclick="closeMob()">Hakkımızda</a>
+  <a href="#yorumlar" class="nav-link" onclick="closeMob()">Yorumlar</a>
+  <a href="#iletisim" class="nav-link" onclick="closeMob()">İletişim</a>
+  <a href="https://www.chrono24.com.tr/dealer/privewatch/index.htm" target="_blank" rel="noopener" class="btn btn-o" onclick="closeMob()">Chrono24</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" aria-label="Privé Watch" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0;">
+    <img src="/brand_asset/prive_extracted/Data/logo-26.png" alt="Privé Watch" class="nav-logo">
+  </a>
+  <!-- World Clocks in Nav -->
+  <div class="nav-worldclocks" id="navWorldClocks">
+    <div class="nwc-item" onmouseenter="this.classList.add('hovered')" onmouseleave="this.classList.remove('hovered')">
+      <div class="nwc-pulse"><div class="pulse-ring"></div><div class="pulse-dot"></div></div>
+      <div class="nwc-text-wrap"><span class="nwc-city">Cenevre</span><span class="nwc-time" id="navGenevaTime">--:--</span></div>
+    </div>
+    <div class="nwc-sep"></div>
+    <div class="nwc-item" onmouseenter="this.classList.add('hovered')" onmouseleave="this.classList.remove('hovered')">
+      <div class="nwc-pulse"><div class="pulse-ring" style="background:#C9A54A;"></div><div class="pulse-dot" style="background:#C9A54A;"></div></div>
+      <div class="nwc-text-wrap"><span class="nwc-city">İstanbul</span><span class="nwc-time" id="navIstanbulTime">--:--</span></div>
+    </div>
+    <div class="nwc-sep"></div>
+    <div class="nwc-item" onmouseenter="this.classList.add('hovered')" onmouseleave="this.classList.remove('hovered')">
+      <div class="nwc-pulse"><div class="pulse-ring"></div><div class="pulse-dot"></div></div>
+      <div class="nwc-text-wrap"><span class="nwc-city">New York</span><span class="nwc-time" id="navNyTime">--:--</span></div>
+    </div>
+  </div>
+  <div class="desk-links limelight-nav">
+    <div class="limelight-indicator" id="llIndicator"></div>
+    <a href="#koleksiyon" class="ll-link active">Koleksiyon</a>
+    <a href="#hakkimizda" class="ll-link">Hakkımızda</a>
+    <a href="#yorumlar" class="ll-link">Yorumlar</a>
+    <a href="#iletisim" class="ll-link">İletişim</a>
+    <a href="https://www.chrono24.com.tr/dealer/privewatch/index.htm" target="_blank" rel="noopener" class="btn btn-o" style="padding:9px 20px;font-size:10px;margin-left:12px;">
+      Chrono24 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+    </a>
+  </div>
+  <button class="mob-menu" id="mobToggle" aria-label="Menü"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-text" aria-hidden="true">PRIVÉ</div>
+  <div class="hero-left">
+    <div class="reveal" style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+        <div style="width:32px;height:1px;background:linear-gradient(90deg,rgba(201,165,74,.7),transparent);"></div>
+        <span style="font-size:12.5px;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);font-weight:400;">İkinci El Lüks Saatler</span>
+      </div>
+    </div>
+    <div class="reveal d1" style="margin-bottom:28px;">
+      <h1 style="font-size:clamp(56px,6.8vw,108px);line-height:.95;margin-bottom:12px;">
+        <span class="shimmer">Zamansız</span><br>
+        <span style="color:var(--text);">Zerafetin</span>
+      </h1>
+      <div style="display:flex;align-items:center;gap:20px;margin-top:14px;">
+        <div style="width:44px;height:1px;background:rgba(201,165,74,.35);"></div>
+        <span style="font-family:'DM Sans',sans-serif;font-size:10.5px;letter-spacing:.44em;text-transform:uppercase;color:rgba(237,232,223,.45);">ADRESİ</span>
+      </div>
+    </div>
+    <p class="reveal d2" style="color:var(--muted);font-size:14.5px;line-height:1.9;max-width:360px;margin-bottom:44px;">
+      Dünyanın en prestijli markalarından, özgünlüğü belgelenmiş parçalar. Her saat bir miras, her satın alım bir güven.
+    </p>
+    <div class="reveal d3" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:44px;">
+      <a href="#koleksiyon" class="btn btn-o">Koleksiyonu Keşfet</a>
+      <a href="https://wa.me/905320155199" target="_blank" rel="noopener" class="btn btn-f">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+    <div class="trust-row reveal d4">
+      <div class="trust-item">
+        <div class="trust-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div><div class="trust-title">Orijinallik Belgesi</div><div class="trust-desc">Uzman Onaylı</div></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div><div class="trust-title">Chrono24 Güvencesi</div><div class="trust-desc">Alıcı Koruması</div></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+        <div><div class="trust-title">Kişisel Danışmanlık</div><div class="trust-desc">7/24 WhatsApp</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right" id="heroRight">
+    <div class="hero-slide active"><img src="https://img.chrono24.com/images/uhren/mexc6ywrofnm-1sfnifmkba692mej4pskd7kv-Square480.jpg" alt="Rolex Submariner Date"></div>
+    <div class="hero-slide"><img src="https://img.chrono24.com/images/uhren/sqzn9r9jwz2w-xv8wwzh08q44cx8ujmc1uax6-Square480.jpg" alt="Rolex Day-Date 40"></div>
+    <div class="hero-slide"><img src="https://img.chrono24.com/images/uhren/yvnatyefxbq1-777sotvfuyjwog9v2g2il9wl-Square480.jpg" alt="Bulgari Serpenti Tubogas"></div>
+    <div class="annotation ann-price reveal d3">
+      <div class="annotation-box"><div class="annotation-label">Fiyat</div><div class="annotation-price-value" id="annPriceVal"><span class="annotation-price-amount">661.294</span><span class="annotation-price-currency">TL</span></div></div>
+      <div class="annotation-line"></div>
+    </div>
+    <div class="annotation ann-material reveal d4">
+      <div class="annotation-line"></div>
+      <div class="annotation-box"><div class="annotation-label">Malzeme</div><div class="annotation-value" id="annMaterialVal">Oystersteel · 41mm</div></div>
+    </div>
+    <div class="annotation ann-cert reveal d5">
+      <div class="annotation-box" style="text-align:right;"><div class="annotation-label">Durum</div><div class="annotation-value" id="annCertVal">Orijinalliği Belgelenmiş</div></div>
+      <div class="annotation-line-v"></div>
+    </div>
+    <div class="hero-watch-meta reveal d4">
+      <div style="font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;" id="metaBrand">Öne Çıkan</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--text);margin-bottom:4px;" id="metaModel">Rolex Submariner Date</div>
+      <div style="font-size:11px;letter-spacing:.1em;color:var(--muted);margin-bottom:12px;" id="metaRef">Ref. 126610LV</div>
+      <a id="metaLink" href="https://www.chrono24.com.tr/rolex/submariner-date--id43515727.htm" target="_blank" rel="noopener" style="font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:6px;border-bottom:1px solid rgba(201,165,74,.3);padding-bottom:2px;cursor:none;">
+        Chrono24'te Gör <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+      </a>
+    </div>
+    <div class="hero-dots">
+      <div class="hero-dot active" onclick="heroGoTo(0)"></div>
+      <div class="hero-dot" onclick="heroGoTo(1)"></div>
+      <div class="hero-dot" onclick="heroGoTo(2)"></div>
+    </div>
+  </div>
+  <div style="position:absolute;bottom:36px;left:64px;z-index:3;display:flex;align-items:center;gap:14px;">
+    <div style="width:1px;height:32px;background:linear-gradient(to bottom,transparent,var(--gold));animation:scrollPulse 2s ease-in-out infinite;opacity:.5;"></div>
+    <span style="font-size:8.5px;letter-spacing:.38em;text-transform:uppercase;color:var(--muted);">Keşfet</span>
+  </div>
+</section>
+
+<!-- EXPANDABLE GALLERY -->
+<section class="expgal-section" id="expgal">
+  <div class="expgal-header reveal">
+    <span class="label" style="display:block;margin-bottom:18px;">— Koleksiyonumuzdan</span>
+    <h2>Seçkin<br><em>Parçalar</em></h2>
+    <p>Dünyanın en prestijli markalarından özgün, belgelenmiş parçaları keşfedin.</p>
+  </div>
+  <!-- Stack view -->
+  <div class="expgal-stack" id="expgalStack">
+    <div class="expgal-stack-photo" style="transform:rotate(-13deg) translate(-95px,8px);z-index:10;" data-hover-r="-13" data-hover-x="-95" data-hover-y="8">
+      <img src="https://img.chrono24.com/images/uhren/mexc6ywrofnm-1sfnifmkba692mej4pskd7kv-Square480.jpg" alt="Rolex Submariner" loading="lazy">
+    </div>
+    <div class="expgal-stack-photo" style="transform:rotate(-3deg) translate(-8px,-12px);z-index:20;" data-hover-r="-3" data-hover-x="-8" data-hover-y="-12">
+      <img src="https://img.chrono24.com/images/uhren/sqzn9r9jwz2w-xv8wwzh08q44cx8ujmc1uax6-Square480.jpg" alt="Rolex Day-Date" loading="lazy">
+    </div>
+    <div class="expgal-stack-photo" style="transform:rotate(11deg) translate(82px,6px);z-index:30;" data-hover-r="11" data-hover-x="82" data-hover-y="6">
+      <img src="https://img.chrono24.com/images/uhren/yvnatyefxbq1-777sotvfuyjwog9v2g2il9wl-Square480.jpg" alt="Bulgari Serpenti" loading="lazy">
+    </div>
+  </div>
+  <!-- Stack CTA -->
+  <div class="expgal-stack-cta" id="expgalStackCta">
+    <a href="#koleksiyon" class="btn btn-o" style="gap:10px;">
+      Koleksiyonu Keşfet
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- BRAND MARQUEE SHOWCASE -->
+<style>
+  .brand-marquee-section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,165,74,.05) 0%, transparent 60%),
+      linear-gradient(to bottom, #080808, #0e0d0a);
+    padding: 96px 0;
+    border-top: 1px solid rgba(201,165,74,.1);
+    border-bottom: 1px solid rgba(201,165,74,.1);
+  }
+  .brand-marquee-section .bm-svg-deco {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: rgba(201,165,74,.06);
+    pointer-events: none;
+  }
+  .brand-marquee-header {
+    text-align: center;
+    margin-bottom: 56px;
+    padding: 0 24px;
+    position: relative;
+    z-index: 2;
+  }
+  .brand-marquee-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--gold-d), var(--gold));
+    color: var(--s0);
+    margin-bottom: 24px;
+  }
+  .brand-marquee-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4.5vw, 58px);
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    position: relative;
+    display: inline-block;
+  }
+  .brand-marquee-title em { color: var(--gold); font-style: italic; }
+  .brand-marquee-sub {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.85;
+  }
+  .bm-track-wrap {
+    position: relative;
+    width: 100%;
+  }
+  .bm-track-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    z-index: 10;
+    height: 100%; width: 140px;
+    background: linear-gradient(to right, #080808, transparent);
+    pointer-events: none;
+  }
+  .bm-track-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    z-index: 10;
+    height: 100%; width: 140px;
+    background: linear-gradient(to left, #080808, transparent);
+    pointer-events: none;
+  }
+  .bm-track {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    animation: bmMarquee 38s linear infinite;
+    padding: 8px 0;
+  }
+  .bm-track:hover { animation-play-state: paused; }
+  @keyframes bmMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .bm-card {
+    flex-shrink: 0;
+    width: 200px;
+    background: var(--s2);
+    border: 1px solid rgba(201,165,74,.08);
+    border-radius: 4px;
+    padding: 28px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    transition: border-color .4s, transform .4s cubic-bezier(.16,1,.3,1), background .4s;
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .bm-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: scaleX(0);
+    transition: transform .5s cubic-bezier(.16,1,.3,1);
+  }
+  .bm-card:hover {
+    border-color: rgba(201,165,74,.28);
+    background: rgba(26,24,16,.9);
+    transform: translateY(-4px);
+  }
+  .bm-card:hover::before { transform: scaleX(1); }
+  .bm-card-badge {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(201,165,74,.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .bm-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .bm-card-meta {
+    font-size: 9px;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: .75;
+  }
+  .bm-card-count {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,.04);
+    width: 100%;
+  }
+  .bm-quote {
+    max-width: 640px;
+    margin: 64px auto 0;
+    padding: 0 32px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+  .bm-quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(17px, 2.2vw, 22px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.75;
+    margin-bottom: 28px;
+    opacity: .9;
+  }
+  .bm-quote-author {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .bm-quote-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(201,165,74,.3);
+    margin-bottom: 4px;
+  }
+  .bm-quote-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text);
+  }
+  .bm-quote-role {
+    font-size: 9.5px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+</style>
+<div class="brand-marquee-section">
+  <!-- Decorative SVG -->
+  <svg class="bm-svg-deco" fill="none" height="154" viewBox="0 0 460 154" width="460" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#bmClip)">
+      <path d="M-87.463 458.432C-102.118 348.092 -77.3418 238.841 -15.0744 188.274C57.4129 129.408 180.708 150.071 351.748 341.128C278.246 -374.233 633.954 380.602 548.123 42.7707" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="40"/>
+    </g>
+    <defs><clipPath id="bmClip"><rect fill="white" height="154" width="460"/></clipPath></defs>
+  </svg>
+
+  <div class="brand-marquee-header reveal">
+    <div class="brand-marquee-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+    </div>
+    <h2 class="brand-marquee-title">Prestijli <em>Markalar</em></h2>
+    <p class="brand-marquee-sub">Dünyanın en seçkin saat markalarından özgün ve belgelenmiş parçalar. Her marka, her model — eksiksiz güvenceyle.</p>
+  </div>
+
+  <div class="bm-track-wrap">
+    <div class="bm-track">
+      <!-- Set 1 -->
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div>
+          <div class="bm-card-name">Rolex</div>
+          <div class="bm-card-meta">İsviçre · 1905</div>
+        </div>
+        <div class="bm-card-count">7 parça mevcut</div>
+      </div>
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div>
+          <div class="bm-card-name">Patek Philippe</div>
+          <div class="bm-card-meta">Cenevre · 1839</div>
+        </div>
+        <div class="bm-card-count">Talebe göre</div>
+      </div>
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div>
+          <div class="bm-card-name">Audemars Piguet</div>
+          <div class="bm-card-meta">Le Brassus · 1875</div>
+        </div>
+        <div class="bm-card-count">Royal Oak stok</div>
+      </div>
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+        <div>
+          <div class="bm-card-name">Bulgari</div>
+          <div class="bm-card-meta">Roma · 1884</div>
+        </div>
+        <div class="bm-card-count">3 parça mevcut</div>
+      </div>
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div>
+          <div class="bm-card-name">Cartier</div>
+          <div class="bm-card-meta">Paris · 1847</div>
+        </div>
+        <div class="bm-card-count">1 parça mevcut</div>
+      </div>
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div>
+        <div>
+          <div class="bm-card-name">IWC</div>
+          <div class="bm-card-meta">Schaffhausen · 1868</div>
+        </div>
+        <div class="bm-card-count">1 parça mevcut</div>
+      </div>
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <div>
+          <div class="bm-card-name">Tudor</div>
+          <div class="bm-card-meta">Cenevre · 1926</div>
+        </div>
+        <div class="bm-card-count">Seçili stok</div>
+      </div>
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <div>
+          <div class="bm-card-name">Omega</div>
+          <div class="bm-card-meta">Biel · 1848</div>
+        </div>
+        <div class="bm-card-count">Speedmaster seçki</div>
+      </div>
+      <!-- Set 2 (duplicate for seamless loop) -->
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div>
+          <div class="bm-card-name">Rolex</div>
+          <div class="bm-card-meta">İsviçre · 1905</div>
+        </div>
+        <div class="bm-card-count">7 parça mevcut</div>
+      </div>
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div>
+          <div class="bm-card-name">Patek Philippe</div>
+          <div class="bm-card-meta">Cenevre · 1839</div>
+        </div>
+        <div class="bm-card-count">Talebe göre</div>
+      </div>
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div>
+          <div class="bm-card-name">Audemars Piguet</div>
+          <div class="bm-card-meta">Le Brassus · 1875</div>
+        </div>
+        <div class="bm-card-count">Royal Oak stok</div>
+      </div>
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+        <div>
+          <div class="bm-card-name">Bulgari</div>
+          <div class="bm-card-meta">Roma · 1884</div>
+        </div>
+        <div class="bm-card-count">3 parça mevcut</div>
+      </div>
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div>
+          <div class="bm-card-name">Cartier</div>
+          <div class="bm-card-meta">Paris · 1847</div>
+        </div>
+        <div class="bm-card-count">1 parça mevcut</div>
+      </div>
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div>
+        <div>
+          <div class="bm-card-name">IWC</div>
+          <div class="bm-card-meta">Schaffhausen · 1868</div>
+        </div>
+        <div class="bm-card-count">1 parça mevcut</div>
+      </div>
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <div>
+          <div class="bm-card-name">Tudor</div>
+          <div class="bm-card-meta">Cenevre · 1926</div>
+        </div>
+        <div class="bm-card-count">Seçili stok</div>
+      </div>
+      <div class="bm-card">
+        <div class="bm-card-badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <div>
+          <div class="bm-card-name">Omega</div>
+          <div class="bm-card-meta">Biel · 1848</div>
+        </div>
+        <div class="bm-card-count">Speedmaster seçki</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quote / Testimonial -->
+  <div class="bm-quote reveal">
+    <p class="bm-quote-text">"Privé Watch'un koleksiyonu gerçekten büyüleyici. Her saat titizlikle seçilmiş ve belgelenmiş; güvenle alışveriş yapılabilecek tek adres."</p>
+    <div class="bm-quote-author">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Ahmet Yılmaz" class="bm-quote-avatar">
+      <div class="bm-quote-name">Ahmet Yılmaz</div>
+      <div class="bm-quote-role">Müşteri · İstanbul</div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY GRID (Filterable Collection) -->
+<section id="koleksiyon" class="gallery-section">
+  <div class="gallery-header reveal">
+    <div>
+      <span class="label" style="display:block;margin-bottom:18px;">— Koleksiyon</span>
+      <h2 class="gallery-title">Öne Çıkan<br><em>Parçalar</em></h2>
+    </div>
+  </div>
+
+  <div class="gallery-filters reveal d1">
+    <button class="gallery-filter-btn active" data-filter="all">Tümü <span class="gallery-filter-count">12</span></button>
+    <button class="gallery-filter-btn" data-filter="Rolex">Rolex <span class="gallery-filter-count">7</span></button>
+    <button class="gallery-filter-btn" data-filter="Bulgari">Bulgari <span class="gallery-filter-count">3</span></button>
+    <button class="gallery-filter-btn" data-filter="Cartier">Cartier <span class="gallery-filter-count">1</span></button>
+    <button class="gallery-filter-btn" data-filter="IWC">IWC <span class="gallery-filter-count">1</span></button>
+  </div>
+
+  <div class="gallery-grid" id="galleryGrid">
+
+    <!-- 1 -->
+    <div class="gallery-card" data-brand="Rolex" data-index="0">
+      <div class="gallery-card-img-wrap" onclick="openLightbox(0)">
+        <img src="https://img.chrono24.com/images/uhren/mexc6ywrofnm-1sfnifmkba692mej4pskd7kv-Square480.jpg" alt="Rolex Submariner Date" loading="lazy">
+        <div class="gallery-card-overlay">
+          <div class="gallery-card-overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div class="gallery-card-overlay-title">Submariner Date</div>
+        </div>
+      </div>
+      <div class="gallery-card-body">
+        <span class="gallery-brand">Rolex</span>
+        <div class="gallery-model">Submariner Date</div>
+        <div class="gallery-ref">Ref. 126610LV</div>
+        <div class="gallery-card-body-price"><div class="gallery-price-line"></div><div class="gallery-price"><span class="gallery-price-amount">661.294</span><span class="gallery-price-currency">TL</span></div></div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="gallery-card" data-brand="Rolex" data-index="1">
+      <div class="gallery-card-img-wrap" onclick="openLightbox(1)">
+        <img src="https://img.chrono24.com/images/uhren/sqzn9r9jwz2w-xv8wwzh08q44cx8ujmc1uax6-Square480.jpg" alt="Rolex Day-Date 40" loading="lazy">
+        <div class="gallery-card-overlay">
+          <div class="gallery-card-overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div class="gallery-card-overlay-title">Day-Date 40</div>
+        </div>
+      </div>
+      <div class="gallery-card-body">
+        <span class="gallery-brand">Rolex</span>
+        <div class="gallery-model">Day-Date 40</div>
+        <div class="gallery-ref">Ref. 228238</div>
+        <div class="gallery-card-body-price"><div class="gallery-price-line"></div><div class="gallery-price"><span class="gallery-price-amount">2.964.422</span><span class="gallery-price-currency">TL</span></div></div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="gallery-card" data-brand="Bulgari" data-index="2">
+      <div class="gallery-card-img-wrap" onclick="openLightbox(2)">
+        <img src="https://img.chrono24.com/images/uhren/yvnatyefxbq1-777sotvfuyjwog9v2g2il9wl-Square480.jpg" alt="Bulgari Serpenti Tubogas" loading="lazy">
+        <div class="gallery-card-overlay">
+          <div class="gallery-card-overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div class="gallery-card-overlay-title">Serpenti Tubogas</div>
+        </div>
+      </div>
+      <div class="gallery-card-body">
+        <span class="gallery-brand">Bulgari</span>
+        <div class="gallery-model">Serpenti Tubogas</div>
+        <div class="gallery-ref">Orijinalliği Belgelenmiş</div>
+        <div class="gallery-card-body-price"><div class="gallery-price-line"></div><div class="gallery-price"><span class="gallery-price-amount">364.852</span><span class="gallery-price-currency">TL</span></div></div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="gallery-card" data-brand="Bulgari" data-index="3">
+      <div class="gallery-card-img-wrap" onclick="openLightbox(3)">
+        <img src="https://img.chrono24.com/images/uhren/aaklrov5ulky-6x9w3qxs8ripvyw4dk0ylfrc-ExtraLarge.jpg" alt="Bulgari Serpenti" loading="lazy">
+        <div class="gallery-card-overlay">
+          <div class="gallery-card-overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div class="gallery-card-overlay-title">Serpenti</div>
+        </div>
+      </div>
+      <div class="gallery-card-body">
+        <span class="gallery-brand">Bulgari</span>
+        <div class="gallery-model">Serpenti</div>
+        <div class="gallery-ref">Ref. 101817</div>
+        <div class="gallery-card-body-price"><div class="gallery-price-line"></div><div class="gallery-price"><span class="gallery-price-amount">307.844</span><span class="gallery-price-currency">TL</span></div></div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="gallery-card" data-brand="Cartier" data-index="4">
+      <div class="gallery-card-img-wrap" onclick="openLightbox(4)">
+        <div class="gallery-placeholder">
+          <div class="gallery-ph-dot"></div>
+          <div class="gallery-ph-brand">Cartier</div>
+          <div class="gallery-ph-model">Trinity Diamond</div>
+        </div>
+        <div class="gallery-card-overlay">
+          <div class="gallery-card-overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div class="gallery-card-overlay-title">Trinity</div>
+        </div>
+      </div>
+      <div class="gallery-card-body">
+        <span class="gallery-brand">Cartier</span>
+        <div class="gallery-model">Trinity</div>
+        <div class="gallery-ref">Diamond Watch</div>
+        <div class="gallery-card-body-price"><div class="gallery-price-line"></div><div class="gallery-price"><span class="gallery-price-amount">433.262</span><span class="gallery-price-currency">TL</span></div></div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="gallery-card gallery-extra" data-brand="Rolex" data-index="5">
+      <div class="gallery-card-img-wrap" onclick="openLightbox(5)">
+        <div class="gallery-placeholder">
+          <div class="gallery-ph-dot"></div>
+          <div class="gallery-ph-brand">Rolex</div>
+          <div class="gallery-ph-model">Oyster Perpetual Date</div>
+        </div>
+        <div class="gallery-card-overlay">
+          <div class="gallery-card-overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div class="gallery-card-overlay-title">Oyster Perpetual Date</div>
+        </div>
+      </div>
+      <div class="gallery-card-body">
+        <span class="gallery-brand">Rolex</span>
+        <div class="gallery-model">Oyster Perpetual Date</div>
+        <div class="gallery-ref">Ref. 1503</div>
+        <div class="gallery-card-body-price"><div class="gallery-price-line"></div><div class="gallery-price"><span class="gallery-price-amount">570.081</span><span class="gallery-price-currency">TL</span></div></div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="gallery-card gallery-extra" data-brand="Rolex" data-index="6">
+      <div class="gallery-card-img-wrap" onclick="openLightbox(6)">
+        <div class="gallery-placeholder">
+          <div class="gallery-ph-dot"></div>
+          <div class="gallery-ph-brand">Rolex</div>
+          <div class="gallery-ph-model">Datejust 31</div>
+        </div>
+        <div class="gallery-card-overlay">
+          <div class="gallery-card-overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div class="gallery-card-overlay-title">Datejust 31</div>
+        </div>
+      </div>
+      <div class="gallery-card-body">
+        <span class="gallery-brand">Rolex</span>
+        <div class="gallery-model">Datejust 31</div>
+        <div class="gallery-ref">Ref. 278271</div>
+        <div class="gallery-card-body-price"><div class="gallery-price-line"></div><div class="gallery-price"><span class="gallery-price-amount">1.003.343</span><span class="gallery-price-currency">TL</span></div></div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="gallery-card gallery-extra" data-brand="Rolex" data-index="7">
+      <div class="gallery-card-img-wrap" onclick="openLightbox(7)">
+        <div class="gallery-placeholder">
+          <div class="gallery-ph-dot"></div>
+          <div class="gallery-ph-brand">Rolex</div>
+          <div class="gallery-ph-model">Lady-Datejust</div>
+        </div>
+        <div class="gallery-card-overlay">
+          <div class="gallery-card-overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div class="gallery-card-overlay-title">Lady-Datejust</div>
+        </div>
+      </div>
+      <div class="gallery-card-body">
+        <span class="gallery-brand">Rolex</span>
+        <div class="gallery-model">Lady-Datejust</div>
+        <div class="gallery-ref">Ref. 279173</div>
+        <div class="gallery-card-body-price"><div class="gallery-price-line"></div><div class="gallery-price"><span class="gallery-price-amount">820.917</span><span class="gallery-price-currency">TL</span></div></div>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="gallery-card gallery-extra" data-brand="Rolex" data-index="8">
+      <div class="gallery-card-img-wrap" onclick="openLightbox(8)">
+        <div class="gallery-placeholder">
+          <div class="gallery-ph-dot"></div>
+          <div class="gallery-ph-brand">Rolex</div>
+          <div class="gallery-ph-model">Datejust 41</div>
+        </div>
+        <div class="gallery-card-overlay">
+          <div class="gallery-card-overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div class="gallery-card-overlay-title">Datejust 41</div>
+        </div>
+      </div>
+      <div class="gallery-card-body">
+        <span class="gallery-brand">Rolex</span>
+        <div class="gallery-model">Datejust 41</div>
+        <div class="gallery-ref">Ref. 126300</div>
+        <div class="gallery-card-body-price"><div class="gallery-price-line"></div><div class="gallery-price"><span class="gallery-price-amount">501.671</span><span class="gallery-price-currency">TL</span></div></div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="gallery-card gallery-extra" data-brand="Rolex" data-index="9">
+      <div class="gallery-card-img-wrap" onclick="openLightbox(9)">
+        <div class="gallery-placeholder">
+          <div class="gallery-ph-dot"></div>
+          <div class="gallery-ph-brand">Rolex</div>
+          <div class="gallery-ph-model">Datejust 36</div>
+        </div>
+        <div class="gallery-card-overlay">
+          <div class="gallery-card-overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div class="gallery-card-overlay-title">Datejust 36</div>
+        </div>
+      </div>
+      <div class="gallery-card-body">
+        <span class="gallery-brand">Rolex</span>
+        <div class="gallery-model">Datejust 36</div>
+        <div class="gallery-ref">Ref. 126231</div>
+        <div class="gallery-card-body-price"><div class="gallery-price-line"></div><div class="gallery-price"><span class="gallery-price-amount">775.310</span><span class="gallery-price-currency">TL</span></div></div>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="gallery-card gallery-extra" data-brand="Bulgari" data-index="10">
+      <div class="gallery-card-img-wrap" onclick="openLightbox(10)">
+        <img src="https://img.chrono24.com/images/uhren/yvnatyefxbq1-777sotvfuyjwog9v2g2il9wl-Square480.jpg" alt="Bulgari Serpenti Tubogas" loading="lazy">
+        <div class="gallery-card-overlay">
+          <div class="gallery-card-overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div class="gallery-card-overlay-title">Serpenti Tubogas</div>
+        </div>
+      </div>
+      <div class="gallery-card-body">
+        <span class="gallery-brand">Bulgari</span>
+        <div class="gallery-model">Serpenti Tubogas</div>
+        <div class="gallery-ref">Orijinalliği Belgelenmiş</div>
+        <div class="gallery-card-body-price"><div class="gallery-price-line"></div><div class="gallery-price"><span class="gallery-price-amount">638.491</span><span class="gallery-price-currency">TL</span></div></div>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="gallery-card gallery-extra" data-brand="IWC" data-index="11">
+      <div class="gallery-card-img-wrap" onclick="openLightbox(11)">
+        <div class="gallery-placeholder">
+          <div class="gallery-ph-dot"></div>
+          <div class="gallery-ph-brand">IWC</div>
+          <div class="gallery-ph-model">Pilot Chronograph</div>
+        </div>
+        <div class="gallery-card-overlay">
+          <div class="gallery-card-overlay-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
+          <div class="gallery-card-overlay-title">Pilot Chronograph</div>
+        </div>
+      </div>
+      <div class="gallery-card-body">
+        <span class="gallery-brand">IWC</span>
+        <div class="gallery-model">Pilot Chronograph</div>
+        <div class="gallery-ref">Ref. IW377714</div>
+        <div class="gallery-card-body-price"><div class="gallery-price-line"></div><div class="gallery-price"><span class="gallery-price-amount">296.442</span><span class="gallery-price-currency">TL</span></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Show more button -->
+  <div class="gallery-showmore-wrap reveal" id="galleryShowMoreWrap">
+    <button class="gallery-showmore-btn" id="galleryShowMoreBtn" onclick="toggleGalleryMore()">
+      Daha Fazlasını Gör
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+  </div>
+
+  <div class="gallery-cta reveal">
+    <div>
+      <span class="label" style="display:block;margin-bottom:10px;">— Tüm Koleksiyon</span>
+      <div class="gallery-cta-title">Her Parça Titizlikle İncelenmiş</div>
+      <div class="gallery-cta-desc">Orijinalliği belgelenmiş koleksiyonun tamamına Chrono24 üzerinden ulaşın.</div>
+    </div>
+    <a href="https://www.chrono24.com.tr/dealer/privewatch/index.htm" target="_blank" rel="noopener" class="btn btn-o" style="flex-shrink:0;">
+      Tümünü Chrono24'te Gör <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </button>
+    <button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <div id="lightboxContent"></div>
+    <div class="lightbox-info" id="lightboxInfo"></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="hakkimizda" class="about-section">
+  <div class="reveal img-frame" style="order:-1;">
+    <img src="https://img.chrono24.com/images/uhren/sqzn9r9jwz2w-xv8wwzh08q44cx8ujmc1uax6-Square480.jpg" alt="Rolex Day-Date 40" style="width:100%;aspect-ratio:1;object-fit:cover;display:block;filter:brightness(.88) contrast(1.06);">
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(8,8,8,.5));pointer-events:none;"></div>
+    <div class="corner-tl"></div><div class="corner-br"></div>
+  </div>
+  <div>
+    <div class="reveal">
+      <span class="label" style="display:block;margin-bottom:20px;">— Hakkımızda</span>
+      <h2 style="font-size:clamp(32px,4vw,62px);margin-bottom:24px;">Lüksün<br><em style="color:var(--gold);font-style:italic;">Seçkin Yüzü</em></h2>
+      <div class="gline" style="margin-bottom:28px;"></div>
+    </div>
+    <p class="reveal d1" style="color:var(--muted);line-height:1.9;font-size:15px;margin-bottom:18px;">Privé Watch, dünyanın en prestijli saat markalarının özgün ikinci el parçalarını seçkin müşterilerimizle buluşturmak için kurulmuştur. Her saat uzman ekibimiz tarafından detaylıca incelenerek orijinalliği belgelenir.</p>
+    <p class="reveal d2" style="color:var(--muted);line-height:1.9;font-size:15px;margin-bottom:40px;">Rolex, Patek Philippe, Audemars Piguet, Bulgari, Cartier ve daha fazlası — zamansız tasarımların ve üstün işçiliğin buluştuğu koleksiyon.</p>
+    <div class="about-badges reveal d3">
+      <div class="about-badge">
+        <div class="about-badge-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="about-badge-title">Özgünlük</div><div class="about-badge-sub">%100 Belgeli</div>
+      </div>
+      <div class="about-badge">
+        <div class="about-badge-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg></div>
+        <div class="about-badge-title">Chrono24</div><div class="about-badge-sub">Onaylı Satıcı</div>
+      </div>
+      <div class="about-badge" style="border-right:none;">
+        <div class="about-badge-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+        <div class="about-badge-title">Müşteri Önce</div><div class="about-badge-sub">Her Zaman</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES / NEDEN PRİVÉ -->
+<section class="feat-section">
+  <div style="max-width:1360px;margin:0 auto;">
+    <div style="margin-bottom:56px;" class="reveal">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:24px;">
+        <div>
+          <span class="label" style="display:block;margin-bottom:16px;">— Neden Privé Watch</span>
+          <h2 style="font-size:clamp(30px,4vw,54px);">Farkı<em style="color:var(--gold);font-style:italic;"> Hissedin</em></h2>
+        </div>
+        <a href="https://www.chrono24.com.tr/dealer/privewatch/index.htm" target="_blank" rel="noopener" class="btn btn-o" style="align-self:flex-end;">
+          Chrono24 Mağazamız <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- MAGNIFIED BENTO WIDGET -->
+    <div class="prive-bento-outer reveal d1">
+      <div class="prive-bento-container" id="priveBento">
+
+        <!-- Base layer (dimmed tags) -->
+        <div class="prive-bento-rows" id="pbBase">
+          <div class="pb-row pb-row-1"><div class="pb-row-inner">
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Rolex Uzmanı</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Sertifikalı Satış</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Patek Philippe</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>AP Koleksiyonu</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Chrono24 Onaylı</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Orijinallik Belgesi</div>
+            <!-- repeat x3 for loop -->
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Rolex Uzmanı</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Sertifikalı Satış</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Patek Philippe</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>AP Koleksiyonu</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Chrono24 Onaylı</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Orijinallik Belgesi</div>
+            <!-- repeat x3 -->
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Rolex Uzmanı</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Sertifikalı Satış</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Patek Philippe</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>AP Koleksiyonu</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Chrono24 Onaylı</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Orijinallik Belgesi</div>
+          </div></div>
+          <div class="pb-row pb-row-2"><div class="pb-row-inner">
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>WhatsApp Destek</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>Premium Seçki</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>İsviçre Saatleri</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="2"/></svg>Güvenli Ödeme</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/></svg>Ekspres Teslimat</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>Uzman Ekspertiz</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>WhatsApp Destek</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>Premium Seçki</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>İsviçre Saatleri</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="2"/></svg>Güvenli Ödeme</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/></svg>Ekspres Teslimat</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>Uzman Ekspertiz</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>WhatsApp Destek</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>Premium Seçki</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>İsviçre Saatleri</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="2"/></svg>Güvenli Ödeme</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/></svg>Ekspres Teslimat</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>Uzman Ekspertiz</div>
+          </div></div>
+          <div class="pb-row pb-row-3"><div class="pb-row-inner">
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Submariner Date</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Day-Date 40</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Serpenti Tubogas</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>Royal Oak</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Datejust 41</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Speedmaster</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Submariner Date</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Day-Date 40</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Serpenti Tubogas</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>Royal Oak</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Datejust 41</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Speedmaster</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Submariner Date</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Day-Date 40</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Serpenti Tubogas</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>Royal Oak</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Datejust 41</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Speedmaster</div>
+          </div></div>
+        </div>
+
+        <!-- Reveal layer (identical structure, gold styling, clipped by lens) -->
+        <div class="prive-bento-rows prive-bento-reveal" id="pbReveal">
+          <div class="pb-row pb-row-1"><div class="pb-row-inner">
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Rolex Uzmanı</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Sertifikalı Satış</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Patek Philippe</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>AP Koleksiyonu</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Chrono24 Onaylı</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Orijinallik Belgesi</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Rolex Uzmanı</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Sertifikalı Satış</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Patek Philippe</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>AP Koleksiyonu</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Chrono24 Onaylı</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Orijinallik Belgesi</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Rolex Uzmanı</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Sertifikalı Satış</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Patek Philippe</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>AP Koleksiyonu</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Chrono24 Onaylı</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Orijinallik Belgesi</div>
+          </div></div>
+          <div class="pb-row pb-row-2"><div class="pb-row-inner">
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>WhatsApp Destek</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>Premium Seçki</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>İsviçre Saatleri</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="2"/></svg>Güvenli Ödeme</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/></svg>Ekspres Teslimat</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>Uzman Ekspertiz</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>WhatsApp Destek</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>Premium Seçki</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>İsviçre Saatleri</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="2"/></svg>Güvenli Ödeme</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/></svg>Ekspres Teslimat</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>Uzman Ekspertiz</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>WhatsApp Destek</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>Premium Seçki</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>İsviçre Saatleri</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="2"/></svg>Güvenli Ödeme</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/></svg>Ekspres Teslimat</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>Uzman Ekspertiz</div>
+          </div></div>
+          <div class="pb-row pb-row-3"><div class="pb-row-inner">
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Submariner Date</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Day-Date 40</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Serpenti Tubogas</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>Royal Oak</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Datejust 41</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Speedmaster</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Submariner Date</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Day-Date 40</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Serpenti Tubogas</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>Royal Oak</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Datejust 41</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Speedmaster</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Submariner Date</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Day-Date 40</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>Serpenti Tubogas</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>Royal Oak</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Datejust 41</div>
+            <div class="pb-tag"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Speedmaster</div>
+          </div></div>
+        </div>
+
+        <!-- Edge fades -->
+        <div class="pb-fade-l"></div>
+        <div class="pb-fade-r"></div>
+        <!-- Lens SVG -->
+        <div class="pb-lens-wrap" id="pbLens">
+          <svg width="92" height="92" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M365.424 335.392L342.24 312.192L311.68 342.736L334.88 365.936L365.424 335.392Z" fill="#B0BDC6"/>
+            <path d="M358.08 342.736L334.88 319.552L319.04 335.392L342.24 358.584L358.08 342.736Z" fill="#DFE9EF"/>
+            <path d="M352.368 321.808L342.752 312.192L312.208 342.752L321.824 352.36L352.368 321.808Z" fill="#B0BDC6"/>
+            <path d="M332 332C260 404 142.4 404 69.6001 332C-2.3999 260 -2.3999 142.4 69.6001 69.6C141.6 -3.20003 259.2 -2.40002 332 69.6C404.8 142.4 404.8 260 332 332ZM315.2 87.2C252 24 150.4 24 88.0001 87.2C24.8001 150.4 24.8001 252 88.0001 314.4C151.2 377.6 252.8 377.6 315.2 314.4C377.6 252 377.6 150.4 315.2 87.2Z" fill="#DFE9EF" opacity="0.7"/>
+            <path d="M319.2 319.2C254.4 384 148.8 384 83.2001 319.2C18.4001 254.4 18.4001 148.8 83.2001 83.2C148 18.4 253.6 18.4 319.2 83.2C384 148.8 384 254.4 319.2 319.2ZM310.4 92C250.4 32 152 32 92.0001 92C32.0001 152 32.0001 250.4 92.0001 310.4C152 370.4 250.4 370.4 310.4 310.4C370.4 250.4 370.4 152 310.4 92Z" fill="#8A6E2A" opacity="0.9"/>
+            <path d="M484.104 428.784L373.8 318.472L318.36 373.912L428.672 484.216L484.104 428.784Z" fill="#1a1810"/>
+            <path d="M471.664 441.224L361.344 330.928L330.8 361.48L441.12 471.76L471.664 441.224Z" fill="#3E3A30"/>
+            <path d="M495.2 423.2C504 432 432.8 504 423.2 495.2L417.6 489.6C408.8 480.8 480 408.8 489.6 417.6L495.2 423.2Z" fill="#C9A54A" opacity="0.6"/>
+            <path d="M483.2 435.2C492 444 444.8 492 435.2 483.2L429.6 477.6C420.8 468.8 468 420.8 477.6 429.6L483.2 435.2Z" fill="#E2C87A" opacity="0.5"/>
+          </svg>
+        </div>
+      </div>
+      <div class="prive-bento-caption">
+        <h3>Uzmanlığımızın <em style="color:var(--gold);font-style:italic;">İzleri</em></h3>
+        <p>Uzman ekspertiz, orijinallik belgeleri ve Chrono24 güvencesiyle her satın alım güvenli ve şeffaftır. Saati değil, deneyimi satın alın.</p>
+      </div>
+    </div>
+
+    <div class="feat-grid">
+      <div class="feat-card reveal"><div class="feat-num">01</div><h3 class="feat-title">Premium Seçki</h3><p class="feat-desc">Patek Philippe'ten Rolex'e, dünyanın en prestijli markalarından özenle seçilmiş her parça kapsamlı ekspertiz sürecinden geçer.</p><a href="#koleksiyon" class="feat-link">Koleksiyona Bak <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg></a></div>
+      <div class="feat-card reveal d1"><div class="feat-num">02</div><h3 class="feat-title">WhatsApp Danışmanlık</h3><p class="feat-desc">Tek tıkla kişisel danışmanlık. Uzman ekibimiz her soru, her bütçe için hızla yanıt verir.</p><a href="https://wa.me/905320155199" target="_blank" rel="noopener" class="feat-link" style="color:#4ADE80;">Hemen Yaz <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg></a></div>
+      <div class="feat-card reveal d2"><div class="feat-num">03</div><h3 class="feat-title">Chrono24 Güvencesi</h3><p class="feat-desc">Dünyanın en büyük lüks saat platformu üzerinden güvenle alışveriş yapın. Uluslararası alıcı koruma.</p><a href="https://www.chrono24.com.tr/dealer/privewatch/index.htm" target="_blank" rel="noopener" class="feat-link">Mağazaya Git <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg></a></div>
+      <div class="feat-card reveal d3"><div class="feat-num">04</div><h3 class="feat-title">Instagram'da Takip Et</h3><p class="feat-desc">Yeni gelen parçaları ve saat dünyasından ilham veren içerikleri keşfedin. @privewatches</p><a href="https://www.instagram.com/privewatches/" target="_blank" rel="noopener" class="feat-link">@privewatches <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg></a></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS COLUMNS -->
+<section id="yorumlar" class="testi-section">
+  <div class="testi-header reveal">
+    <div class="testi-badge">
+      <div style="width:20px;height:1px;background:var(--gold);"></div>
+      <span class="label">Müşteri Yorumları</span>
+      <div style="width:20px;height:1px;background:var(--gold);"></div>
+    </div>
+    <h2 style="font-size:clamp(30px,4vw,52px);margin-bottom:18px;">Müşterilerimiz<br><em style="color:var(--gold);font-style:italic;">Ne Diyor?</em></h2>
+    <p style="color:var(--muted);font-size:14.5px;line-height:1.8;">Gerçek alıcılardan, gerçek deneyimler.</p>
+  </div>
+  <div class="testi-columns">
+    <!-- Column 1 -->
+    <div class="testi-col">
+      <div class="testi-col-inner">
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Rolex Submariner alımımda inanılmaz bir hizmet aldım. Saatin özgünlüğü belgesiyle teslim edildi, süreç son derece şeffaftı."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/32.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Ahmet Yılmaz</div><div class="testi-role">İstanbul</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Patek Philippe'imi Privé Watch aracılığıyla aldım. WhatsApp danışmanlığı hızlı ve profesyoneldi."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/44.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Selin Arslan</div><div class="testi-role">Ankara</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Audemars Piguet Royal Oak'ımın kutusuyla birlikte teslim alırken hissettiğim güven paha biçilemez."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/61.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Kerem Demir</div><div class="testi-role">İzmir</div></div></div></div>
+        <!-- duplicate for loop -->
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Rolex Submariner alımımda inanılmaz bir hizmet aldım. Saatin özgünlüğü belgesiyle teslim edildi, süreç son derece şeffaftı."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/32.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Ahmet Yılmaz</div><div class="testi-role">İstanbul</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Patek Philippe'imi Privé Watch aracılığıyla aldım. WhatsApp danışmanlığı hızlı ve profesyoneldi."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/44.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Selin Arslan</div><div class="testi-role">Ankara</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Audemars Piguet Royal Oak'ımın kutusuyla birlikte teslim alırken hissettiğim güven paha biçilemez."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/61.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Kerem Demir</div><div class="testi-role">İzmir</div></div></div></div>
+      </div>
+    </div>
+    <!-- Column 2 -->
+    <div class="testi-col" style="display:none;" id="testiCol2">
+      <div class="testi-col-inner">
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Saatimi Instagram'dan görüp hemen iletişime geçtim. Belgeler anında iletildi. Bu kadar güvenilir bir satıcı bulmak gerçekten nadir."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/68.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Deniz Kaya</div><div class="testi-role">Bursa</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Tudor Black Bay aldım, tam istediğim gibiydi. Fiyatlar şeffaf, açıklama detaylıydı. Kesinlikle tekrar alışveriş yapacağım."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/53.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Burak Şahin</div><div class="testi-role">Antalya</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"IWC Pilot'umu aldım, hem fiyat hem kalite açısından memnunum. Gönderim hızlıydı ve paketleme son derece titizdi."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/77.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Emre Çelik</div><div class="testi-role">Eskişehir</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Saatimi Instagram'dan görüp hemen iletişime geçtim. Belgeler anında iletildi. Bu kadar güvenilir bir satıcı bulmak gerçekten nadir."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/68.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Deniz Kaya</div><div class="testi-role">Bursa</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Tudor Black Bay aldım, tam istediğim gibiydi. Fiyatlar şeffaf, açıklama detaylıydı. Kesinlikle tekrar alışveriş yapacağım."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/53.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Burak Şahin</div><div class="testi-role">Antalya</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"IWC Pilot'umu aldım, hem fiyat hem kalite açısından memnunum. Gönderim hızlıydı ve paketleme son derece titizdi."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/77.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Emre Çelik</div><div class="testi-role">Eskişehir</div></div></div></div>
+      </div>
+    </div>
+    <!-- Column 3 -->
+    <div class="testi-col" style="display:none;" id="testiCol3">
+      <div class="testi-col-inner">
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Cartier satın aldım; ekip sabırla tüm sorularımı yanıtladı. Lüks saat alımında Privé Watch'u kesinlikle tavsiye ederim."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/12.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Ayşe Türk</div><div class="testi-role">İstanbul</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Omega Speedmaster almayı düşünüyordum; danışmanlık sayesinde doğru modeli seçtim. Saat tam olarak tanımlandığı gibiydi."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/28.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Oğuz Doğan</div><div class="testi-role">Adana</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Hublot Big Bang'ı görür görmez istedim. Privé Watch ekibi aynı gün tüm detayları iletti. Harika bir deneyimdi!"</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/91.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Mert Koç</div><div class="testi-role">İzmir</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Cartier satın aldım; ekip sabırla tüm sorularımı yanıtladı. Lüks saat alımında Privé Watch'u kesinlikle tavsiye ederim."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/12.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Ayşe Türk</div><div class="testi-role">İstanbul</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Omega Speedmaster almayı düşünüyordum; danışmanlık sayesinde doğru modeli seçtim. Saat tam olarak tanımlandığı gibiydi."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/28.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Oğuz Doğan</div><div class="testi-role">Adana</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Hublot Big Bang'ı görür görmez istedim. Privé Watch ekibi aynı gün tüm detayları iletti. Harika bir deneyimdi!"</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/91.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Mert Koç</div><div class="testi-role">İzmir</div></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="iletisim" class="contact-section">
+  <div class="reveal">
+    <span class="label" style="display:block;margin-bottom:18px;">— İletişim</span>
+    <h2 style="font-size:clamp(32px,4vw,60px);margin-bottom:48px;">Bizimle<br><em style="color:var(--gold);font-style:italic;">İletişime Geçin</em></h2>
+    <div class="cinfo"><div class="cicon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div><div><div style="font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;">Telefon</div><a href="tel:+905320155199" style="color:var(--text);text-decoration:none;font-family:'Cormorant Garamond',serif;font-size:18px;transition:color .3s;cursor:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text)'">+90 0532 015 5199</a></div></div>
+    <div class="cinfo"><div class="cicon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><div style="font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;">E-posta</div><a href="mailto:privewatches@gmail.com" style="color:var(--text);text-decoration:none;font-family:'Cormorant Garamond',serif;font-size:18px;transition:color .3s;cursor:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text)'">privewatches@gmail.com</a></div></div>
+    <div class="cinfo"><div class="cicon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div style="font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;">Adres</div><a href="https://share.google/KMC8bHjtPT6hcJrLF" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;font-family:'Cormorant Garamond',serif;font-size:18px;transition:color .3s;cursor:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text)'">İstanbul, Türkiye</a></div></div>
+    <div style="margin-top:40px;padding-top:36px;border-top:1px solid rgba(255,255,255,.04);">
+      <div style="font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;">Bağlantılar</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="https://wa.me/905320155199" target="_blank" rel="noopener" class="btn btn-f" style="padding:10px 18px;font-size:10px;gap:7px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</a>
+        <a href="https://www.instagram.com/privewatches/" target="_blank" rel="noopener" class="btn btn-o" style="padding:10px 18px;font-size:10px;gap:7px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg> Instagram</a>
+        <a href="https://www.chrono24.com.tr/dealer/privewatch/index.htm" target="_blank" rel="noopener" class="btn btn-o" style="padding:10px 18px;font-size:10px;gap:7px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg> Chrono24</a>
+      </div>
+    </div>
+  </div>
+  <div class="reveal d2">
+    <div class="map-wrap" style="height:440px;"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241316.66397228675!2d28.87251339724609!3d41.00523509999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14caa7040068086b%3A0xe1ccfe98bc01b0d0!2zxLBzdGFuYnVs!5e0!3m2!1str!2str!4v1712345678901" width="100%" height="100%" style="border:none;filter:invert(93%) hue-rotate(180deg) saturate(.5) brightness(.85);" allowfullscreen loading="lazy" title="Privé Watch Konum"></iframe></div>
+    <div class="map-bar"><span style="font-size:11.5px;color:var(--muted);">Google İşletme Sayfamız</span><a href="https://share.google/KMC8bHjtPT6hcJrLF" target="_blank" rel="noopener" style="font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:5px;transition:opacity .3s;cursor:none;" onmouseover="this.style.opacity='.6'" onmouseout="this.style.opacity='1'">Görüntüle <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg></a></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="max-width:1360px;margin:0 auto;">
+    <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,165,74,.5),transparent);margin-bottom:56px;"></div>
+    <div class="footer-cols" style="display:grid;grid-template-columns:1.4fr 1px 1fr 1px 1fr;gap:40px;align-items:start;margin-bottom:56px;">
+      <div>
+        <img src="/brand_asset/prive_extracted/Data/logo-26.png" alt="Privé Watch" class="footer-logo">
+        <p style="color:var(--muted);font-size:13.5px;line-height:1.8;max-width:260px;margin-bottom:24px;">Seçkin ikinci el lüks saat koleksiyonu. Orijinallik garantisi ile Rolex, Patek Philippe, AP ve daha fazlası.</p>
+        <div style="display:flex;gap:12px;">
+          <a href="https://www.instagram.com/privewatches/" target="_blank" rel="noopener" style="width:34px;height:34px;border:1px solid rgba(201,165,74,.2);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:border-color .3s,color .3s;cursor:none;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='rgba(201,165,74,.2)';this.style.color='var(--muted)'"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="https://wa.me/905320155199" target="_blank" rel="noopener" style="width:34px;height:34px;border:1px solid rgba(201,165,74,.2);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:border-color .3s,color .3s;cursor:none;" onmouseover="this.style.borderColor='#25D366';this.style.color='#25D366'" onmouseout="this.style.borderColor='rgba(201,165,74,.2)';this.style.color='var(--muted)'"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-divider" style="background:rgba(201,165,74,.1);height:100%;min-height:120px;"></div>
+      <div>
+        <div style="font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;gap:12px;"><div style="width:20px;height:1px;background:var(--gold-d);"></div>Hızlı Erişim</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <a href="#koleksiyon" class="nav-link" style="color:rgba(237,232,223,.6);font-size:13px;letter-spacing:.05em;text-transform:none;">Koleksiyon</a>
+          <a href="#hakkimizda" class="nav-link" style="color:rgba(237,232,223,.6);font-size:13px;letter-spacing:.05em;text-transform:none;">Hakkımızda</a>
+          <a href="#yorumlar" class="nav-link" style="color:rgba(237,232,223,.6);font-size:13px;letter-spacing:.05em;text-transform:none;">Müşteri Yorumları</a>
+          <a href="#iletisim" class="nav-link" style="color:rgba(237,232,223,.6);font-size:13px;letter-spacing:.05em;text-transform:none;">İletişim</a>
+        </div>
+      </div>
+      <div class="footer-divider" style="background:rgba(201,165,74,.1);height:100%;min-height:120px;"></div>
+      <div>
+        <div style="font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;gap:12px;"><div style="width:20px;height:1px;background:var(--gold-d);"></div>Platform</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <a href="https://www.chrono24.com.tr/dealer/privewatch/index.htm" target="_blank" rel="noopener" class="nav-link" style="color:rgba(237,232,223,.6);font-size:13px;letter-spacing:.05em;text-transform:none;display:flex;align-items:center;gap:6px;">Chrono24 Mağazası <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg></a>
+          <a href="https://www.instagram.com/privewatches/" target="_blank" rel="noopener" class="nav-link" style="color:rgba(237,232,223,.6);font-size:13px;letter-spacing:.05em;text-transform:none;display:flex;align-items:center;gap:6px;">@privewatches <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <hr class="rule" style="margin-bottom:28px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
+      <p style="font-size:11.5px;color:var(--dim);letter-spacing:.04em;">© 2024 Privé Watch. Tüm hakları saklıdır.</p>
+      <p style="font-size:13px;color:rgba(201,165,74,.35);font-family:'Cormorant Garamond',serif;font-style:italic;">Zamansız Zerafetin Adresi</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Cursor ──────────────────────────────────────
+  const cur = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx=0, my=0, rx=0, ry=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+  (function animCursor(){ cur.style.left=mx+'px'; cur.style.top=my+'px'; rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animCursor); })();
+  document.querySelectorAll('a,button,.gallery-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
+  });
+
+  // ── Reveal ──────────────────────────────────────
+  const io = new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.06,rootMargin:'0px 0px -24px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  document.querySelectorAll('.hero .reveal').forEach((el,i)=>setTimeout(()=>el.classList.add('in'),150+i*120));
+
+  // ── Nav ─────────────────────────────────────────
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>50),{passive:true});
+
+  // Limelight Nav Logic
+  const llNav = document.querySelector('.limelight-nav');
+  if (llNav) {
+    const indicator = document.getElementById('llIndicator');
+    const links = llNav.querySelectorAll('.ll-link');
+    function updateLimelight(el) {
+      if(!el) return;
+      const w = el.offsetWidth;
+      const l = el.offsetLeft;
+      indicator.style.width = '30px';
+      indicator.style.left = (l + (w/2) - 15) + 'px';
+      links.forEach(link => link.classList.remove('active'));
+      el.classList.add('active');
+    }
+    links.forEach(link => {
+      link.addEventListener('click', (e) => {
+        updateLimelight(e.currentTarget);
+      });
+    });
+    setTimeout(() => {
+      updateLimelight(llNav.querySelector('.active') || links[0]);
+      indicator.classList.add('ready');
+    }, 100);
+  }
+
+  // Location Tags Logic — also updates nav world clocks
+  function updateWorldClocks() {
+    const now = new Date();
+    const opts = { hour:'2-digit', minute:'2-digit', hour12:false };
+    const genevaStr = now.toLocaleTimeString('en-US', { timeZone: 'Europe/Zurich', ...opts });
+    const navG = document.getElementById('navGenevaTime');
+    if (navG) navG.textContent = genevaStr;
+
+    const istStr = now.toLocaleTimeString('en-US', { timeZone: 'Europe/Istanbul', ...opts });
+    const navI = document.getElementById('navIstanbulTime');
+    if (navI) navI.textContent = istStr;
+
+    const nyStr = now.toLocaleTimeString('en-US', { timeZone: 'America/New_York', ...opts });
+    const navN = document.getElementById('navNyTime');
+    if (navN) navN.textContent = nyStr;
+  }
+  setInterval(updateWorldClocks, 1000);
+  updateWorldClocks();
+
+  // ── Expandable Gallery (hover lift only) ─────────────────
+  (function(){
+    const stack = document.getElementById('expgalStack');
+    if (!stack) return;
+    stack.querySelectorAll('.expgal-stack-photo').forEach(p => {
+      p.addEventListener('mouseenter', () => {
+        const r = parseFloat(p.dataset.hoverR || 0);
+        const x = parseFloat(p.dataset.hoverX || 0);
+        const y = parseFloat(p.dataset.hoverY || 0);
+        p.style.transition = 'transform .35s cubic-bezier(.16,1,.3,1), box-shadow .3s';
+        p.style.transform = `rotate(${r * 0.7}deg) translate(${x}px, ${y - 16}px) scale(1.04)`;
+        p.style.zIndex = '50';
+      });
+      p.addEventListener('mouseleave', () => {
+        p.style.transition = 'transform .55s cubic-bezier(.16,1,.3,1), box-shadow .4s';
+        p.style.transform = `rotate(${p.dataset.hoverR || 0}deg) translate(${p.dataset.hoverX || 0}px, ${p.dataset.hoverY || 0}px)`;
+        p.style.zIndex = '';
+      });
+    });
+  })();
+
+  // ── Hero carousel ───────────────────────────────
+  const heroData=[
+    {price:'661.294 TL',material:'Oystersteel · 41mm',cert:'Orijinalliği Belgelenmiş',brand:'Rolex',model:'Submariner Date',ref:'Ref. 126610LV',link:'https://www.chrono24.com.tr/rolex/submariner-date--id43515727.htm'},
+    {price:'2.964.422 TL',material:'18K Sarı Altın · 40mm',cert:'Tam Kutu & Belgeli',brand:'Rolex',model:'Day-Date 40',ref:'Ref. 228238',link:'https://www.chrono24.com.tr/rolex/day-date-40--id43516231.htm'},
+    {price:'364.852 TL',material:'Çelik & Altın · 18mm',cert:'Orijinalliği Belgelenmiş',brand:'Bulgari',model:'Serpenti Tubogas',ref:'İkinci El · Mükemmel',link:'https://www.chrono24.com.tr/bulgari/serpenti-tubogas--id43516544.htm'}
+  ];
+  let heroIdx=0, heroTimer;
+  const heroSlides=document.querySelectorAll('.hero-slide');
+  const heroDots=document.querySelectorAll('.hero-dot');
+  window.heroGoTo=function(idx){
+    heroSlides[heroIdx].classList.remove('active'); heroDots[heroIdx].classList.remove('active');
+    heroIdx=idx; heroSlides[heroIdx].classList.add('active');
+    void heroDots[heroIdx].offsetWidth; // force reflow to restart CSS animation
+    heroDots[heroIdx].classList.add('active');
+    const d=heroData[idx];
+    const priceNum=d.price.replace(' TL',''); document.getElementById('annPriceVal').innerHTML=`<span class="annotation-price-amount">${priceNum}</span><span class="annotation-price-currency">TL</span>`;
+    document.getElementById('annMaterialVal').textContent=d.material;
+    document.getElementById('annCertVal').textContent=d.cert;
+    document.getElementById('metaBrand').textContent=d.brand;
+    document.getElementById('metaModel').textContent=d.model;
+    document.getElementById('metaRef').textContent=d.ref;
+    document.getElementById('metaLink').href=d.link;
+    clearInterval(heroTimer); heroTimer=setInterval(()=>heroGoTo((heroIdx+1)%3),5000);
+  };
+  heroTimer=setInterval(()=>heroGoTo((heroIdx+1)%3),5000);
+
+
+
+  // ── Privé Bento Lens ─────────────────────────────
+  (function() {
+    const container = document.getElementById('priveBento');
+    const reveal = document.getElementById('pbReveal');
+    const lens = document.getElementById('pbLens');
+    if (!container || !reveal || !lens) return;
+    let lensX = 0, lensY = 0, dragging = false, dragStartX = 0, dragStartY = 0, initX = 0, initY = 0;
+    const r = 48;
+    function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+    function updatePos(x, y) {
+      const rect = container.getBoundingClientRect();
+      lensX = clamp(x - rect.left, r, rect.width - r);
+      lensY = clamp(y - rect.top, r, rect.height - r);
+      reveal.style.clipPath = 'circle(' + r + 'px at ' + lensX + 'px ' + lensY + 'px)';
+      lens.style.left = (lensX - r) + 'px';
+      lens.style.top = (lensY - r) + 'px';
+    }
+    // Init centered
+    setTimeout(function() {
+      const rect = container.getBoundingClientRect();
+      updatePos(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    }, 100);
+    // Mouse drag
+    container.addEventListener('mousedown', function(e) {
+      dragging = true; dragStartX = e.clientX; dragStartY = e.clientY; initX = lensX; initY = lensY;
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', function(e) {
+      if (!dragging) return;
+      const rect = container.getBoundingClientRect();
+      const nx = clamp(initX + (e.clientX - dragStartX), r, rect.width - r);
+      const ny = clamp(initY + (e.clientY - dragStartY), r, rect.height - r);
+      lensX = nx; lensY = ny;
+      reveal.style.clipPath = 'circle(' + r + 'px at ' + nx + 'px ' + ny + 'px)';
+      lens.style.left = (nx - r) + 'px'; lens.style.top = (ny - r) + 'px';
+    });
+    document.addEventListener('mouseup', function() { dragging = false; });
+    // Touch
+    container.addEventListener('touchstart', function(e) {
+      dragging = true; dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY; initX = lensX; initY = lensY;
+    }, {passive:true});
+    container.addEventListener('touchmove', function(e) {
+      if (!dragging) return;
+      const rect = container.getBoundingClientRect();
+      const nx = clamp(initX + (e.touches[0].clientX - dragStartX), r, rect.width - r);
+      const ny = clamp(initY + (e.touches[0].clientY - dragStartY), r, rect.height - r);
+      lensX = nx; lensY = ny;
+      reveal.style.clipPath = 'circle(' + r + 'px at ' + nx + 'px ' + ny + 'px)';
+      lens.style.left = (nx - r) + 'px'; lens.style.top = (ny - r) + 'px';
+    }, {passive:true});
+    container.addEventListener('touchend', function() { dragging = false; });
+  })();
+
+  // ── Gallery Show More ────────────────────────────
+  let galleryExpanded = false;
+  window.toggleGalleryMore = function() {
+    galleryExpanded = !galleryExpanded;
+    const extras = document.querySelectorAll('.gallery-card.gallery-extra');
+    const btn = document.getElementById('galleryShowMoreBtn');
+    extras.forEach((card, i) => {
+      if (galleryExpanded) {
+        card.style.animationDelay = (i * 50) + 'ms';
+        card.classList.add('gallery-extra-open', 'filtering');
+      } else {
+        card.classList.remove('gallery-extra-open', 'filtering');
+      }
+    });
+    btn.classList.toggle('open', galleryExpanded);
+    btn.innerHTML = galleryExpanded
+      ? 'Daha Az Göster <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>'
+      : 'Daha Fazlasını Gör <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>';
+    if (!galleryExpanded) {
+      document.getElementById('koleksiyon').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  // ── Gallery Filter ──────────────────────────────
+  const watchData=[
+    {brand:'Rolex',model:'Submariner Date',ref:'Ref. 126610LV',price:'661.294 TL',hasImg:true,img:'https://img.chrono24.com/images/uhren/mexc6ywrofnm-1sfnifmkba692mej4pskd7kv-Square480.jpg',url:'https://www.chrono24.com.tr/rolex/submariner-date--id43515727.htm'},
+    {brand:'Rolex',model:'Day-Date 40',ref:'Ref. 228238',price:'2.964.422 TL',hasImg:true,img:'https://img.chrono24.com/images/uhren/sqzn9r9jwz2w-xv8wwzh08q44cx8ujmc1uax6-Square480.jpg',url:'https://www.chrono24.com.tr/rolex/day-date-40--id43516231.htm'},
+    {brand:'Bulgari',model:'Serpenti Tubogas',ref:'Orijinalliği Belgelenmiş',price:'364.852 TL',hasImg:true,img:'https://img.chrono24.com/images/uhren/yvnatyefxbq1-777sotvfuyjwog9v2g2il9wl-Square480.jpg',url:'https://www.chrono24.com.tr/bulgari/serpenti-tubogas--id43516544.htm'},
+    {brand:'Bulgari',model:'Serpenti',ref:'Ref. 101817',price:'307.844 TL',hasImg:true,img:'https://img.chrono24.com/images/uhren/aaklrov5ulky-6x9w3qxs8ripvyw4dk0ylfrc-ExtraLarge.jpg',url:'https://www.chrono24.com.tr/bulgari/serpenti--id43516554.htm'},
+    {brand:'Cartier',model:'Trinity',ref:'Diamond Watch',price:'433.262 TL',hasImg:false,url:'https://www.chrono24.com.tr/cartier/trinity-diamond-watch--id43516695.htm'},
+    {brand:'Rolex',model:'Oyster Perpetual Date',ref:'Ref. 1503',price:'570.081 TL',hasImg:false,url:'https://www.chrono24.com.tr/rolex/oyster-perpetual-date--id43516716.htm'},
+    {brand:'Rolex',model:'Datejust 31',ref:'Ref. 278271',price:'1.003.343 TL',hasImg:false,url:'https://www.chrono24.com.tr/rolex/datejust-31--id45271367.htm'},
+    {brand:'Rolex',model:'Lady-Datejust',ref:'Ref. 279173',price:'820.917 TL',hasImg:false,url:'https://www.chrono24.com.tr/rolex/lady-datejust--id45285737.htm'},
+    {brand:'Rolex',model:'Datejust 41',ref:'Ref. 126300',price:'501.671 TL',hasImg:false,url:'https://www.chrono24.com.tr/rolex/datejust-41--id43515537.htm'},
+    {brand:'Rolex',model:'Datejust 36',ref:'Ref. 126231',price:'775.310 TL',hasImg:false,url:'https://www.chrono24.com.tr/rolex/datejust-36--id43516078.htm'},
+    {brand:'Bulgari',model:'Serpenti Tubogas',ref:'Orijinalliği Belgelenmiş',price:'638.491 TL',hasImg:true,img:'https://img.chrono24.com/images/uhren/yvnatyefxbq1-777sotvfuyjwog9v2g2il9wl-Square480.jpg',url:'https://www.chrono24.com.tr/bulgari/serpenti-tubogas--id45285648.htm'},
+    {brand:'IWC',model:'Pilot Chronograph',ref:'Ref. IW377714',price:'296.442 TL',hasImg:false,url:'https://www.chrono24.com.tr/iwc/pilot-chronograph--id43513167.htm'}
+  ];
+
+  document.querySelectorAll('.gallery-filter-btn').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('.gallery-filter-btn').forEach(b=>b.classList.remove('active'));
+      this.classList.add('active');
+      const filter=this.dataset.filter;
+      const cards=document.querySelectorAll('.gallery-card');
+      const showMoreWrap = document.getElementById('galleryShowMoreWrap');
+      let delay=0;
+      cards.forEach(card=>{
+        const brand=card.dataset.brand;
+        const isExtra = card.classList.contains('gallery-extra');
+        const matchesBrand = filter==='all'||brand===filter;
+        // For non-all filters, show all matching cards (ignore extra truncation)
+        const shouldShow = matchesBrand && (filter!=='all' || !isExtra || galleryExpanded);
+        if(shouldShow){
+          if(isExtra&&filter!=='all') card.classList.add('gallery-extra-open');
+          card.classList.remove('hidden');
+          card.style.animationDelay=delay+'ms';
+          card.classList.remove('filtering');
+          void card.offsetWidth;
+          card.classList.add('filtering');
+          delay+=40;
+        } else {
+          if(isExtra&&filter==='all'&&!galleryExpanded) card.classList.remove('gallery-extra-open');
+          card.classList.add('hidden');
+        }
+      });
+      // Show/hide the show-more button (only relevant for 'all' filter)
+      if(showMoreWrap) showMoreWrap.style.display = filter==='all' ? '' : 'none';
+    });
+  });
+
+  // ── Lightbox ─────────────────────────────────────
+  let currentLightboxIdx=0;
+  const lb=document.getElementById('lightbox');
+  const lbContent=document.getElementById('lightboxContent');
+  const lbInfo=document.getElementById('lightboxInfo');
+
+  function renderLightbox(idx){
+    currentLightboxIdx=idx;
+    const w=watchData[idx];
+    if(w.hasImg){
+      lbContent.innerHTML=`<img src="${w.img}" alt="${w.model}" class="lightbox-img">`;
+    } else {
+      lbContent.innerHTML=`<div class="lightbox-placeholder"><div class="lp-brand">${w.brand}</div><div class="lp-model">${w.model}</div></div>`;
+    }
+    lbInfo.innerHTML=`<div class="lightbox-brand">${w.brand}</div><div class="lightbox-model">${w.model}</div><div class="lightbox-ref">${w.ref}</div><div class="lightbox-price"><span class="lightbox-price-amount">${w.price.replace(' TL','')}</span><span class="lightbox-price-currency">TL</span></div><a href="${w.url}" target="_blank" rel="noopener" class="lightbox-link">Chrono24'te Gör <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg></a>`;
+  }
+  window.openLightbox=function(idx){ renderLightbox(idx); lb.classList.add('open'); document.body.style.overflow='hidden'; };
+  window.closeLightbox=function(){ lb.classList.remove('open'); document.body.style.overflow=''; };
+  window.closeLightboxOutside=function(e){ if(e.target===lb) closeLightbox(); };
+  window.lightboxNav=function(dir){ renderLightbox((currentLightboxIdx+dir+watchData.length)%watchData.length); };
+  document.addEventListener('keydown',e=>{ if(lb.classList.contains('open')){ if(e.key==='Escape') closeLightbox(); if(e.key==='ArrowLeft') lightboxNav(-1); if(e.key==='ArrowRight') lightboxNav(1); } });
+
+  // ── Testimonial column visibility ───────────────
+  function setTestiCols(){
+    const w=window.innerWidth;
+    document.getElementById('testiCol2').style.display=w>=768?'block':'none';
+    document.getElementById('testiCol3').style.display=w>=1024?'block':'none';
+  }
+  setTestiCols();
+  window.addEventListener('resize',setTestiCols);
+
+  // ── Mobile nav ──────────────────────────────────
+  const mob=document.getElementById('mobNav');
+  document.getElementById('mobToggle').addEventListener('click',()=>{ mob.classList.add('open'); document.body.style.overflow='hidden'; });
+  window.closeMob=function(){ mob.classList.remove('open'); document.body.style.overflow=''; };
+  document.getElementById('mobClose').addEventListener('click',closeMob);
+</script>
+</body>
+</html>
