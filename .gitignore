@@ -1,0 +1,9 @@
+node_modules/
+temporary screenshots/
+.DS_Store
+.claude/
+*.backup.html
+screenshot-debug.mjs
+screenshot-fixed.mjs
+screenshot-scroll.mjs
+screenshot-sections.mjs
