@@ -1,0 +1,14 @@
+{
+  "functions": {
+    "api/watches.js": { "maxDuration": 10 },
+    "api/img.js": { "maxDuration": 15 }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    }
+  ]
+}
