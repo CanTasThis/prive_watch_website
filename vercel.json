@@ -1,7 +1,12 @@
 {
   "functions": {
-    "api/watches.js": { "maxDuration": 10 },
-    "api/img.js": { "maxDuration": 15 }
+    "api/watches.js": {
+      "maxDuration": 10,
+      "includeFiles": "../watches.json"
+    },
+    "api/img.js": {
+      "maxDuration": 15
+    }
   },
   "headers": [
     {
