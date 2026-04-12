@@ -405,9 +405,11 @@
 
     /* ─── CONTACT ───────────────────────────── */
     .contact-section { padding: 112px 56px; background: linear-gradient(to bottom,#0b0a08 0%,#0d0c0a 100%); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; border-top: 1px solid rgba(201,165,74,.08); }
-    .cinfo { display: flex; align-items: flex-start; gap: 18px; padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+    .cinfo { display: flex; align-items: center; gap: 18px; padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,.04); text-decoration: none; color: inherit; transition: opacity .25s; cursor: pointer; }
+    .cinfo:hover { opacity: .72; }
     .cinfo:last-of-type { border-bottom: none; }
-    .cicon { width: 44px; height: 44px; flex-shrink: 0; border: 1px solid rgba(201,165,74,.2); display: flex; align-items: center; justify-content: center; color: var(--gold); }
+    .cicon { width: 44px; height: 44px; flex-shrink: 0; border: 1px solid rgba(201,165,74,.2); display: flex; align-items: center; justify-content: center; color: var(--gold); transition: border-color .25s, background .25s; }
+    .cinfo:hover .cicon { border-color: var(--gold); background: rgba(201,165,74,.06); }
     .map-wrap { border: 1px solid rgba(201,165,74,.12); overflow: hidden; }
     .map-bar { padding: 14px 20px; background: var(--s2); border-top: 1px solid rgba(201,165,74,.08); display: flex; align-items: center; justify-content: space-between; }
 
@@ -1436,9 +1438,18 @@
   <div class="reveal">
     <span class="label" style="display:block;margin-bottom:18px;">— İletişim</span>
     <h2 style="font-size:clamp(32px,4vw,60px);margin-bottom:48px;">Bizimle<br><em style="color:var(--gold);font-style:italic;">İletişime Geçin</em></h2>
-    <div class="cinfo"><div class="cicon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div><div><div style="font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;">Telefon</div><a href="tel:+905320155199" style="color:var(--text);text-decoration:none;font-family:'Playfair Display',Georgia,serif;font-size:18px;font-weight:500;transition:color .3s;cursor:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text)'">+90 0532 015 5199</a></div></div>
-    <div class="cinfo"><div class="cicon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><div style="font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;">E-posta</div><a href="mailto:privewatches@gmail.com" style="color:var(--text);text-decoration:none;font-family:'Playfair Display',Georgia,serif;font-size:18px;font-weight:500;transition:color .3s;cursor:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text)'">privewatches@gmail.com</a></div></div>
-    <div class="cinfo"><div class="cicon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div style="font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;">Adres</div><a href="https://share.google/KMC8bHjtPT6hcJrLF" target="_blank" rel="noopener" style="color:var(--text);text-decoration:none;font-family:'Playfair Display',Georgia,serif;font-size:18px;font-weight:500;transition:color .3s;cursor:none;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text)'">Harbiye, Mim Kemal Öke Cd. No:3<br>34367 Şişli / İstanbul, Türkiye</a></div></div>
+    <a href="tel:+905320155199" class="cinfo">
+      <div class="cicon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+      <div><div style="font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Telefon</div><div style="font-family:'Playfair Display',Georgia,serif;font-size:18px;font-weight:500;color:var(--text);">+90 0532 015 5199</div></div>
+    </a>
+    <a href="mailto:privewatches@gmail.com" class="cinfo">
+      <div class="cicon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+      <div><div style="font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">E-posta</div><div style="font-family:'Playfair Display',Georgia,serif;font-size:18px;font-weight:500;color:var(--text);">privewatches@gmail.com</div></div>
+    </a>
+    <a href="https://share.google/KMC8bHjtPT6hcJrLF" target="_blank" rel="noopener" class="cinfo">
+      <div class="cicon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+      <div><div style="font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Adres</div><div style="font-family:'Playfair Display',Georgia,serif;font-size:17px;font-weight:500;color:var(--text);line-height:1.5;">Harbiye, Mim Kemal Öke Cd. No:3<br>34367 Şişli / İstanbul, Türkiye</div></div>
+    </a>
     <div style="margin-top:40px;padding-top:36px;border-top:1px solid rgba(255,255,255,.04);">
       <div style="font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;">Bağlantılar</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
