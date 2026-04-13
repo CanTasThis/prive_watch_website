@@ -2,7 +2,7 @@ name: Update Watches
 
 on:
   schedule:
-    - cron: '0 * * * *'     # Every hour
+    - cron: '0 9 * * *'     # Every day at 09:00 UTC
   workflow_dispatch:          # Manual trigger from GitHub UI
 
 jobs:
