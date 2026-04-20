@@ -147,7 +147,7 @@
     .btn:active { transform:none; }
     .btn:focus-visible { outline:2px solid var(--gold); outline-offset:3px; }
 
-    .mob-menu { display:none; width:36px; height:36px; align-items:center; justify-content:center; }
+    .mob-menu { display:none; width:40px; height:40px; align-items:center; justify-content:center; }
     .mob-menu span { display:block; width:20px; height:1.5px; background:var(--text); position:relative; transition:transform .3s, opacity .3s; }
     .mob-menu span::before, .mob-menu span::after {
       content:''; position:absolute; left:0; width:100%; height:1.5px; background:var(--text); transition:transform .3s, top .3s;
@@ -157,6 +157,19 @@
     .mob-menu.open span { background:transparent; }
     .mob-menu.open span::before { top:0; transform:rotate(45deg); }
     .mob-menu.open span::after { top:0; transform:rotate(-45deg); }
+
+    /* Mobile icon row (Tudor-style header) */
+    .mob-left, .mob-right { display:none; align-items:center; gap:2px; }
+    .mob-icon-btn {
+      width:40px; height:40px;
+      display:flex; align-items:center; justify-content:center;
+      color:var(--text); transition:color .25s, transform .25s;
+      background:none; border:none; cursor:pointer; padding:0;
+    }
+    .mob-icon-btn:hover { color:var(--gold); }
+    .mob-icon-btn:focus-visible { outline:none; color:var(--gold); }
+    .mob-icon-btn:active { transform:scale(.92); }
+    .mob-icon-btn svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
 
     .mob-nav {
       position:fixed; inset:0; z-index:490;
@@ -968,12 +981,24 @@
 
     /* ───── Mobile ───── */
     @media (max-width:900px) {
-      #nav { padding:10px 16px; gap:12px; background:rgba(8,8,8,.95); backdrop-filter:blur(18px); border-bottom:1px solid rgba(201,165,74,.1); }
-      #nav.scrolled { padding:8px 16px; }
-      .nav-logo { height:26px; }
+      #nav {
+        padding:0 10px;
+        height:60px;
+        display:grid; grid-template-columns:1fr auto 1fr;
+        align-items:center; gap:0;
+        background:rgba(10,9,8,.96); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+        border-bottom:1px solid rgba(201,165,74,.14);
+        transition:transform .35s var(--ease), background .3s, height .3s, border-color .3s;
+      }
+      #nav.scrolled { height:54px; background:rgba(10,9,8,.98); }
+      #nav.nav-hidden { transform:translateY(-100%); }
+      .nav-logo { height:28px; }
       .nav-links.desktop { display:none; }
-      .mob-menu { display:flex; width:40px; height:40px; margin-right:-8px; }
       .nav-cta-desk { display:none !important; }
+      .mob-menu { display:flex; }
+      .mob-left { display:flex; justify-self:start; }
+      .mob-right { display:flex; justify-self:end; }
+      .nav-wordmark { justify-self:center; }
       .hero-content { padding:96px 20px 56px; }
       .hero-title { font-size:clamp(40px, 11vw, 64px); margin-bottom:20px; }
       .hero-sub { font-size:14.5px; line-height:1.65; margin-bottom:32px; }
@@ -988,8 +1013,13 @@
       .collection-cta { padding:28px; flex-direction:column; align-items:flex-start; }
     }
     @media (max-width:420px) {
-      #nav { padding:8px 14px; }
-      .nav-logo { height:24px; }
+      #nav { padding:0 6px; height:56px; }
+      #nav.scrolled { height:52px; }
+      .nav-logo { height:26px; }
+      .mob-icon-btn { width:36px; height:36px; }
+      .mob-icon-btn svg { width:18px; height:18px; }
+      .mob-menu { width:36px; height:36px; }
+      .mob-left, .mob-right { gap:0; }
       .hero-content { padding:84px 18px 48px; }
       .hero-title { font-size:clamp(36px, 12vw, 52px); }
       .hero-sub { font-size:14px; }
@@ -1009,6 +1039,15 @@
 
 <!-- ───── NAV ───── -->
 <nav id="nav" aria-label="Ana menü">
+  <div class="mob-left">
+    <button class="mob-menu" id="mobToggle" aria-label="Menüyü aç/kapat"><span></span></button>
+    <a href="#koleksiyon" class="mob-icon-btn" aria-label="Koleksiyonda ara">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><line x1="20" y1="20" x2="16.65" y2="16.65"></line></svg>
+    </a>
+    <a href="https://wa.me/905320155199?text=Merhaba%2C%20favori%20parça%20danışmanlığı%20almak%20istiyorum." target="_blank" rel="noopener" class="mob-icon-btn" aria-label="Favori parça danışmanlığı">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+    </a>
+  </div>
   <a href="#" aria-label="Privé Watch" class="nav-wordmark" style="display:flex;align-items:center;">
     <img src="brand_asset/prive_extracted/Data/new_logo.png" alt="Privé Watch" class="nav-logo">
   </a>
@@ -1028,7 +1067,14 @@
       Uzmanımızla Görüşün
     </a>
   </div>
-  <button class="mob-menu" id="mobToggle" aria-label="Menüyü aç/kapat"><span></span></button>
+  <div class="mob-right">
+    <a href="#hakkimizda" class="mob-icon-btn" aria-label="Hakkımızda">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"></circle><polyline points="12 10 12 12 13.5 13.5"></polyline><line x1="16.51" y1="17.35" x2="16.51" y2="21"></line><line x1="7.49" y1="17.35" x2="7.49" y2="21"></line><line x1="16.51" y1="6.65" x2="16.51" y2="3"></line><line x1="7.49" y1="6.65" x2="7.49" y2="3"></line></svg>
+    </a>
+    <a href="#iletisim" class="mob-icon-btn" aria-label="İletişim ve konum">
+      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+    </a>
+  </div>
 </nav>
 
 <div class="mob-nav" id="mobNav">
@@ -1441,9 +1487,21 @@
 <script>
   // ===== Nav scroll state =====
   const nav = document.getElementById('nav');
+  let lastScrollY = window.scrollY;
   window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 30);
-    document.getElementById('scrollTop').classList.toggle('show', window.scrollY > 800);
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 30);
+    document.getElementById('scrollTop').classList.toggle('show', y > 800);
+
+    // Hide-on-scroll-down, show-on-scroll-up (CSS limits to mobile)
+    const menuOpen = document.getElementById('mobNav').classList.contains('open');
+    if (!menuOpen && y > 120) {
+      if (y > lastScrollY + 6) nav.classList.add('nav-hidden');
+      else if (y < lastScrollY - 4) nav.classList.remove('nav-hidden');
+    } else {
+      nav.classList.remove('nav-hidden');
+    }
+    lastScrollY = y;
   }, { passive: true });
 
   document.getElementById('scrollTop').addEventListener('click', () => {
@@ -1457,11 +1515,13 @@
     const open = mobNav.classList.toggle('open');
     mobToggle.classList.toggle('open', open);
     document.body.style.overflow = open ? 'hidden' : '';
+    if (open) nav.classList.remove('nav-hidden');
   });
   window.closeMob = () => {
     mobNav.classList.remove('open');
     mobToggle.classList.remove('open');
     document.body.style.overflow = '';
+    lastScrollY = window.scrollY;
   };
 
   // ===== Active nav link on scroll =====
