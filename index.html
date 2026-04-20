@@ -58,8 +58,8 @@
       padding-top: 12px; padding-bottom: 12px;
     }
     .nav-logo-wrap { display: inline-flex; mix-blend-mode: screen; transition: opacity .3s; }
-    .nav-logo-wrap:hover { opacity: .85; }
-    .nav-logo { height: 44px; width: auto; filter: grayscale(1) contrast(12) brightness(0.85); display: block; }
+    .nav-logo-wrap:hover { opacity: .8; }
+    .nav-logo { height: 44px; width: auto; filter: brightness(1.1); display: block; }
     .nav-link { font-size: 10.5px; font-weight: 400; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); text-decoration: none; position: relative; padding-bottom: 3px; transition: color .3s; cursor: none; }
     .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--gold); transition: width .35s cubic-bezier(.16,1,.3,1); }
     .nav-link:hover { color: var(--gold-l); }
@@ -89,39 +89,43 @@
     .btn:active { transform: scale(.975); }
     .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-    /* Tudor-style pill button (white fill, gold text) */
+    /* Gold pill button (primary) */
     .btn-pill {
       display: inline-flex; align-items: center; gap: 10px;
       padding: 14px 32px;
       border-radius: 999px;
-      background: #fff;
+      background: linear-gradient(to right, var(--gold-l) 50%, var(--gold) 50%);
+      background-size: 200% 100%; background-position: 100%;
       color: var(--s0);
       font-family: var(--font-body);
       font-size: 11px; font-weight: 600;
       letter-spacing: .22em; text-transform: uppercase;
       text-decoration: none; cursor: none;
-      border: 1px solid #fff;
-      transition: background .35s, color .35s, transform .25s, box-shadow .35s;
-      box-shadow: 0 8px 24px rgba(0,0,0,.35);
+      border: 1px solid var(--gold);
+      transition: background-position .45s cubic-bezier(.16,1,.3,1), box-shadow .35s, transform .25s;
+      box-shadow: 0 6px 20px rgba(201,165,74,.28);
     }
-    .btn-pill:hover { background: var(--gold); color: var(--s0); border-color: var(--gold); box-shadow: 0 10px 28px rgba(201,165,74,.35); }
+    .btn-pill:hover { background-position: 0%; box-shadow: 0 10px 28px rgba(201,165,74,.4); }
     .btn-pill svg { transition: transform .3s; }
     .btn-pill:hover svg { transform: translateX(3px); }
+    /* Gold outline pill button (secondary) */
     .btn-pill-o {
       display: inline-flex; align-items: center; gap: 10px;
       padding: 14px 32px;
       border-radius: 999px;
-      background: transparent;
-      color: #fff;
+      background: linear-gradient(to right, var(--gold) 50%, transparent 50%);
+      background-size: 200% 100%; background-position: 100%;
+      color: var(--gold);
       font-family: var(--font-body);
       font-size: 11px; font-weight: 500;
       letter-spacing: .22em; text-transform: uppercase;
       text-decoration: none; cursor: none;
-      border: 1px solid rgba(255,255,255,.55);
-      transition: background .35s, color .35s, border-color .35s;
+      border: 1px solid var(--gold);
+      transition: background-position .45s cubic-bezier(.16,1,.3,1), color .45s;
     }
-    .btn-pill-o:hover { background: #fff; color: var(--s0); border-color: #fff; }
+    .btn-pill-o:hover { background-position: 0%; color: var(--s0); }
     .btn-pill:active, .btn-pill-o:active { transform: scale(.97); }
+    .btn-pill:focus-visible, .btn-pill-o:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
     /* ─── HERO (Tudor-style full-bleed) ─────── */
     .hero {
@@ -488,7 +492,7 @@
 
     /* ─── FOOTER ────────────────────────────── */
     footer { background: radial-gradient(ellipse at 50% 100%, rgba(201,165,74,.03) 0%, transparent 60%), #090807; border-top: 1px solid rgba(201,165,74,.12); padding: 72px 56px 36px; }
-    .footer-logo { height: 42px; width: auto; mix-blend-mode: screen; filter: contrast(4); display: block; margin-bottom: 20px; }
+    .footer-logo { height: 42px; width: auto; mix-blend-mode: screen; filter: brightness(1.05); display: block; margin-bottom: 20px; }
     .rule { border: none; height: 1px; background: linear-gradient(90deg,transparent,rgba(201,165,74,.3),transparent); }
 
 
@@ -537,7 +541,7 @@
       .hero-sub { font-size: 14px !important; line-height: 1.65 !important; max-width: 92% !important; margin-bottom: 26px !important; }
       .hero-ctas { gap: 10px !important; }
       .hero-ctas .btn-pill,
-      .hero-ctas .btn-pill-o { padding: 12px 22px; font-size: 10px; letter-spacing: .2em; }
+      .hero-ctas .btn-pill-o { padding: 12px 24px; font-size: 10px; letter-spacing: .2em; }
       .hero-mobile-cta { display: none !important; }
 
       /* ── Nav ── */
@@ -733,7 +737,7 @@
 <!-- NAV -->
 <nav id="nav">
   <a href="#" aria-label="Privé Watch" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0;" class="nav-logo-wrap">
-    <img src="/brand_asset/prive_extracted/Data/logo-26.png" alt="Privé Watch" class="nav-logo">
+    <img src="/brand_asset/prive_extracted/Data/new_logo.png" alt="Privé Watch" class="nav-logo">
   </a>
   <!-- World Clocks in Nav -->
   <div class="nav-worldclocks" id="navWorldClocks">
@@ -1608,7 +1612,7 @@
     <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,165,74,.5),transparent);margin-bottom:56px;"></div>
     <div class="footer-cols" style="display:grid;grid-template-columns:1.4fr 1px 1fr 1px 1fr;gap:40px;align-items:start;margin-bottom:56px;">
       <div>
-        <img src="/brand_asset/prive_extracted/Data/logo-26.png" alt="Privé Watch" class="footer-logo">
+        <img src="/brand_asset/prive_extracted/Data/new_logo.png" alt="Privé Watch" class="footer-logo">
         <p style="color:var(--muted);font-size:13.5px;line-height:1.8;max-width:260px;margin-bottom:24px;">Seçkin lüks saat koleksiyonu. Orijinallik garantisi ile Rolex, Patek Philippe, AP ve daha fazlası.</p>
         <div style="display:flex;gap:12px;">
           <a href="https://www.instagram.com/privewatches/" target="_blank" rel="noopener" style="width:34px;height:34px;border:1px solid rgba(201,165,74,.2);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:border-color .3s,color .3s;cursor:none;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='rgba(201,165,74,.2)';this.style.color='var(--muted)'"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
