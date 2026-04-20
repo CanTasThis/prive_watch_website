@@ -435,13 +435,15 @@
       html, body { overflow-x: hidden !important; max-width: 100vw; }
       * { max-width: 100%; }
       .hero { grid-template-columns: 1fr; min-height: 100svh; }
-      .hero-right, .annotation { display: none; }
-      .hero-left { padding: 110px 24px 80px; justify-content: center; }
+      .annotation { display: none; }
+      .hero-right { position: absolute !important; inset: 0; z-index: 0; opacity: 0.18; pointer-events: none; }
+      .hero-right .hero-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+      .hero-left { padding: 110px 24px 80px; justify-content: center; position: relative; z-index: 1; }
       /* Hero reveals immediately on mobile */
       .hero-left .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
 
       /* ── Nav ── */
-      #nav { padding: 18px 24px; position: fixed; top: 0; left: 0; right: 0; z-index: 200; }
+      #nav { padding: 18px 24px; position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba(8,8,8,.97) !important; backdrop-filter: blur(20px) !important; -webkit-backdrop-filter: blur(20px) !important; border-bottom-color: rgba(201,165,74,.14) !important; }
       .mob-menu { display: flex; }
       .desk-links { display: none !important; }
       .nav-worldclocks { display: none !important; }
@@ -497,6 +499,9 @@
 
       /* ── Location tags ── */
       .location-tags-container { gap: 10px; }
+
+      /* ── Keşfet indicator ── */
+      #kesfetIndicator { display: none !important; }
       .location-tag { padding: 6px 12px; }
 
       /* ── Expgal ── */
@@ -715,7 +720,7 @@
       <div class="hero-dot" onclick="heroGoTo(2)"></div>
     </div>
   </div>
-  <div style="position:absolute;bottom:36px;left:64px;z-index:3;display:flex;align-items:center;gap:14px;">
+  <div id="kesfetIndicator" style="position:absolute;bottom:36px;left:64px;z-index:3;display:flex;align-items:center;gap:14px;">
     <div style="width:1px;height:32px;background:linear-gradient(to bottom,transparent,var(--gold));animation:scrollPulse 2s ease-in-out infinite;opacity:.5;"></div>
     <span style="font-size:8.5px;letter-spacing:.38em;text-transform:uppercase;color:var(--muted);">Keşfet</span>
   </div>
@@ -730,13 +735,13 @@
   </div>
   <!-- Stack view -->
   <div class="expgal-stack" id="expgalStack">
-    <div class="expgal-stack-photo" style="transform:rotate(-13deg) translate(-95px,8px);z-index:10;" data-hover-r="-13" data-hover-x="-95" data-hover-y="8">
+    <div class="expgal-stack-photo" style="transform:rotate(-13deg) translate(-95px,8px);z-index:10;cursor:pointer;" data-hover-r="-13" data-hover-x="-95" data-hover-y="8" onclick="window.open('https://www.chrono24.com.tr/rolex/submariner-date--id43515727.htm','_blank')">
       <img src="https://img.chrono24.com/images/uhren/mexc6ywrofnm-1sfnifmkba692mej4pskd7kv-Square480.jpg" alt="Rolex Submariner" loading="lazy">
     </div>
-    <div class="expgal-stack-photo" style="transform:rotate(-3deg) translate(-8px,-12px);z-index:20;" data-hover-r="-3" data-hover-x="-8" data-hover-y="-12">
+    <div class="expgal-stack-photo" style="transform:rotate(-3deg) translate(-8px,-12px);z-index:20;cursor:pointer;" data-hover-r="-3" data-hover-x="-8" data-hover-y="-12" onclick="window.open('https://www.chrono24.com.tr/rolex/day-date-40--id43516231.htm','_blank')">
       <img src="https://img.chrono24.com/images/uhren/sqzn9r9jwz2w-xv8wwzh08q44cx8ujmc1uax6-Square480.jpg" alt="Rolex Day-Date" loading="lazy">
     </div>
-    <div class="expgal-stack-photo" style="transform:rotate(11deg) translate(82px,6px);z-index:30;" data-hover-r="11" data-hover-x="82" data-hover-y="6">
+    <div class="expgal-stack-photo" style="transform:rotate(11deg) translate(82px,6px);z-index:30;cursor:pointer;" data-hover-r="11" data-hover-x="82" data-hover-y="6" onclick="window.open('https://www.chrono24.com.tr/bulgari/serpenti-tubogas--id43516544.htm','_blank')">
       <img src="https://img.chrono24.com/images/uhren/yvnatyefxbq1-777sotvfuyjwog9v2g2il9wl-Square480.jpg" alt="Bulgari Serpenti" loading="lazy">
     </div>
   </div>
@@ -1703,10 +1708,14 @@
     card.dataset.brand = w.brand;
     card.dataset.index = idx;
 
-    // Image wrap — click goes to Chrono24
+    // Image wrap — click opens WhatsApp with watch name
     const imgWrap = document.createElement('div');
     imgWrap.className = 'gallery-card-img-wrap';
-    imgWrap.addEventListener('click', function() { window.open(w.url, '_blank'); });
+    imgWrap.addEventListener('click', function() {
+      const name = [w.brand, w.model, w.ref].filter(Boolean).join(' ');
+      const msg = encodeURIComponent(name + ' hakkında bilgi almak istiyorum.');
+      window.open('https://wa.me/905320155199?text=' + msg, '_blank');
+    });
 
     if (w.hasImg && w.img) {
       const img = document.createElement('img');

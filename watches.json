@@ -25,14 +25,6 @@
   },
   {
     "brand": "Rolex",
-    "model": "Datejust 36",
-    "ref": "126231",
-    "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2Fqg2klt7z0xnf-di20ne9vhicsqykbw025ye74-Square480.jpg",
-    "hasImg": true,
-    "url": "https://www.chrono24.com.tr/rolex/datejust-36--id43516078.htm"
-  },
-  {
-    "brand": "Rolex",
     "model": "Day-Date 40",
     "ref": "228238",
     "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2Fsqzn9r9jwz2w-xv8wwzh08q44cx8ujmc1uax6-Square480.jpg",
@@ -64,20 +56,20 @@
     "url": "https://www.chrono24.com.tr/patekphilippe/aquanaut--id44917405.htm"
   },
   {
-    "brand": "Audemars Piguet",
-    "model": "Royal Oak",
-    "ref": "15500ST.OO.1220ST.01",
-    "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2Fybmcs6nr3tx5-wm0f069i0wsj7oc6z9vdyiug-Square480.jpg",
-    "hasImg": true,
-    "url": "https://www.chrono24.com.tr/audemarspiguet/royal-oak--id44918770.htm"
-  },
-  {
     "brand": "Bulgari",
     "model": "Serpenti",
     "ref": "101817",
     "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2Faaklrov5ulky-6x9w3qxs8ripvyw4dk0ylfrc-Square480.jpg",
     "hasImg": true,
     "url": "https://www.chrono24.com.tr/bulgari/serpenti--id43516554.htm"
+  },
+  {
+    "brand": "Audemars Piguet",
+    "model": "Royal Oak",
+    "ref": "15500ST.OO.1220ST.01",
+    "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2Fybmcs6nr3tx5-wm0f069i0wsj7oc6z9vdyiug-Square480.jpg",
+    "hasImg": true,
+    "url": "https://www.chrono24.com.tr/audemarspiguet/royal-oak--id44918770.htm"
   },
   {
     "brand": "Rolex",
@@ -120,20 +112,20 @@
     "url": "https://www.chrono24.com.tr/rolex/yacht-master--id43515193.htm"
   },
   {
-    "brand": "Cartier",
-    "model": "Ballon Bleu",
-    "ref": "3005",
-    "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2F7r97tcem9xk6-31h8hfe8em8m6btnxyfyu9df-Square480.jpg",
-    "hasImg": true,
-    "url": "https://www.chrono24.com.tr/cartier/ballon-bleu--id45520583.htm"
-  },
-  {
     "brand": "Rolex",
     "model": "Submariner Date",
     "ref": "126610lv",
     "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2Fmexc6ywrofnm-1sfnifmkba692mej4pskd7kv-Square480.jpg",
     "hasImg": true,
     "url": "https://www.chrono24.com.tr/rolex/submariner-date--id43515727.htm"
+  },
+  {
+    "brand": "Cartier",
+    "model": "Ballon Bleu",
+    "ref": "3005",
+    "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2F7r97tcem9xk6-31h8hfe8em8m6btnxyfyu9df-Square480.jpg",
+    "hasImg": true,
+    "url": "https://www.chrono24.com.tr/cartier/ballon-bleu--id45520583.htm"
   },
   {
     "brand": "Rolex",
@@ -192,20 +184,20 @@
     "url": "https://www.chrono24.com.tr/iwc/pilot-chronograph--id43513167.htm"
   },
   {
-    "brand": "Bulgari",
-    "model": "Serpenti Tubogas",
-    "ref": "",
-    "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2F116zqphz0vam-1x56lcu1paqdkxzbqitxwtrv-Square480.jpg",
-    "hasImg": true,
-    "url": "https://www.chrono24.com.tr/bulgari/serpenti-tubogas--id45285648.htm"
-  },
-  {
     "brand": "Cartier",
     "model": "Trinity Diamond Watch",
     "ref": "",
     "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2Fozta0j13eyct-81xfggtgjp2jwje5g0przq5k-Square480.jpg",
     "hasImg": true,
     "url": "https://www.chrono24.com.tr/cartier/trinity-diamond-watch--id43516695.htm"
+  },
+  {
+    "brand": "Bulgari",
+    "model": "Serpenti Tubogas",
+    "ref": "",
+    "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2F116zqphz0vam-1x56lcu1paqdkxzbqitxwtrv-Square480.jpg",
+    "hasImg": true,
+    "url": "https://www.chrono24.com.tr/bulgari/serpenti-tubogas--id45285648.htm"
   },
   {
     "brand": "Hublot",
@@ -224,20 +216,20 @@
     "url": "https://www.chrono24.com.tr/rolex/datejust-36--id43516344.htm"
   },
   {
-    "brand": "Cartier",
-    "model": "Panthère",
-    "ref": "WSPN0006",
-    "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2Fnazfkhw826gn-9g6mu81wb0yn8h4858vbrxhr-Square480.jpg",
-    "hasImg": true,
-    "url": "https://www.chrono24.com.tr/cartier/panthere--id44917631.htm"
-  },
-  {
     "brand": "Rolex",
     "model": "Daytona",
     "ref": "116518LN",
     "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2Fhm0qeyan65gr-vnvqjypju6qdg9iao0p81xw2-Square480.jpg",
     "hasImg": true,
     "url": "https://www.chrono24.com.tr/rolex/daytona--id43514123.htm"
+  },
+  {
+    "brand": "Cartier",
+    "model": "Panthère",
+    "ref": "WSPN0006",
+    "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2Fnazfkhw826gn-9g6mu81wb0yn8h4858vbrxhr-Square480.jpg",
+    "hasImg": true,
+    "url": "https://www.chrono24.com.tr/cartier/panthere--id44917631.htm"
   },
   {
     "brand": "Rolex",
