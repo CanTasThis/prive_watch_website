@@ -80,22 +80,6 @@
     "url": "https://www.chrono24.com.tr/rolex/datejust-41--id43515537.htm"
   },
   {
-    "brand": "Cartier",
-    "model": "Santos",
-    "ref": "WSSA0062",
-    "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2F7c4lqavp2aem-vp89v0i67yeafyllw9z9ssca-Square480.jpg",
-    "hasImg": true,
-    "url": "https://www.chrono24.com.tr/cartier/santos--id44917538.htm"
-  },
-  {
-    "brand": "Rolex",
-    "model": "Datejust 31",
-    "ref": "278271",
-    "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2Ffism18wzesuf-gpf3t23ljoh70wacsr0evipu-Square480.jpg",
-    "hasImg": true,
-    "url": "https://www.chrono24.com.tr/rolex/datejust-31--id45271367.htm"
-  },
-  {
     "brand": "Rolex",
     "model": "Oyster Perpetual Stainless Dial",
     "ref": "(2025)",
@@ -150,6 +134,22 @@
     "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2Fbyjax5jnyhl2-05ii81fia6p6jfss7r0cf5vi-Square480.jpg",
     "hasImg": true,
     "url": "https://www.chrono24.com.tr/rolex/daytona--id43514936.htm"
+  },
+  {
+    "brand": "Cartier",
+    "model": "Santos",
+    "ref": "WSSA0062",
+    "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2F7c4lqavp2aem-vp89v0i67yeafyllw9z9ssca-Square480.jpg",
+    "hasImg": true,
+    "url": "https://www.chrono24.com.tr/cartier/santos--id44917538.htm"
+  },
+  {
+    "brand": "Rolex",
+    "model": "Datejust 31",
+    "ref": "278271",
+    "img": "/api/img?url=https%3A%2F%2Fimg.chrono24.com%2Fimages%2Fuhren%2Ffism18wzesuf-gpf3t23ljoh70wacsr0evipu-Square480.jpg",
+    "hasImg": true,
+    "url": "https://www.chrono24.com.tr/rolex/datejust-31--id45271367.htm"
   },
   {
     "brand": "Rolex",
