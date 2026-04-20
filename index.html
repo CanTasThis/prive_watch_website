@@ -57,8 +57,9 @@
       border-bottom-color: rgba(201,165,74,.14);
       padding-top: 12px; padding-bottom: 12px;
     }
-    .nav-logo { height: 44px; width: auto; mix-blend-mode: screen; filter: contrast(4); transition: opacity .3s; }
-    .nav-logo:hover { opacity: .85; }
+    .nav-logo-wrap { display: inline-flex; mix-blend-mode: screen; transition: opacity .3s; }
+    .nav-logo-wrap:hover { opacity: .85; }
+    .nav-logo { height: 44px; width: auto; filter: grayscale(1) contrast(12) brightness(0.85); display: block; }
     .nav-link { font-size: 10.5px; font-weight: 400; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); text-decoration: none; position: relative; padding-bottom: 3px; transition: color .3s; cursor: none; }
     .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--gold); transition: width .35s cubic-bezier(.16,1,.3,1); }
     .nav-link:hover { color: var(--gold-l); }
@@ -88,21 +89,93 @@
     .btn:active { transform: scale(.975); }
     .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-    /* ─── HERO ──────────────────────────────── */
-    .hero {
-      min-height: 100vh; position: relative; overflow: hidden;
-      display: grid; grid-template-columns: 55fr 45fr;
-      background: radial-gradient(ellipse at 20% 60%, rgba(201,165,74,.04) 0%, transparent 55%), linear-gradient(145deg,#0a0907 0%,#080808 60%,#06060a 100%);
+    /* Tudor-style pill button (white fill, gold text) */
+    .btn-pill {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--s0);
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 600;
+      letter-spacing: .22em; text-transform: uppercase;
+      text-decoration: none; cursor: none;
+      border: 1px solid #fff;
+      transition: background .35s, color .35s, transform .25s, box-shadow .35s;
+      box-shadow: 0 8px 24px rgba(0,0,0,.35);
     }
-    .hero-left { display: flex; flex-direction: column; justify-content: flex-end; padding: 140px 64px 100px; position: relative; z-index: 2; }
-    .hero-right { position: relative; overflow: hidden; }
-    .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s cubic-bezier(.4,0,.2,1); }
-    .hero-slide.active { opacity: 1; }
-    .hero-slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; transform: scale(1.04); }
-    .hero-right::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(105deg,var(--s0) 0%,rgba(8,8,8,.55) 38%,transparent 65%); pointer-events: none; }
-    .hero-right::after { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top,var(--s0) 0%,transparent 28%); pointer-events: none; }
-    .hero-bg-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-family: var(--font-heading); font-size: clamp(80px,16vw,240px); font-weight: 400; color: rgba(255,255,255,.015); white-space: nowrap; letter-spacing: -.05em; pointer-events: none; user-select: none; z-index: 0; }
+    .btn-pill:hover { background: var(--gold); color: var(--s0); border-color: var(--gold); box-shadow: 0 10px 28px rgba(201,165,74,.35); }
+    .btn-pill svg { transition: transform .3s; }
+    .btn-pill:hover svg { transform: translateX(3px); }
+    .btn-pill-o {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px;
+      border-radius: 999px;
+      background: transparent;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 500;
+      letter-spacing: .22em; text-transform: uppercase;
+      text-decoration: none; cursor: none;
+      border: 1px solid rgba(255,255,255,.55);
+      transition: background .35s, color .35s, border-color .35s;
+    }
+    .btn-pill-o:hover { background: #fff; color: var(--s0); border-color: #fff; }
+    .btn-pill:active, .btn-pill-o:active { transform: scale(.97); }
 
+    /* ─── HERO (Tudor-style full-bleed) ─────── */
+    .hero {
+      min-height: 100vh; min-height: 100svh; position: relative; overflow: hidden;
+      display: block;
+      background: #080808;
+    }
+    .hero-left {
+      position: absolute; inset: 0; z-index: 3;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 160px clamp(32px, 6vw, 96px) clamp(72px, 8vh, 128px);
+      max-width: min(680px, 60vw);
+      pointer-events: none;
+    }
+    .hero-left > * { pointer-events: auto; }
+    .hero-right { position: absolute; inset: 0; z-index: 1; overflow: hidden; }
+    .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s cubic-bezier(.4,0,.2,1); }
+    .hero-slide.active { opacity: 1; }
+    .hero-slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; transform: scale(1.04); }
+    .hero-right::before {
+      content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background:
+        linear-gradient(to right, rgba(8,8,8,.78) 0%, rgba(8,8,8,.45) 38%, rgba(8,8,8,.08) 62%, transparent 90%),
+        linear-gradient(to top, rgba(8,8,8,.85) 0%, rgba(8,8,8,.25) 42%, transparent 72%);
+    }
+    .hero-right::after { content: ''; position: absolute; inset: 0; z-index: 2; background: linear-gradient(to top, var(--s0) 0%, transparent 14%); pointer-events: none; }
+    .hero-bg-text { display: none; }
+
+    /* Tudor-style headline */
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: clamp(44px, 6.4vw, 96px);
+      font-weight: 600;
+      line-height: 1.02;
+      letter-spacing: -.02em;
+      color: #fff;
+      text-shadow: 0 2px 24px rgba(0,0,0,.45);
+      margin: 0;
+    }
+    .hero-sub {
+      color: rgba(255,255,255,.82);
+      font-size: clamp(15px, 1.15vw, 17px);
+      line-height: 1.7;
+      max-width: 460px;
+      margin-bottom: 40px;
+      text-shadow: 0 1px 12px rgba(0,0,0,.4);
+    }
+    .hero-ctas { margin-top: 8px; }
+
+    /* Tudor-style: hide annotations, meta, dots, scroll indicator on hero for clean full-bleed feel */
+    .hero .annotation,
+    .hero .hero-watch-meta,
+    .hero .hero-dots,
+    #kesfetIndicator { display: none !important; }
     .annotation { position: absolute; z-index: 3; display: flex; align-items: center; pointer-events: none; }
     .annotation-box { border: 1px solid rgba(201,165,74,.55); background: rgba(8,8,8,.88); backdrop-filter: blur(12px); padding: 10px 16px; white-space: nowrap; }
     .annotation-label { font-size: 8.5px; letter-spacing: .28em; color: var(--gold); margin-bottom: 3px; text-transform: uppercase; }
@@ -445,23 +518,32 @@
       .hero { grid-template-columns: 1fr; min-height: 100svh; }
       .annotation { display: none; }
 
-      /* Mobile hero: full-screen image, no text overlap */
-      .hero-left { display: none !important; }
+      /* Mobile hero: Tudor-style full-bleed with readable text overlay */
+      .hero-left {
+        display: flex !important;
+        padding: 90px 22px 40px !important;
+        max-width: 100% !important;
+        justify-content: flex-end;
+      }
       .hero-right {
-        position: absolute !important; inset: 0; z-index: 0;
+        position: absolute !important; inset: 0; z-index: 1;
         opacity: 1 !important; pointer-events: auto;
       }
       .hero-right::before {
-        background: linear-gradient(to top, rgba(8,8,8,.95) 0%, rgba(8,8,8,.35) 50%, transparent 75%) !important;
+        background: linear-gradient(to top, rgba(8,8,8,.92) 0%, rgba(8,8,8,.55) 38%, rgba(8,8,8,.15) 62%, transparent 88%) !important;
       }
-      .hero-right .hero-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
-      .hero-watch-meta { bottom: 130px !important; right: auto !important; left: 24px !important; text-align: left !important; }
-      .hero-dots { right: auto !important; left: 50% !important; transform: translateX(-50%) !important; bottom: 80px !important; }
-      .hero-mobile-cta { display: flex !important; }
+      .hero-right .hero-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
+      .hero-title { font-size: clamp(36px, 10vw, 56px) !important; line-height: 1.02 !important; }
+      .hero-sub { font-size: 14px !important; line-height: 1.65 !important; max-width: 92% !important; margin-bottom: 26px !important; }
+      .hero-ctas { gap: 10px !important; }
+      .hero-ctas .btn-pill,
+      .hero-ctas .btn-pill-o { padding: 12px 22px; font-size: 10px; letter-spacing: .2em; }
+      .hero-mobile-cta { display: none !important; }
 
       /* ── Nav ── */
       #nav { padding: 16px 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 9990 !important; background: rgba(8,8,8,.98) !important; backdrop-filter: blur(20px) !important; -webkit-backdrop-filter: blur(20px) !important; border-bottom: 1px solid rgba(201,165,74,.14) !important; }
       .nav-logo { height: 36px !important; }
+      .nav-logo-wrap { mix-blend-mode: screen !important; }
       .mob-menu { display: flex; }
       .desk-links { display: none !important; }
       .nav-worldclocks { display: none !important; }
@@ -650,7 +732,7 @@
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#" aria-label="Privé Watch" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0;">
+  <a href="#" aria-label="Privé Watch" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0;" class="nav-logo-wrap">
     <img src="/brand_asset/prive_extracted/Data/logo-26.png" alt="Privé Watch" class="nav-logo">
   </a>
   <!-- World Clocks in Nav -->
@@ -687,33 +769,28 @@
 <section class="hero">
   <div class="hero-bg-text" aria-hidden="true">PRIVÉ</div>
   <div class="hero-left">
-    <div class="reveal" style="margin-bottom:14px;">
-      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
-        <div style="width:32px;height:1px;background:linear-gradient(90deg,rgba(201,165,74,.7),transparent);"></div>
-        <span style="font-size:12.5px;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);font-weight:400;">Seçkin Saat Koleksiyonu</span>
-      </div>
+    <div class="reveal" style="margin-bottom:18px;">
+      <span style="font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:#fff;font-weight:500;opacity:.85;">Privé Watch</span>
     </div>
-    <div class="reveal d1" style="margin-bottom:28px;">
-      <h1 style="font-size:clamp(56px,6.8vw,108px);line-height:.95;margin-bottom:12px;">
-        <span class="shimmer">Zamansız</span><br>
-        <span style="color:var(--text);">Zerafetin</span>
+    <div class="reveal d1 hero-title-wrap" style="margin-bottom:28px;">
+      <h1 class="hero-title">
+        Zamansız<br>Zerafetin Adresi
       </h1>
-      <div style="display:flex;align-items:center;gap:20px;margin-top:14px;">
-        <div style="width:44px;height:1px;background:rgba(201,165,74,.35);"></div>
-        <span style="font-family:'Inter',sans-serif;font-size:10.5px;letter-spacing:.44em;text-transform:uppercase;color:rgba(237,232,223,.45);">ADRESİ</span>
-      </div>
     </div>
-    <p class="reveal d2" style="color:var(--muted);font-size:14.5px;line-height:1.9;max-width:360px;margin-bottom:44px;">
-      Dünyanın en prestijli markalarından, özgünlüğü belgelenmiş parçalar. Her saat bir miras, her satın alım bir güven.
+    <p class="reveal d2 hero-sub">
+      Dünyanın en prestijli markalarından, özgünlüğü belgelenmiş parçalar.
     </p>
-    <div class="reveal d3" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:44px;">
-      <a href="#koleksiyon" class="btn btn-o">Koleksiyonu Keşfet</a>
-      <a href="https://wa.me/905320155199" target="_blank" rel="noopener" class="btn btn-f">
+    <div class="reveal d3 hero-ctas" style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:0;">
+      <a href="#koleksiyon" class="btn-pill">
+        Koleksiyonu Keşfet
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+      </a>
+      <a href="https://wa.me/905320155199" target="_blank" rel="noopener" class="btn-pill-o">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         WhatsApp
       </a>
     </div>
-    <div class="trust-row reveal d4">
+    <div class="trust-row reveal d4" style="display:none;">
       <div class="trust-item">
         <div class="trust-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <div><div class="trust-title">Orijinallik Belgesi</div><div class="trust-desc">Uzman Onaylı</div></div>
