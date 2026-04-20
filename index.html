@@ -16,10 +16,20 @@
       --text: #EDE8DF; --muted: #7A7060; --dim: #3E3A30;
       --font-heading: 'Playfair Display', Georgia, serif;
       --font-body: 'Inter', -apple-system, sans-serif;
+
+      /* ── Type Scale Tokens ── */
+      --fs-micro:   9px;    /* icon captions, currency tags, tiny meta */
+      --fs-label:   10.5px; /* nav links, filter buttons, uppercase labels */
+      --fs-body-sm: 13.5px; /* card descriptions, testimonials */
+      --fs-body:    15px;   /* main body copy */
+      --fs-ui:      11px;   /* prices, badges, secondary UI text */
+      --ls-label:   .26em;  /* unified letter-spacing for uppercase labels */
+      --ls-micro:   .18em;  /* tight labels */
+      --lh-body:    1.78;   /* consistent body line-height */
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { background: var(--s0); color: var(--text); font-family: var(--font-body); font-weight: 300; line-height: 1.75; overflow-x: hidden; cursor: none; }
+    body { background: var(--s0); color: var(--text); font-family: var(--font-body); font-weight: 300; line-height: var(--lh-body); font-size: var(--fs-body-sm); overflow-x: hidden; cursor: none; }
 
     /* Cursor */
     #cursor { position: fixed; z-index: 9998; pointer-events: none; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); transform: translate(-50%,-50%); transition: width .3s, height .3s; }
@@ -31,7 +41,7 @@
     body::after { content: ''; position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: .022; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 300px; }
 
     h1,h2,h3 { font-family: var(--font-heading); font-weight: 400; letter-spacing: -.01em; line-height: 1.08; }
-    .label { font-size: 9.5px; font-weight: 400; letter-spacing: .35em; text-transform: uppercase; color: var(--gold); }
+    .label { font-size: var(--fs-micro); font-weight: 400; letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--gold); }
     .gline { width: 36px; height: 1px; background: rgba(201,165,74,.5); }
 
     .shimmer { background: linear-gradient(100deg,var(--gold-d) 0%,var(--gold) 30%,var(--gold-l) 50%,var(--gold) 70%,var(--gold-d) 100%); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: shimmer 5s linear infinite; }
@@ -60,7 +70,7 @@
     .nav-logo-wrap { display: inline-flex; mix-blend-mode: screen; transition: opacity .3s; }
     .nav-logo-wrap:hover { opacity: .8; }
     .nav-logo { height: 44px; width: auto; filter: brightness(1.1); display: block; }
-    .nav-link { font-size: 10.5px; font-weight: 400; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); text-decoration: none; position: relative; padding-bottom: 3px; transition: color .3s; cursor: none; }
+    .nav-link { font-size: var(--fs-label); font-weight: 400; letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--muted); text-decoration: none; position: relative; padding-bottom: 3px; transition: color .3s; cursor: none; }
     .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--gold); transition: width .35s cubic-bezier(.16,1,.3,1); }
     .nav-link:hover { color: var(--gold-l); }
     .nav-link:hover::after { width: 100%; }
@@ -69,8 +79,8 @@
     .btn {
       position: relative; display: inline-flex; align-items: center; gap: 8px;
       padding: 13px 28px;
-      font-family: var(--font-body); font-size: 10.5px; font-weight: 400;
-      letter-spacing: .18em; text-transform: uppercase; text-decoration: none; cursor: none;
+      font-family: var(--font-body); font-size: var(--fs-label); font-weight: 400;
+      letter-spacing: var(--ls-label); text-transform: uppercase; text-decoration: none; cursor: none;
     }
     .btn-o {
       border: 1px solid var(--gold); color: var(--gold);
@@ -167,8 +177,8 @@
     }
     .hero-sub {
       color: rgba(255,255,255,.82);
-      font-size: clamp(15px, 1.15vw, 17px);
-      line-height: 1.7;
+      font-size: clamp(14px, 1.1vw, 16px);
+      line-height: var(--lh-body);
       max-width: 460px;
       margin-bottom: 40px;
       text-shadow: 0 1px 12px rgba(0,0,0,.4);
@@ -230,7 +240,7 @@
     }
     .expgal-header h2 { font-size: clamp(32px, 4.5vw, 60px); line-height: 1; }
     .expgal-header h2 em { color: var(--gold); font-style: italic; }
-    .expgal-header p { color: var(--muted); font-size: 14.5px; line-height: 1.85; max-width: 480px; margin: 18px auto 0; }
+    .expgal-header p { color: var(--muted); font-size: var(--fs-body); line-height: var(--lh-body); max-width: 480px; margin: 18px auto 0; }
     /* Stack state */
     .expgal-stack { position: relative; height: 340px; display: flex; align-items: center; justify-content: center; cursor: none; }
     .expgal-stack-photo {
@@ -307,7 +317,7 @@
 
     .gallery-filters { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; padding: 0 56px; margin-bottom: 40px; }
     .gallery-filter-btn {
-      font-family: var(--font-body); font-size: 10px; font-weight: 400; letter-spacing: .28em;
+      font-family: var(--font-body); font-size: var(--fs-label); font-weight: 400; letter-spacing: var(--ls-label);
       text-transform: uppercase; color: var(--muted); background: none; border: none; cursor: none;
       padding: 4px 0; position: relative; transition: color .3s;
     }
@@ -339,9 +349,9 @@
     .gallery-card-overlay-title { font-family: var(--font-heading); font-size: 17px; font-weight: 500; color: var(--text); text-align: center; padding: 0 16px; }
 
     .gallery-card-body { padding: 18px 18px 20px; }
-    .gallery-brand { font-size: 9px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 5px; }
-    .gallery-model { font-family: var(--font-heading); font-size: 18px; font-weight: 500; color: var(--text); margin-bottom: 3px; line-height: 1.2; }
-    .gallery-ref { font-size: 10px; letter-spacing: .1em; color: var(--muted); margin-bottom: 0; }
+    .gallery-brand { font-size: var(--fs-micro); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 5px; }
+    .gallery-model { font-family: var(--font-heading); font-size: 17px; font-weight: 500; color: var(--text); margin-bottom: 3px; line-height: 1.2; }
+    .gallery-ref { font-size: var(--fs-micro); letter-spacing: var(--ls-micro); color: var(--muted); margin-bottom: 0; }
     .gallery-card-body-price { padding-top: 2px; }
     .gallery-price { display: inline-flex; align-items: center; gap: 8px; }
     .gallery-price-amount { font-family: var(--font-body); font-size: 14px; font-weight: 500; color: var(--text); letter-spacing: .01em; }
@@ -447,7 +457,7 @@
     .feat-num { font-family: var(--font-heading); font-size: 56px; font-weight: 400; color: rgba(201,165,74,.16); line-height: 1; margin-bottom: 24px; transition: color .4s; }
     .feat-card:hover .feat-num { color: rgba(201,165,74,.48); }
     .feat-title { font-family: var(--font-heading); font-size: 26px; font-weight: 500; color: var(--text); margin-bottom: 14px; line-height: 1.2; }
-    .feat-desc { font-size: 13.5px; color: var(--muted); line-height: 1.85; }
+    .feat-desc { font-size: var(--fs-body-sm); color: var(--muted); line-height: var(--lh-body); }
     .feat-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); text-decoration: none; cursor: none; transition: gap .3s; }
     .feat-link:hover { gap: 12px; }
     .feat-link svg { transition: transform .3s; }
@@ -474,7 +484,7 @@
     .testi-card:hover { border-color: rgba(201,165,74,.25); }
     .testi-stars { display: flex; gap: 3px; margin-bottom: 14px; }
     .testi-star { color: var(--gold); font-size: 11px; }
-    .testi-text { font-size: 13px; color: var(--muted); line-height: 1.85; margin-bottom: 18px; font-style: italic; }
+    .testi-text { font-size: var(--fs-body-sm); color: var(--muted); line-height: var(--lh-body); margin-bottom: 18px; font-style: italic; }
     .testi-person { display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(255,255,255,.04); padding-top: 14px; }
     .testi-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(201,165,74,.25); flex-shrink: 0; }
     .testi-name { font-family: var(--font-heading); font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.2; }
@@ -648,7 +658,7 @@
     }
     /* ─── NEW COMPONENTS (Limelight Nav, Carousel, Location Tag) ─── */
     .limelight-nav { position: relative; display: inline-flex; align-items: center; border-radius: 8px; background: rgba(8,8,8,0.4); border: 1px solid rgba(201,165,74,.15); padding: 4px; }
-    .ll-link { position: relative; z-index: 20; padding: 10px 20px; font-size: 10.5px; font-weight: 400; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .3s; cursor: none; }
+    .ll-link { position: relative; z-index: 20; padding: 10px 20px; font-size: var(--fs-label); font-weight: 400; letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .3s; cursor: none; }
     .ll-link:hover, .ll-link.active { color: var(--gold-l); }
     .limelight-indicator { position: absolute; top: -1px; z-index: 10; height: 3px; border-radius: 4px; background: var(--gold); box-shadow: 0 10px 15px rgba(201,165,74,0.5); transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1), width 0.4s cubic-bezier(0.25, 1, 0.5, 1); pointer-events: none; opacity: 0; }
     .limelight-indicator.ready { opacity: 1; }
@@ -703,7 +713,7 @@
 
     /* ─── GALLERY CARD ACTIONS ─────────────────── */
     .gallery-card-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
-    .gc-action-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; font-family: var(--font-body); font-size: 9.5px; font-weight: 400; letter-spacing: .15em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: background .3s, color .3s, border-color .3s; white-space: nowrap; cursor: none; }
+    .gc-action-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; font-family: var(--font-body); font-size: var(--fs-micro); font-weight: 400; letter-spacing: var(--ls-label); text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: background .3s, color .3s, border-color .3s; white-space: nowrap; cursor: none; }
     .gc-action-btn.gc-chrono { color: var(--gold); border: 1px solid rgba(201,165,74,.3); background: transparent; }
     .gc-action-btn.gc-chrono:hover { background: rgba(201,165,74,.08); border-color: var(--gold); }
     .gc-action-btn.gc-wa { color: #25D366; border: 1px solid rgba(37,211,102,.25); background: transparent; }
@@ -737,7 +747,7 @@
 <!-- NAV -->
 <nav id="nav">
   <a href="#" aria-label="Privé Watch" style="display:flex;align-items:center;text-decoration:none;flex-shrink:0;" class="nav-logo-wrap">
-    <img src="/brand_asset/prive_extracted/Data/new_logo.png" alt="Privé Watch" class="nav-logo">
+    <img src="brand_asset/prive_extracted/Data/new_logo.png" alt="Privé Watch" class="nav-logo">
   </a>
   <!-- World Clocks in Nav -->
   <div class="nav-worldclocks" id="navWorldClocks">
@@ -1612,7 +1622,7 @@
     <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,165,74,.5),transparent);margin-bottom:56px;"></div>
     <div class="footer-cols" style="display:grid;grid-template-columns:1.4fr 1px 1fr 1px 1fr;gap:40px;align-items:start;margin-bottom:56px;">
       <div>
-        <img src="/brand_asset/prive_extracted/Data/new_logo.png" alt="Privé Watch" class="footer-logo">
+        <img src="brand_asset/prive_extracted/Data/new_logo.png" alt="Privé Watch" class="footer-logo">
         <p style="color:var(--muted);font-size:13.5px;line-height:1.8;max-width:260px;margin-bottom:24px;">Seçkin lüks saat koleksiyonu. Orijinallik garantisi ile Rolex, Patek Philippe, AP ve daha fazlası.</p>
         <div style="display:flex;gap:12px;">
           <a href="https://www.instagram.com/privewatches/" target="_blank" rel="noopener" style="width:34px;height:34px;border:1px solid rgba(201,165,74,.2);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:border-color .3s,color .3s;cursor:none;" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='rgba(201,165,74,.2)';this.style.color='var(--muted)'"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
