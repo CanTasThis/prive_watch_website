@@ -221,6 +221,9 @@
       font-family:var(--font-mono);
       font-size:11px; font-weight:500; letter-spacing:.32em; text-transform:uppercase;
       color:var(--gold); margin-bottom:28px;
+      background:rgba(0,0,0,0.4); padding:6px 14px; border-radius:999px;
+      backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+      border:1px solid rgba(201,165,74,0.15);
     }
     .hero-eyebrow::before, .hero-eyebrow::after {
       content:''; width:28px; height:1px; background:var(--gold); opacity:.5;
@@ -1010,6 +1013,8 @@
       .hero-ctas .btn { flex:1; justify-content:center; min-width:140px; }
       .hero-featured { display:none; }
       .hero-dots { bottom:24px; right:20px; }
+      .hero-media::before { display:none; }
+      .hero-scroll-hint { display:none; }
       .about-grid { grid-template-columns:1fr; }
       .collection-cta { padding:28px; flex-direction:column; align-items:flex-start; }
     }
@@ -1088,9 +1093,9 @@
     Keşfet
   </div>
   <div class="hero-dots" role="tablist">
-    <button class="hero-dot-wrap active" data-idx="0" aria-label="Slayt 1"><span>01</span><span class="hero-dot"></span></button>
-    <button class="hero-dot-wrap" data-idx="1" aria-label="Slayt 2"><span>02</span><span class="hero-dot"></span></button>
-    <button class="hero-dot-wrap" data-idx="2" aria-label="Slayt 3"><span>03</span><span class="hero-dot"></span></button>
+    <button class="hero-dot-wrap active" data-idx="0" aria-label="Slayt 1"><span class="hero-dot"></span></button>
+    <button class="hero-dot-wrap" data-idx="1" aria-label="Slayt 2"><span class="hero-dot"></span></button>
+    <button class="hero-dot-wrap" data-idx="2" aria-label="Slayt 3"><span class="hero-dot"></span></button>
   </div>
 </section>
 
