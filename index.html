@@ -106,8 +106,10 @@
       border-bottom-color:rgba(201,165,74,.12);
       padding:12px 32px;
     }
+    .nav-wordmark { display:flex; align-items:center; gap:10px; }
     .nav-logo { height:40px; width:auto; filter:brightness(1.1); transition:opacity .3s; }
     .nav-logo:hover { opacity:.8; }
+    .nav-wordmark-text { display:none; }
 
     .nav-cta-desk { display:flex; gap:10px; align-items:center; }
     .nav-links { display:flex; align-items:center; gap:4px; }
@@ -982,24 +984,42 @@
     /* ───── Mobile ───── */
     @media (max-width:900px) {
       #nav {
-        padding:0 10px;
-        height:60px;
+        padding:8px 10px;
+        height:78px;
         display:grid; grid-template-columns:1fr auto 1fr;
         align-items:center; gap:0;
         background:rgba(10,9,8,.96); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
         border-bottom:1px solid rgba(201,165,74,.14);
-        transition:transform .35s var(--ease), background .3s, height .3s, border-color .3s;
+        transition:transform .4s var(--ease), background .3s, border-color .3s;
+        will-change:transform;
       }
-      #nav.scrolled { height:54px; background:rgba(10,9,8,.98); }
+      #nav.scrolled { background:rgba(10,9,8,.99); border-bottom-color:rgba(201,165,74,.22); }
       #nav.nav-hidden { transform:translateY(-100%); }
-      .nav-logo { height:28px; }
       .nav-links.desktop { display:none; }
       .nav-cta-desk { display:none !important; }
       .mob-menu { display:flex; }
       .mob-left { display:flex; justify-self:start; }
       .mob-right { display:flex; justify-self:end; }
-      .nav-wordmark { justify-self:center; }
-      .hero-content { padding:96px 20px 56px; }
+
+      .nav-wordmark {
+        flex-direction:column; gap:4px;
+        justify-self:center;
+        padding:0 8px;
+      }
+      .nav-logo { height:28px; }
+      .nav-wordmark-text {
+        display:block;
+        font-family:var(--font-display);
+        font-size:11px;
+        letter-spacing:.38em;
+        text-transform:uppercase;
+        color:var(--text);
+        font-weight:500;
+        line-height:1;
+        padding-left:.38em;
+      }
+
+      .hero-content { padding:104px 20px 56px; }
       .hero-title { font-size:clamp(40px, 11vw, 64px); margin-bottom:20px; }
       .hero-sub { font-size:14.5px; line-height:1.65; margin-bottom:32px; }
       .hero-eyebrow { font-size:10px; letter-spacing:.24em; padding:5px 12px; margin-bottom:22px; }
@@ -1013,14 +1033,14 @@
       .collection-cta { padding:28px; flex-direction:column; align-items:flex-start; }
     }
     @media (max-width:420px) {
-      #nav { padding:0 6px; height:56px; }
-      #nav.scrolled { height:52px; }
+      #nav { padding:6px 6px; height:72px; }
       .nav-logo { height:26px; }
+      .nav-wordmark-text { font-size:10px; letter-spacing:.34em; padding-left:.34em; }
       .mob-icon-btn { width:36px; height:36px; }
       .mob-icon-btn svg { width:18px; height:18px; }
       .mob-menu { width:36px; height:36px; }
       .mob-left, .mob-right { gap:0; }
-      .hero-content { padding:84px 18px 48px; }
+      .hero-content { padding:96px 18px 48px; }
       .hero-title { font-size:clamp(36px, 12vw, 52px); }
       .hero-sub { font-size:14px; }
     }
@@ -1048,8 +1068,9 @@
       <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
     </a>
   </div>
-  <a href="#" aria-label="Privé Watch" class="nav-wordmark" style="display:flex;align-items:center;">
+  <a href="#" aria-label="Privé Watch" class="nav-wordmark">
     <img src="brand_asset/prive_extracted/Data/new_logo.png" alt="Privé Watch" class="nav-logo">
+    <span class="nav-wordmark-text">Privé Watch</span>
   </a>
   <div class="nav-links desktop">
     <a href="#koleksiyon" class="nav-link">Koleksiyon</a>
@@ -1485,23 +1506,33 @@
 </button>
 
 <script>
-  // ===== Nav scroll state =====
+  // ===== Nav scroll state (rAF-throttled for iOS reliability) =====
   const nav = document.getElementById('nav');
-  let lastScrollY = window.scrollY;
-  window.addEventListener('scroll', () => {
-    const y = window.scrollY;
+  const scrollTopBtn = document.getElementById('scrollTop');
+  let lastScrollY = Math.max(0, window.scrollY);
+  let scrollTicking = false;
+  function onScrollFrame() {
+    const y = Math.max(0, window.scrollY);
     nav.classList.toggle('scrolled', y > 30);
-    document.getElementById('scrollTop').classList.toggle('show', y > 800);
+    if (scrollTopBtn) scrollTopBtn.classList.toggle('show', y > 800);
 
-    // Hide-on-scroll-down, show-on-scroll-up (CSS limits to mobile)
-    const menuOpen = document.getElementById('mobNav').classList.contains('open');
-    if (!menuOpen && y > 120) {
-      if (y > lastScrollY + 6) nav.classList.add('nav-hidden');
-      else if (y < lastScrollY - 4) nav.classList.remove('nav-hidden');
+    const mobNavEl = document.getElementById('mobNav');
+    const menuOpen = mobNavEl && mobNavEl.classList.contains('open');
+    if (!menuOpen && y > 140) {
+      const delta = y - lastScrollY;
+      if (delta > 4) nav.classList.add('nav-hidden');
+      else if (delta < -4) nav.classList.remove('nav-hidden');
     } else {
       nav.classList.remove('nav-hidden');
     }
     lastScrollY = y;
+    scrollTicking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!scrollTicking) {
+      window.requestAnimationFrame(onScrollFrame);
+      scrollTicking = true;
+    }
   }, { passive: true });
 
   document.getElementById('scrollTop').addEventListener('click', () => {
