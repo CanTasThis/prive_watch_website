@@ -994,7 +994,6 @@
         will-change:transform;
       }
       #nav.scrolled { background:rgba(10,9,8,.99); border-bottom-color:rgba(201,165,74,.22); }
-      #nav.nav-hidden { transform:translateY(-100%); }
       .nav-links.desktop { display:none; }
       .nav-cta-desk { display:none !important; }
       .mob-menu { display:flex; }
@@ -1516,15 +1515,7 @@
     nav.classList.toggle('scrolled', y > 30);
     if (scrollTopBtn) scrollTopBtn.classList.toggle('show', y > 800);
 
-    const mobNavEl = document.getElementById('mobNav');
-    const menuOpen = mobNavEl && mobNavEl.classList.contains('open');
-    if (!menuOpen && y > 140) {
-      const delta = y - lastScrollY;
-      if (delta > 4) nav.classList.add('nav-hidden');
-      else if (delta < -4) nav.classList.remove('nav-hidden');
-    } else {
-      nav.classList.remove('nav-hidden');
-    }
+    // nav hide logic removed per user request
     lastScrollY = y;
     scrollTicking = false;
   }
@@ -1546,7 +1537,6 @@
     const open = mobNav.classList.toggle('open');
     mobToggle.classList.toggle('open', open);
     document.body.style.overflow = open ? 'hidden' : '';
-    if (open) nav.classList.remove('nav-hidden');
   });
   window.closeMob = () => {
     mobNav.classList.remove('open');
