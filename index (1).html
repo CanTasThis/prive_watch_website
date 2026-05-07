@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Privé Watch — Seçkin lüks saat koleksiyonu. Rolex, Patek Philippe, Audemars Piguet ve daha fazlası.">
+  <title>Privé Watch — Seçkin Lüks Saatler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ───────── TOKENS ───────── */
+    :root {
+      --gold:#C9A54A; --gold-l:#E2C87A; --gold-d:#8A6E2A;
+      --s0:#0A0908; --s1:#0E0D0B; --s2:#141210; --s3:#1C1A16;
+      --text:#EFEAE0; --text-soft:#B8B2A5; --muted:#8C8475; --dim:#3E3A30;
+      --wa:#25D366;
+      --font-display:'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+      --font-heading:'Cormorant Garamond', Georgia, serif;
+      --font-body:'DM Sans', -apple-system, sans-serif;
+      --font-mono:'JetBrains Mono', ui-monospace, monospace;
+      --container: 1360px;
+      --space-section: clamp(72px, 10vh, 128px);
+      --radius: 4px;
+      --ease: cubic-bezier(.16,1,.3,1);
+      --ease-smooth: cubic-bezier(.22,.61,.36,1);
+    }
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body {
+      background:var(--s0); color:var(--text);
+      font-family:var(--font-body); font-weight:300;
+      line-height:1.75; font-size:16px;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      text-rendering:optimizeLegibility;
+    }
+    a { color:inherit; text-decoration:none; }
+    img { display:block; max-width:100%; }
+    button { font-family:inherit; cursor:pointer; background:none; border:none; color:inherit; }
+
+    /* Selection */
+    ::selection { background:var(--gold); color:var(--s0); }
+
+    /* Subtle grain */
+    body::after {
+      content:''; position:fixed; inset:0; z-index:9999; pointer-events:none;
+      opacity:.025;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:300px;
+      mix-blend-mode:overlay;
+    }
+
+    /* Typography refinements */
+    h1,h2,h3,h4 { font-family:var(--font-heading); font-weight:400; letter-spacing:-.02em; line-height:1.05; }
+    h1 em, h2 em, h3 em { font-style:italic; color:var(--gold); font-weight:400; }
+    p { text-wrap:pretty; }
+    .mono { font-family:var(--font-mono); font-size:.92em; letter-spacing:.01em; }
+
+    /* Display class — big sexy serif */
+    .display {
+      font-family:var(--font-display);
+      font-weight:400;
+      letter-spacing:-.028em;
+      line-height:.98;
+    }
+    .display em { font-style:italic; color:var(--gold); font-weight:400; }
+
+    .label {
+      display:inline-flex; align-items:center; gap:10px;
+      font-size:10.5px; font-weight:500; letter-spacing:.28em; text-transform:uppercase;
+      color:var(--gold);
+    }
+    .label::before { content:''; width:24px; height:1px; background:var(--gold); opacity:.6; }
+
+    .container { max-width:var(--container); margin:0 auto; padding:0 32px; }
+    @media (max-width:900px) { .container { padding:0 20px; } }
+
+    /* ───── Reveal ───── */
+    .reveal { opacity:0; transform:translateY(16px); transition:opacity .9s var(--ease), transform .9s var(--ease); }
+    .reveal.in { opacity:1; transform:none; }
+    .d1 { transition-delay:.08s } .d2 { transition-delay:.16s } .d3 { transition-delay:.24s } .d4 { transition-delay:.32s }
+
+    /* ───── Skip link (a11y) ───── */
+    .skip-link {
+      position:absolute; left:-9999px; top:8px; z-index:10000;
+      background:var(--gold); color:var(--s0);
+      padding:10px 18px; font-size:12px; font-weight:500;
+      letter-spacing:.18em; text-transform:uppercase;
+    }
+    .skip-link:focus { left:12px; }
+
+    /* ───── NAV ───── */
+    #nav {
+      position:fixed; top:0; left:0; right:0; z-index:500;
+      padding:18px 32px;
+      display:flex; align-items:center; justify-content:space-between; gap:24px;
+      background:linear-gradient(to bottom, rgba(8,8,8,.7), transparent);
+      border-bottom:1px solid transparent;
+      transition:background .4s, border-color .4s, padding .3s;
+    }
+    #nav.scrolled {
+      background:rgba(8,8,8,.92);
+      backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+      border-bottom-color:rgba(201,165,74,.12);
+      padding:12px 32px;
+    }
+    .nav-wordmark { display:flex; align-items:center; gap:10px; }
+    .nav-logo { height:40px; width:auto; filter:brightness(1.1); transition:opacity .3s; }
+    .nav-logo:hover { opacity:.8; }
+    .nav-wordmark-text { display:none; }
+
+    .nav-cta-desk { display:flex; gap:10px; align-items:center; }
+    .nav-links { display:flex; align-items:center; gap:4px; }
+    .nav-link {
+      padding:10px 16px;
+      font-size:11px; font-weight:500; letter-spacing:.22em; text-transform:uppercase;
+      color:var(--text-soft);
+      position:relative; transition:color .25s;
+    }
+    .nav-link::after {
+      content:''; position:absolute; left:16px; right:16px; bottom:4px;
+      height:1px; background:var(--gold); transform:scaleX(0); transform-origin:left;
+      transition:transform .3s var(--ease);
+    }
+    .nav-link:hover, .nav-link.active { color:var(--text); }
+    .nav-link:hover::after, .nav-link.active::after { transform:scaleX(1); }
+
+    .btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:12px 22px;
+      font-size:10.5px; font-weight:500; letter-spacing:.24em; text-transform:uppercase;
+      border-radius:999px;
+      transition:background .3s, border-color .3s, color .3s;
+      border:1px solid transparent;
+      position:relative; overflow:hidden;
+    }
+    .btn-primary {
+      background:var(--gold); color:var(--s0);
+      /* Static inset shadow for subtle depth, no pop out */
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.2);
+    }
+    .btn-primary:hover { background:var(--gold-l); }
+    .btn-ghost { border-color:rgba(201,165,74,.4); color:var(--gold); backdrop-filter:blur(6px); }
+    .btn-ghost:hover { border-color:var(--gold); background:rgba(201,165,74,.1); }
+    .btn-wa { background:var(--wa); color:#fff; }
+    .btn-wa:hover { background:#1fb955; }
+    .btn:active { transform:none; }
+    .btn:focus-visible { outline:2px solid var(--gold); outline-offset:3px; }
+
+    .mob-menu { display:none; width:40px; height:40px; align-items:center; justify-content:center; }
+    .mob-menu span { display:block; width:20px; height:1.5px; background:var(--text); position:relative; transition:transform .3s, opacity .3s; }
+    .mob-menu span::before, .mob-menu span::after {
+      content:''; position:absolute; left:0; width:100%; height:1.5px; background:var(--text); transition:transform .3s, top .3s;
+    }
+    .mob-menu span::before { top:-6px; }
+    .mob-menu span::after { top:6px; }
+    .mob-menu.open span { background:transparent; }
+    .mob-menu.open span::before { top:0; transform:rotate(45deg); }
+    .mob-menu.open span::after { top:0; transform:rotate(-45deg); }
+
+    /* Mobile icon row (Tudor-style header) */
+    .mob-left, .mob-right { display:none; align-items:center; gap:2px; }
+    .mob-icon-btn {
+      width:40px; height:40px;
+      display:flex; align-items:center; justify-content:center;
+      color:var(--text); transition:color .25s, transform .25s;
+      background:none; border:none; cursor:pointer; padding:0;
+    }
+    .mob-icon-btn:hover { color:var(--gold); }
+    .mob-icon-btn:focus-visible { outline:none; color:var(--gold); }
+    .mob-icon-btn:active { transform:scale(.92); }
+    .mob-icon-btn svg { width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+
+    .mob-nav {
+      position:fixed; inset:0; z-index:490;
+      background:rgba(8,8,8,.98); backdrop-filter:blur(24px);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:28px; opacity:0; pointer-events:none;
+      transition:opacity .35s;
+    }
+    .mob-nav.open { opacity:1; pointer-events:auto; }
+    .mob-nav .nav-link { font-size:15px; padding:10px 20px; letter-spacing:.18em; }
+    .mob-nav .btn { margin-top:12px; }
+
+    /* ───── HERO ───── */
+    .hero {
+      position:relative; min-height:100vh; min-height:100svh;
+      overflow:hidden; background:var(--s0);
+      display:grid; grid-template-columns:1fr; align-items:end;
+    }
+    .hero-media { position:absolute; inset:0; z-index:0; }
+    .hero-slide {
+      position:absolute; inset:0; opacity:0;
+      transition:opacity 1.4s ease;
+      overflow:hidden;
+    }
+    .hero-slide.active { opacity:1; }
+    .hero-slide img {
+      width:100%; height:100%; object-fit:cover;
+      transform:scale(1.08);
+      transition:transform 8s linear;
+      filter:brightness(.95) contrast(1.05);
+    }
+    .hero-slide.active img { transform:scale(1.16); }
+    .hero-media::after {
+      content:''; position:absolute; inset:0;
+      background:
+        linear-gradient(to right, rgba(10,9,8,.92) 0%, rgba(10,9,8,.6) 38%, rgba(10,9,8,.15) 65%, transparent 100%),
+        linear-gradient(to top, rgba(10,9,8,.95) 0%, rgba(10,9,8,.35) 32%, transparent 58%);
+    }
+    /* Vertical film strip on right */
+    .hero-media::before {
+      content:''; position:absolute;
+      top:0; right:48px; bottom:0; width:1px;
+      background:linear-gradient(to bottom, transparent, rgba(201,165,74,.25) 30%, rgba(201,165,74,.25) 70%, transparent);
+      z-index:1; pointer-events:none;
+    }
+
+    .hero-content {
+      position:relative; z-index:2;
+      padding:140px 32px 96px;
+      max-width:720px;
+      width:100%;
+    }
+    .hero-eyebrow {
+      display:inline-flex; align-items:center; gap:12px;
+      font-family:var(--font-mono);
+      font-size:11px; font-weight:500; letter-spacing:.32em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:28px;
+      background:rgba(0,0,0,0.4); padding:6px 14px; border-radius:999px;
+      backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+      border:1px solid rgba(201,165,74,0.15);
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content:''; width:28px; height:1px; background:var(--gold); opacity:.5;
+    }
+    .hero-title {
+      font-family:var(--font-display); font-weight:400;
+      font-size:clamp(52px, 7.8vw, 116px);
+      line-height:.96; letter-spacing:-.03em;
+      color:#fff; margin-bottom:28px;
+      text-shadow:0 4px 60px rgba(0,0,0,0.85), 0 2px 20px rgba(0,0,0,0.6);
+    }
+    .hero-title em { color:var(--gold-l); font-weight:400; }
+    .hero-sub {
+      color:rgba(255,255,255,.9);
+      font-size:clamp(15px, 1.2vw, 17.5px); line-height:1.75;
+      max-width:500px; margin-bottom:40px;
+      font-weight:300;
+      text-shadow:0 2px 20px rgba(0,0,0,0.8);
+    }
+    .hero-ctas { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:52px; }
+    .hero-ctas .btn { padding:15px 28px; font-size:11px; }
+
+    /* Featured watch card */
+    .hero-featured {
+      display:inline-flex; align-items:center; gap:16px;
+      padding:10px 22px 10px 10px;
+      background:rgba(10,9,8,.6); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+      border:1px solid rgba(201,165,74,.25); border-radius:999px;
+      transition:border-color .35s, background .35s, transform .35s var(--ease);
+      position:relative; overflow:hidden;
+    }
+    .hero-featured::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(120deg, transparent 30%, rgba(201,165,74,.15), transparent 70%);
+      transform:translateX(-100%);
+      transition:transform .8s var(--ease);
+    }
+    .hero-featured:hover { border-color:rgba(201,165,74,.55); background:rgba(10,9,8,.8); transform:translateY(-2px); }
+    .hero-featured:hover::before { transform:translateX(100%); }
+    .hf-thumb {
+      width:48px; height:48px; border-radius:50%; overflow:hidden;
+      border:1px solid rgba(201,165,74,.35); flex-shrink:0;
+      position:relative;
+    }
+    .hf-thumb img { width:100%; height:100%; object-fit:cover; transition:transform .5s; }
+    .hero-featured:hover .hf-thumb img { transform:scale(1.1); }
+    .hf-meta { display:flex; flex-direction:column; gap:3px; min-width:0; }
+    .hf-label { font-family:var(--font-mono); font-size:9px; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); }
+    .hf-name { font-family:var(--font-heading); font-size:16px; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:240px; font-weight:500; letter-spacing:-.005em; }
+    .hf-arrow { color:var(--gold); flex-shrink:0; transition:transform .35s var(--ease); }
+    .hero-featured:hover .hf-arrow { transform:translate(3px,-3px); }
+
+    .hero-dots {
+      position:absolute; bottom:44px; right:44px; z-index:3;
+      display:flex; flex-direction:column; gap:10px;
+      align-items:flex-end;
+    }
+    .hero-dot-wrap {
+      display:flex; align-items:center; gap:12px;
+      color:rgba(255,255,255,.45); font-family:var(--font-mono); font-size:10px; letter-spacing:.2em;
+      transition:color .3s;
+      background:none; padding:0;
+    }
+    .hero-dot-wrap.active { color:var(--gold); }
+    .hero-dot {
+      width:32px; height:1px; background:rgba(255,255,255,.2);
+      overflow:hidden; position:relative;
+      transition:background .3s, width .3s;
+    }
+    .hero-dot-wrap.active .hero-dot { width:52px; background:rgba(255,255,255,.15); }
+    .hero-dot-wrap:hover .hero-dot { background:rgba(255,255,255,.35); }
+    .hero-dot::after {
+      content:''; position:absolute; inset:0; background:var(--gold);
+      transform:translateX(-100%);
+    }
+    .hero-dot-wrap.active .hero-dot::after { animation:fillBar 6s linear forwards; }
+    @keyframes fillBar { to { transform:translateX(0); } }
+
+    /* Hero bottom scroll hint */
+    .hero-scroll-hint {
+      position:absolute; bottom:44px; left:44px; z-index:3;
+      display:flex; align-items:center; gap:14px;
+      font-family:var(--font-mono); font-size:9.5px; letter-spacing:.32em; text-transform:uppercase;
+      color:var(--muted);
+    }
+    .hero-scroll-hint-line {
+      width:1px; height:40px;
+      background:linear-gradient(to bottom, transparent, var(--gold));
+      position:relative; overflow:hidden;
+    }
+    .hero-scroll-hint-line::after {
+      content:''; position:absolute; top:-100%; left:0; right:0; height:50%;
+      background:linear-gradient(to bottom, transparent, #fff);
+      animation:scrollLine 2.2s cubic-bezier(.4,0,.2,1) infinite;
+    }
+    @keyframes scrollLine {
+      0% { top:-50%; opacity:0; }
+      50% { opacity:1; }
+      100% { top:100%; opacity:0; }
+    }
+
+    /* ───── TRUST BAR ───── */
+    .trust-bar {
+      background:var(--s1);
+      border-top:1px solid rgba(201,165,74,.1);
+      border-bottom:1px solid rgba(201,165,74,.1);
+    }
+    .trust-bar-inner {
+      display:grid; grid-template-columns:repeat(4, 1fr);
+      padding:28px 0;
+    }
+    .trust-item {
+      display:flex; align-items:center; gap:14px;
+      padding:0 32px; position:relative;
+    }
+    .trust-item + .trust-item::before {
+      content:''; position:absolute; left:0; top:50%; transform:translateY(-50%);
+      width:1px; height:40px; background:rgba(201,165,74,.12);
+    }
+    .trust-icon {
+      width:38px; height:38px; border:1px solid rgba(201,165,74,.3);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--gold); flex-shrink:0; border-radius:50%;
+    }
+    .trust-title { font-family:var(--font-heading); font-size:19px; color:var(--text); line-height:1.2; margin-bottom:4px; letter-spacing:0.01em; }
+    .trust-desc { font-size:10.5px; letter-spacing:.12em; color:var(--muted); text-transform:uppercase; }
+    @media (max-width:900px) {
+      .trust-bar-inner { grid-template-columns:repeat(2,1fr); gap:20px 0; padding:24px 0; }
+      .trust-item { padding:0 20px; }
+      .trust-item:nth-child(3)::before { display:none; }
+    }
+
+    /* ───── SECTION HEADER ───── */
+    .section { padding:var(--space-section) 0; }
+    .section-head { margin-bottom:64px; max-width:760px; }
+    .section-head.center { margin-left:auto; margin-right:auto; text-align:center; }
+    .section-head .label { margin-bottom:22px; }
+    .section-head h2 {
+      font-family:var(--font-display);
+      font-size:clamp(40px, 6vw, 80px);
+      margin-bottom:18px;
+      line-height:.98;
+      font-weight:400;
+    }
+    .section-head p {
+      color:var(--text-soft); font-size:16px; line-height:1.7;
+      max-width:540px;
+    }
+    .section-head.center p { margin:0 auto; }
+
+    /* ───── COLLECTION (Gallery) ───── */
+    .collection-section { background:linear-gradient(to bottom, var(--s0), #0a0907); }
+    .collection-head {
+      display:flex; align-items:flex-end; justify-content:space-between;
+      flex-wrap:wrap; gap:32px; margin-bottom:40px;
+    }
+    .collection-filters {
+      display:flex; gap:8px; flex-wrap:wrap; margin-bottom:32px;
+      padding-bottom:4px;
+    }
+    .filter-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 16px;
+      font-size:11px; font-weight:500; letter-spacing:.16em; text-transform:uppercase;
+      color:var(--text-soft);
+      background:transparent;
+      border:1px solid rgba(201,165,74,.15);
+      border-radius:999px;
+      transition:all .25s ease;
+    }
+    .filter-btn:hover {
+      color:var(--text); border-color:rgba(201,165,74,.4);
+    }
+    .filter-btn.active {
+      color:var(--s0); background:var(--gold); border-color:var(--gold);
+    }
+    .filter-count {
+      font-size:9.5px; opacity:.8; font-weight:400;
+      padding:2px 6px; border-radius:999px;
+      background:rgba(255,255,255,.06);
+    }
+    .filter-btn.active .filter-count { background:rgba(0,0,0,.15); }
+
+    .gallery-grid {
+      display:grid; grid-template-columns:repeat(4, 1fr);
+      gap:16px;
+    }
+    @media (max-width:1100px) { .gallery-grid { grid-template-columns:repeat(3,1fr); } }
+    @media (max-width:768px) { .gallery-grid { grid-template-columns:repeat(2,1fr); gap:12px; } }
+    @media (max-width:420px) { .gallery-grid { grid-template-columns:1fr; } }
+
+    .gallery-card {
+      position:relative;
+      background:var(--s2);
+      border:1px solid rgba(201,165,74,.06);
+      border-radius:var(--radius);
+      overflow:hidden;
+      transition:border-color .4s, transform .5s var(--ease), box-shadow .5s;
+      display:flex; flex-direction:column;
+      transform-style:preserve-3d;
+      will-change:transform;
+    }
+    .gallery-card:hover {
+      border-color:rgba(201,165,74,.35);
+      transform:translateY(-4px);
+      box-shadow:0 18px 36px -20px rgba(0,0,0,.65), 0 0 0 1px rgba(201,165,74,.08);
+    }
+    .gallery-card.hidden { display:none; }
+
+    .gc-img-wrap {
+      position:relative; aspect-ratio:1;
+      overflow:hidden; background:#0a0907;
+      cursor:pointer;
+    }
+    .gc-img-wrap img {
+      width:100%; height:100%; object-fit:cover;
+      transition:transform .6s var(--ease-smooth);
+    }
+    .gallery-card:hover .gc-img-wrap img { transform:scale(1.03); }
+    .gc-img-wrap::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(8,8,8,.75), transparent 45%);
+      pointer-events:none;
+    }
+    /* Quick peek on hover */
+    .gc-peek {
+      position:absolute; inset:auto 12px 12px 12px; z-index:2;
+      display:flex; align-items:center; justify-content:space-between; gap:8px;
+      transform:translateY(14px); opacity:0;
+      transition:transform .4s var(--ease), opacity .4s;
+      pointer-events:none;
+    }
+    .gallery-card:hover .gc-peek { transform:translateY(0); opacity:1; pointer-events:auto; }
+    .gc-peek-btn {
+      width:34px; height:34px; border-radius:50%;
+      background:rgba(10,9,8,.8); backdrop-filter:blur(8px);
+      border:1px solid rgba(201,165,74,.3);
+      color:var(--gold);
+      display:flex; align-items:center; justify-content:center;
+      transition:all .25s;
+    }
+    .gc-peek-btn:hover { background:var(--gold); color:var(--s0); transform:scale(1.08); }
+    .gc-peek-btn.fav.active { background:var(--gold); color:var(--s0); }
+    .gc-peek-btn.fav.active svg { fill:currentColor; }
+
+    .gc-badge {
+      position:absolute; top:12px; left:12px; z-index:2;
+      display:inline-flex; align-items:center; gap:5px;
+      padding:5px 10px; border-radius:999px;
+      font-size:9px; letter-spacing:.18em; text-transform:uppercase;
+      background:rgba(8,8,8,.7); backdrop-filter:blur(8px);
+      color:var(--gold); border:1px solid rgba(201,165,74,.25);
+    }
+    .gc-badge::before {
+      content:''; width:5px; height:5px; border-radius:50%;
+      background:var(--gold); box-shadow:0 0 6px var(--gold);
+    }
+
+    .gc-body {
+      padding:16px 16px 14px;
+      display:flex; flex-direction:column; gap:3px;
+      flex:1;
+    }
+    .gc-brand { font-size:9px; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); }
+    .gc-model { font-family:var(--font-heading); font-size:16px; color:var(--text); line-height:1.25; }
+    .gc-ref { font-size:11px; color:var(--muted); letter-spacing:.04em; margin-bottom:12px; }
+
+    .gc-actions {
+      display:grid; grid-template-columns:1fr 1fr; gap:6px;
+      margin-top:auto;
+    }
+    .gc-btn {
+      display:inline-flex; align-items:center; justify-content:center; gap:5px;
+      padding:9px 10px;
+      font-size:9.5px; font-weight:500; letter-spacing:.12em; text-transform:uppercase;
+      border-radius:4px;
+      border:1px solid transparent;
+      transition:all .25s;
+      white-space:nowrap;
+    }
+    .gc-btn.chrono { border-color:rgba(201,165,74,.25); color:var(--gold); }
+    .gc-btn.chrono:hover { background:rgba(201,165,74,.08); border-color:var(--gold); }
+    .gc-btn.wa { background:rgba(37,211,102,.1); color:var(--wa); border-color:rgba(37,211,102,.3); }
+    .gc-btn.wa:hover { background:var(--wa); color:#fff; border-color:var(--wa); }
+
+    /* Placeholder state */
+    .gc-placeholder {
+      width:100%; height:100%;
+      background:radial-gradient(circle at center, #201d12 10%, #0a0907 80%);
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+      position:relative;
+    }
+    .gc-placeholder::before, .gc-placeholder::after {
+      content:''; position:absolute; border-radius:50%;
+      border:1px solid rgba(201,165,74,.15);
+    }
+    .gc-placeholder::before { width:60%; aspect-ratio:1; }
+    .gc-placeholder::after { width:40%; aspect-ratio:1; border-color:rgba(201,165,74,.08); }
+    .gc-ph-brand { font-family:var(--font-heading); font-style:italic; font-size:22px; color:rgba(201,165,74,.7); z-index:1; }
+    .gc-ph-model { font-size:9px; letter-spacing:.3em; text-transform:uppercase; color:rgba(201,165,74,.4); z-index:1; }
+
+    /* ───── QUICKVIEW / LIGHTBOX ───── */
+    .qv-overlay {
+      position:fixed; inset:0; z-index:1000;
+      background:rgba(5,4,3,.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+      opacity:0; pointer-events:none;
+      transition:opacity .35s var(--ease);
+      display:flex; align-items:center; justify-content:center;
+      padding:24px;
+    }
+    .qv-overlay.open { opacity:1; pointer-events:auto; }
+    .qv-modal {
+      position:relative; width:100%; max-width:920px;
+      background:var(--s1);
+      border:1px solid rgba(201,165,74,.18);
+      border-radius:10px;
+      overflow:hidden;
+      display:grid; grid-template-columns:1fr 1fr;
+      max-height:88vh;
+      transform:scale(.96) translateY(12px);
+      transition:transform .45s var(--ease);
+      box-shadow:0 40px 100px -20px rgba(0,0,0,.6);
+    }
+    .qv-overlay.open .qv-modal { transform:scale(1) translateY(0); }
+    .qv-close {
+      position:absolute; top:16px; right:16px; z-index:3;
+      width:38px; height:38px; border-radius:50%;
+      background:rgba(10,9,8,.8); backdrop-filter:blur(8px);
+      border:1px solid rgba(201,165,74,.25);
+      color:var(--text);
+      display:flex; align-items:center; justify-content:center;
+      transition:all .25s;
+    }
+    .qv-close:hover { background:var(--gold); color:var(--s0); transform:rotate(90deg); }
+    .qv-img {
+      position:relative; aspect-ratio:1;
+      background:#0a0907;
+      overflow:hidden;
+    }
+    .qv-img img { width:100%; height:100%; object-fit:cover; }
+    .qv-img-placeholder {
+      width:100%; height:100%;
+      background:radial-gradient(circle at center, #201d12 10%, #0a0907 85%);
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;
+      position:relative;
+    }
+    .qv-img-placeholder::before, .qv-img-placeholder::after {
+      content:''; position:absolute; border-radius:50%;
+      border:1px solid rgba(201,165,74,.15);
+    }
+    .qv-img-placeholder::before { width:60%; aspect-ratio:1; }
+    .qv-img-placeholder::after { width:40%; aspect-ratio:1; border-color:rgba(201,165,74,.08); }
+    .qv-body {
+      padding:48px 40px 40px;
+      display:flex; flex-direction:column;
+      overflow-y:auto;
+    }
+    .qv-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:4px 10px; border-radius:999px;
+      font-family:var(--font-mono); font-size:9px; letter-spacing:.22em; text-transform:uppercase;
+      background:rgba(201,165,74,.1);
+      border:1px solid rgba(201,165,74,.25);
+      color:var(--gold); width:max-content;
+      margin-bottom:16px;
+    }
+    .qv-badge::before {
+      content:''; width:5px; height:5px; border-radius:50%;
+      background:var(--gold); box-shadow:0 0 8px var(--gold);
+    }
+    .qv-brand {
+      font-family:var(--font-mono);
+      font-size:10.5px; letter-spacing:.32em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:8px;
+    }
+    .qv-model {
+      font-family:var(--font-display);
+      font-size:34px; line-height:1.05; color:var(--text);
+      margin-bottom:8px; font-weight:500; letter-spacing:-.02em;
+    }
+    .qv-ref {
+      font-family:var(--font-mono); font-size:12px; color:var(--muted); letter-spacing:.06em;
+      margin-bottom:24px;
+    }
+    .qv-divider { height:1px; background:rgba(201,165,74,.1); margin:8px 0 22px; }
+    .qv-desc {
+      color:var(--text-soft); font-size:14.5px; line-height:1.75;
+      margin-bottom:28px;
+    }
+    .qv-specs {
+      display:grid; grid-template-columns:1fr 1fr; gap:16px 20px;
+      margin-bottom:32px;
+    }
+    .qv-spec-label {
+      font-family:var(--font-mono); font-size:9px; letter-spacing:.22em; text-transform:uppercase;
+      color:var(--muted); margin-bottom:4px;
+    }
+    .qv-spec-value { font-family:var(--font-heading); font-size:16px; color:var(--text); letter-spacing:-.005em; }
+    .qv-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:auto; }
+    .qv-actions .btn { flex:1; justify-content:center; min-width:140px; padding:14px 18px; }
+
+    @media (max-width:720px) {
+      .qv-modal { grid-template-columns:1fr; max-height:92vh; overflow-y:auto; }
+      .qv-img { aspect-ratio:4/3; }
+      .qv-body { padding:32px 24px; }
+      .qv-model { font-size:26px; }
+    }
+
+    /* Toast */
+    .toast {
+      position:fixed; bottom:32px; left:50%; transform:translateX(-50%) translateY(40px);
+      z-index:1100;
+      background:var(--s3); border:1px solid rgba(201,165,74,.3);
+      color:var(--text); padding:12px 22px; border-radius:999px;
+      font-size:13px; font-weight:400; letter-spacing:.02em;
+      display:flex; align-items:center; gap:10px;
+      opacity:0; pointer-events:none;
+      transition:transform .4s var(--ease), opacity .3s;
+      box-shadow:0 12px 32px rgba(0,0,0,.5);
+    }
+    .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+    .toast svg { color:var(--gold); flex-shrink:0; }
+
+    /* Favorites badge on nav */
+    .nav-fav-badge {
+      display:inline-flex; align-items:center; justify-content:center;
+      width:20px; height:20px; margin-left:6px;
+      background:var(--gold); color:var(--s0);
+      border-radius:999px;
+      font-size:10px; font-weight:600;
+      font-family:var(--font-mono);
+    }
+
+    /* Skeleton */
+    .gc-skeleton {
+      aspect-ratio:.82; background:var(--s2);
+      border:1px solid rgba(201,165,74,.06);
+      border-radius:var(--radius); overflow:hidden; position:relative;
+    }
+    .gc-skeleton::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(90deg, transparent, rgba(201,165,74,.04), transparent);
+      animation:skel 1.6s linear infinite;
+    }
+    @keyframes skel { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+      aspect-ratio:.82; background:var(--s2);
+      border:1px solid rgba(201,165,74,.06);
+      border-radius:var(--radius); overflow:hidden; position:relative;
+    }
+    .gc-skeleton::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(90deg, transparent, rgba(201,165,74,.04), transparent);
+      animation:skel 1.6s linear infinite;
+    }
+    @keyframes skel { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+
+    .show-more-wrap { text-align:center; margin-top:40px; }
+    .show-more-btn {
+      display:inline-flex; align-items:center; gap:10px;
+      padding:12px 28px;
+      font-size:10.5px; font-weight:500; letter-spacing:.22em; text-transform:uppercase;
+      color:var(--gold); border:1px solid rgba(201,165,74,.3);
+      border-radius:999px;
+      transition:all .3s;
+    }
+    .show-more-btn:hover { background:rgba(201,165,74,.08); border-color:var(--gold); }
+    .show-more-btn svg { transition:transform .3s; }
+    .show-more-btn.open svg { transform:rotate(180deg); }
+
+    /* Collection CTA */
+    .collection-cta {
+      margin-top:56px; padding:40px;
+      background:linear-gradient(135deg, rgba(201,165,74,.05), transparent);
+      border:1px solid rgba(201,165,74,.12);
+      border-radius:var(--radius);
+      display:flex; align-items:center; justify-content:space-between;
+      gap:32px; flex-wrap:wrap;
+    }
+    .collection-cta h3 { font-family:var(--font-heading); font-size:24px; margin-bottom:6px; }
+    .collection-cta p { color:var(--text-soft); font-size:14px; }
+    .collection-cta-actions { display:flex; gap:10px; flex-wrap:wrap; }
+
+    /* ───── BRANDS MARQUEE ───── */
+    .brands-section {
+      padding:80px 0;
+      background:var(--s1);
+      border-top:1px solid rgba(201,165,74,.08);
+      border-bottom:1px solid rgba(201,165,74,.08);
+      overflow:hidden;
+    }
+    .brands-head { text-align:center; margin-bottom:48px; }
+    .brands-head h2 { font-size:clamp(28px, 4vw, 44px); margin-bottom:12px; }
+    .brands-head p { color:var(--text-soft); font-size:14.5px; max-width:440px; margin:0 auto; }
+    .brands-track-wrap { position:relative; }
+    .brands-track-wrap::before, .brands-track-wrap::after {
+      content:''; position:absolute; top:0; bottom:0; width:120px; z-index:10; pointer-events:none;
+    }
+    .brands-track-wrap::before { left:0; background:linear-gradient(to right, var(--s1), transparent); }
+    .brands-track-wrap::after { right:0; background:linear-gradient(to left, var(--s1), transparent); }
+    .brands-track {
+      display:flex; gap:16px; width:max-content;
+      animation:bMarquee 42s linear infinite;
+    }
+    .brands-track:hover { animation-play-state:paused; }
+    @keyframes bMarquee { to { transform:translateX(-50%); } }
+    .brand-pill {
+      display:flex; align-items:center; gap:12px;
+      padding:16px 24px;
+      background:var(--s2); border:1px solid rgba(201,165,74,.1);
+      border-radius:999px;
+      transition:all .3s;
+      flex-shrink:0;
+    }
+    .brand-pill:hover { border-color:rgba(201,165,74,.4); background:var(--s3); }
+    .brand-pill-name { font-family:var(--font-heading); font-size:18px; color:var(--text); }
+    .brand-pill-meta { font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); }
+    .brand-pill-sep { width:1px; height:14px; background:rgba(201,165,74,.2); }
+
+    /* ───── ABOUT ───── */
+    .about-section {
+      background:linear-gradient(to bottom, var(--s0), #0b0a08);
+    }
+    .about-grid {
+      display:grid; grid-template-columns:1.1fr 1fr; gap:80px; align-items:center;
+    }
+    @media (max-width:900px) { .about-grid { grid-template-columns:1fr; gap:40px; } }
+    .about-img {
+      position:relative; aspect-ratio:1; border-radius:var(--radius); overflow:hidden;
+    }
+    .about-img img { width:100%; height:100%; object-fit:cover; filter:brightness(.92) contrast(1.05); }
+    .about-img::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(8,8,8,.5), transparent 60%);
+    }
+    .about-img-corner {
+      position:absolute; bottom:16px; right:16px; z-index:2;
+      display:flex; align-items:center; gap:8px;
+      padding:8px 14px; border-radius:999px;
+      background:rgba(8,8,8,.75); backdrop-filter:blur(12px);
+      border:1px solid rgba(201,165,74,.25);
+      font-size:10px; letter-spacing:.18em; text-transform:uppercase;
+      color:var(--gold);
+    }
+    .about-img-corner svg { width:11px; height:11px; }
+
+    .about-text h2 { font-size:clamp(32px, 4.5vw, 56px); margin-bottom:20px; }
+    .about-text p { color:var(--text-soft); font-size:15px; line-height:1.8; margin-bottom:18px; }
+
+    .about-stats {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:1px; margin-top:36px;
+      background:rgba(201,165,74,.1);
+      border:1px solid rgba(201,165,74,.1);
+      border-radius:var(--radius); overflow:hidden;
+    }
+    .about-stat {
+      padding:22px 18px;
+      background:var(--s2);
+      transition:background .3s;
+    }
+    .about-stat:hover { background:var(--s3); }
+    .about-stat-num {
+      font-family:var(--font-heading);
+      font-size:32px; color:var(--gold); line-height:1;
+      margin-bottom:6px;
+    }
+    .about-stat-label {
+      font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--text-soft);
+    }
+
+    /* ───── FEATURES ───── */
+    .features-section {
+      background:linear-gradient(to bottom, var(--s0), #0c0a08);
+    }
+    .features-grid {
+      display:grid; grid-template-columns:repeat(2,1fr); gap:16px;
+    }
+    @media (max-width:768px) { .features-grid { grid-template-columns:1fr; } }
+    .feature-card {
+      padding:36px 32px;
+      background:var(--s2);
+      border:1px solid rgba(201,165,74,.08);
+      border-radius:var(--radius);
+      position:relative; overflow:hidden;
+      transition:all .4s;
+      display:flex; flex-direction:column;
+    }
+    .feature-card:hover {
+      border-color:rgba(201,165,74,.25);
+      background:var(--s3);
+      transform:translateY(-3px);
+    }
+    .feature-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg, transparent, var(--gold), transparent);
+      transform:scaleX(0); transform-origin:center;
+      transition:transform .5s var(--ease);
+    }
+    .feature-card:hover::before { transform:scaleX(1); }
+    .feature-icon {
+      width:48px; height:48px; border-radius:12px;
+      background:rgba(201,165,74,.08); border:1px solid rgba(201,165,74,.2);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--gold); margin-bottom:20px;
+    }
+    .feature-title { font-family:var(--font-heading); font-size:22px; color:var(--text); margin-bottom:10px; }
+    .feature-desc { color:var(--text-soft); font-size:14px; line-height:1.7; margin-bottom:20px; flex:1; }
+    .feature-link {
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:10.5px; font-weight:500; letter-spacing:.22em; text-transform:uppercase;
+      color:var(--gold);
+      transition:gap .25s;
+    }
+    .feature-link:hover { gap:12px; }
+
+    /* ─── TESTIMONIALS COLUMNS ──────────────── */
+    .testi-section {
+      padding: 112px 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(201,165,74,.04) 0%, transparent 60%),
+        linear-gradient(to bottom, #0e0d0a 0%, #0b0a08 100%);
+      border-top: 1px solid rgba(201,165,74,.08);
+      overflow: hidden;
+    }
+    .testi-header { text-align: center; max-width: 680px; margin: 0 auto 64px; padding: 0 24px; }
+    .testi-header h2 { font-family:var(--font-display); font-size:clamp(36px, 5vw, 72px); line-height:1; margin-bottom:18px; font-weight:400; letter-spacing:-.02em; }
+    .testi-header p { color:var(--text-soft); font-size:16px; line-height:1.7; }
+    .testi-badge { display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(201,165,74,.25); padding: 5px 18px; margin-bottom: 24px; }
+    .testi-columns { display: flex; justify-content: center; gap: 16px; max-height: 680px; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom,transparent 0%,black 12%,black 88%,transparent 100%); mask-image: linear-gradient(to bottom,transparent 0%,black 12%,black 88%,transparent 100%); padding: 0 24px; }
+    .testi-col { flex: 0 0 300px; display: flex; flex-direction: column; gap: 14px; }
+    .testi-col-inner { display: flex; flex-direction: column; gap: 14px; }
+    .testi-col:nth-child(1) .testi-col-inner { animation: testiScroll 18s linear infinite; }
+    .testi-col:nth-child(2) .testi-col-inner { animation: testiScroll 22s linear infinite; }
+    .testi-col:nth-child(3) .testi-col-inner { animation: testiScroll 20s linear infinite; }
+    @keyframes testiScroll { 0%{transform:translateY(0)} 100%{transform:translateY(calc(-50% - 7px))} }
+    @media (max-width: 1024px) { .testi-col:nth-child(3) { display: none; } }
+    @media (max-width: 768px) { .testi-col:nth-child(2) { display: none; } }
+    .testi-card { background: var(--s2); border: 1px solid rgba(201,165,74,.08); padding: 24px; border-radius: 2px; transition: border-color .4s; }
+    .testi-card:hover { border-color: rgba(201,165,74,.25); }
+    .testi-stars { display: flex; gap: 3px; margin-bottom: 14px; }
+    .testi-star { color: var(--gold); font-size: 11px; }
+    .testi-text { font-size: var(--fs-body-sm); color: var(--muted); line-height: var(--lh-body); margin-bottom: 18px; font-style: italic; }
+    .testi-person { display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(255,255,255,.04); padding-top: 14px; }
+    .testi-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(201,165,74,.25); flex-shrink: 0; }
+    .testi-name { font-family: var(--font-heading); font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.2; }
+    .testi-role { font-size: 9.5px; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+
+    /* ───── CONTACT ───── */
+    .contact-section {
+      background:linear-gradient(to bottom, var(--s0), #0a0907);
+    }
+    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; }
+    @media (max-width:900px) { .contact-grid { grid-template-columns:1fr; gap:40px; } }
+
+    .contact-card {
+      display:flex; align-items:center; gap:16px;
+      padding:18px; margin-bottom:10px;
+      background:var(--s2); border:1px solid rgba(201,165,74,.08);
+      border-radius:var(--radius);
+      transition:all .25s;
+    }
+    .contact-card:hover { border-color:rgba(201,165,74,.25); background:var(--s3); }
+    .c-icon {
+      width:44px; height:44px; border-radius:10px;
+      background:rgba(201,165,74,.08); border:1px solid rgba(201,165,74,.25);
+      display:flex; align-items:center; justify-content:center; color:var(--gold); flex-shrink:0;
+    }
+    .c-label { font-size:9.5px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+    .c-value { font-family:var(--font-heading); font-size:15px; color:var(--text); }
+
+    .map-wrap {
+      border:1px solid rgba(201,165,74,.12);
+      border-radius:var(--radius); overflow:hidden;
+      background:var(--s2);
+    }
+    .map-wrap iframe {
+      width:100%; height:300px; border:none;
+      filter:invert(92%) hue-rotate(180deg) saturate(.4) brightness(.88);
+    }
+    .map-bar {
+      padding:12px 18px; display:flex; align-items:center; justify-content:space-between;
+      border-top:1px solid rgba(201,165,74,.08);
+      font-size:12px;
+    }
+    .map-bar a { color:var(--gold); font-size:10px; letter-spacing:.18em; text-transform:uppercase; }
+
+    .quick-cta {
+      margin-top:16px; padding:24px;
+      background:rgba(201,165,74,.04); border:1px solid rgba(201,165,74,.12);
+      border-radius:var(--radius);
+    }
+    .quick-cta-label { font-size:9.5px; letter-spacing:.28em; text-transform:uppercase; color:var(--muted); margin-bottom:16px; }
+    .quick-cta .btn { width:100%; justify-content:center; padding:13px; }
+    .quick-cta-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
+
+    .quick-cta-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
+
+    /* ───── SCROLL TOP ───── */
+    .scroll-top {
+      position:fixed; right:20px; bottom:90px; z-index:440;
+      width:44px; height:44px; border-radius:50%;
+      background:rgba(8,8,8,.85); backdrop-filter:blur(10px);
+      border:1px solid rgba(201,165,74,.3);
+      color:var(--gold);
+      display:flex; align-items:center; justify-content:center;
+      transition:all .3s var(--ease);
+      transform:translateY(60px); opacity:0; pointer-events:none;
+    }
+    .scroll-top.show { transform:translateY(0); opacity:1; pointer-events:auto; }
+    .scroll-top:hover { background:var(--gold); color:var(--s0); border-color:var(--gold); }
+    @media (max-width:500px) { .scroll-top { bottom:80px; width:40px; height:40px; } }
+
+    /* ───── FOOTER ───── */
+    footer {
+      background:#060505;
+      border-top:1px solid rgba(201,165,74,.1);
+      padding:64px 0 32px;
+    }
+    .footer-grid {
+      display:grid; grid-template-columns:2fr 1fr 1fr 1fr;
+      gap:48px; margin-bottom:48px;
+    }
+    @media (max-width:900px) { .footer-grid { grid-template-columns:1fr 1fr; gap:32px; } }
+    @media (max-width:500px) { .footer-grid { grid-template-columns:1fr; } }
+    .footer-logo { height:38px; margin-bottom:18px; filter:brightness(1.05); }
+    .footer-desc { color:var(--text-soft); font-size:13px; line-height:1.7; max-width:280px; margin-bottom:20px; }
+    .footer-social { display:flex; gap:10px; }
+    .footer-social a {
+      width:36px; height:36px; border-radius:50%;
+      border:1px solid rgba(201,165,74,.2);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--text-soft); transition:all .25s;
+    }
+    .footer-social a:hover { color:var(--gold); border-color:var(--gold); background:rgba(201,165,74,.06); }
+    .footer-title {
+      font-size:10px; letter-spacing:.3em; text-transform:uppercase;
+      color:var(--gold); margin-bottom:18px;
+    }
+    .footer-links { display:flex; flex-direction:column; gap:10px; }
+    .footer-links a { font-size:13px; color:var(--text-soft); transition:color .25s; }
+    .footer-links a:hover { color:var(--text); }
+    .footer-bottom {
+      padding-top:24px;
+      border-top:1px solid rgba(201,165,74,.08);
+      display:flex; justify-content:space-between; align-items:center;
+      flex-wrap:wrap; gap:12px;
+      font-size:12px; color:var(--muted);
+    }
+    .footer-tagline { font-family:var(--font-heading); font-style:italic; color:rgba(201,165,74,.5); }
+
+    /* ───── Mobile ───── */
+    @media (max-width:900px) {
+      #nav {
+        padding:8px 10px;
+        height:78px;
+        display:grid; grid-template-columns:1fr auto 1fr;
+        align-items:center; gap:0;
+        background:rgba(10,9,8,.96); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+        border-bottom:1px solid rgba(201,165,74,.14);
+        transition:transform .4s var(--ease), background .3s, border-color .3s;
+        will-change:transform;
+      }
+      #nav.scrolled { background:rgba(10,9,8,.99); border-bottom-color:rgba(201,165,74,.22); }
+      #nav.nav-hidden { transform:translateY(-100%); }
+      .nav-links.desktop { display:none; }
+      .nav-cta-desk { display:none !important; }
+      .mob-menu { display:flex; }
+      .mob-left { display:flex; justify-self:start; }
+      .mob-right { display:flex; justify-self:end; }
+
+      .nav-wordmark {
+        flex-direction:column; gap:4px;
+        justify-self:center;
+        padding:0 8px;
+      }
+      .nav-logo { height:28px; }
+      .nav-wordmark-text {
+        display:block;
+        font-family:var(--font-display);
+        font-size:11px;
+        letter-spacing:.38em;
+        text-transform:uppercase;
+        color:var(--text);
+        font-weight:500;
+        line-height:1;
+        padding-left:.38em;
+      }
+
+      .hero-content { padding:104px 20px 56px; }
+      .hero-title { font-size:clamp(40px, 11vw, 64px); margin-bottom:20px; }
+      .hero-sub { font-size:14.5px; line-height:1.65; margin-bottom:32px; }
+      .hero-eyebrow { font-size:10px; letter-spacing:.24em; padding:5px 12px; margin-bottom:22px; }
+      .hero-ctas { width:100%; gap:10px; }
+      .hero-ctas .btn { flex:1; justify-content:center; min-width:140px; padding:13px 20px; font-size:10.5px; }
+      .hero-featured { display:none; }
+      .hero-dots { bottom:24px; right:20px; }
+      .hero-media::before { display:none; }
+      .hero-scroll-hint { display:none; }
+      .about-grid { grid-template-columns:1fr; }
+      .collection-cta { padding:28px; flex-direction:column; align-items:flex-start; }
+    }
+    @media (max-width:420px) {
+      #nav { padding:6px 6px; height:72px; }
+      .nav-logo { height:26px; }
+      .nav-wordmark-text { font-size:10px; letter-spacing:.34em; padding-left:.34em; }
+      .mob-icon-btn { width:36px; height:36px; }
+      .mob-icon-btn svg { width:18px; height:18px; }
+      .mob-menu { width:36px; height:36px; }
+      .mob-left, .mob-right { gap:0; }
+      .hero-content { padding:96px 18px 48px; }
+      .hero-title { font-size:clamp(36px, 12vw, 52px); }
+      .hero-sub { font-size:14px; }
+    }
+    @media (min-width:901px) {
+      .mob-nav { display:none !important; }
+    }
+
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background:var(--s0); }
+    ::-webkit-scrollbar-thumb { background:var(--gold-d); border-radius:3px; }
+  </style>
+</head>
+<body>
+
+<a href="#koleksiyon" class="skip-link">İçeriğe atla</a>
+
+<!-- ───── NAV ───── -->
+<nav id="nav" aria-label="Ana menü">
+  <div class="mob-left">
+    <button class="mob-menu" id="mobToggle" aria-label="Menüyü aç/kapat"><span></span></button>
+    <a href="#koleksiyon" class="mob-icon-btn" aria-label="Koleksiyonda ara">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><line x1="20" y1="20" x2="16.65" y2="16.65"></line></svg>
+    </a>
+    <a href="https://wa.me/905320155199?text=Merhaba%2C%20favori%20parça%20danışmanlığı%20almak%20istiyorum." target="_blank" rel="noopener" class="mob-icon-btn" aria-label="Favori parça danışmanlığı">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+    </a>
+  </div>
+  <a href="#" aria-label="Privé Watch" class="nav-wordmark">
+    <img src="brand_asset/prive_extracted/Data/new_logo.png" alt="Privé Watch" class="nav-logo">
+    <span class="nav-wordmark-text">Privé Watch</span>
+  </a>
+  <div class="nav-links desktop">
+    <a href="#koleksiyon" class="nav-link">Koleksiyon</a>
+    <a href="#hakkimizda" class="nav-link">Hakkımızda</a>
+    <a href="#yorumlar" class="nav-link">Yorumlar</a>
+    <a href="#iletisim" class="nav-link">İletişim</a>
+  </div>
+  <div class="nav-cta-desk">
+    <a href="https://www.chrono24.com.tr/dealer/privewatch/index.htm" target="_blank" rel="noopener" class="btn btn-ghost" aria-label="Chrono24 Mağazası">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:-2px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      Chrono24 Mağazası
+    </a>
+    <a href="https://wa.me/905320155199" target="_blank" rel="noopener" class="btn btn-primary" aria-label="Uzmanla Görüşün">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:-2px;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+      Uzmanımızla Görüşün
+    </a>
+  </div>
+  <div class="mob-right">
+    <a href="#hakkimizda" class="mob-icon-btn" aria-label="Hakkımızda">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"></circle><polyline points="12 10 12 12 13.5 13.5"></polyline><line x1="16.51" y1="17.35" x2="16.51" y2="21"></line><line x1="7.49" y1="17.35" x2="7.49" y2="21"></line><line x1="16.51" y1="6.65" x2="16.51" y2="3"></line><line x1="7.49" y1="6.65" x2="7.49" y2="3"></line></svg>
+    </a>
+    <a href="#iletisim" class="mob-icon-btn" aria-label="İletişim ve konum">
+      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+    </a>
+  </div>
+</nav>
+
+<div class="mob-nav" id="mobNav">
+  <a href="#koleksiyon" class="nav-link" onclick="closeMob()">Koleksiyon</a>
+  <a href="#hakkimizda" class="nav-link" onclick="closeMob()">Hakkımızda</a>
+  <a href="#yorumlar" class="nav-link" onclick="closeMob()">Yorumlar</a>
+  <a href="#iletisim" class="nav-link" onclick="closeMob()">İletişim</a>
+  <a href="https://wa.me/905320155199" target="_blank" rel="noopener" class="btn btn-primary" onclick="closeMob()">Danışmanlık</a>
+  <a href="https://www.chrono24.com.tr/dealer/privewatch/index.htm" target="_blank" rel="noopener" class="btn btn-ghost" onclick="closeMob()">Chrono24</a>
+</div>
+
+<!-- ───── HERO ───── -->
+<section class="hero">
+  <div class="hero-media">
+    <div class="hero-slide active"><img src="brand_asset/slider1.jpg" alt="Rolex Koleksiyonu"></div>
+    <div class="hero-slide"><img src="brand_asset/slider2.jpg" alt="Daytona Koleksiyonu"></div>
+    <div class="hero-slide"><img src="brand_asset/slider3.jpg" alt="Klasik İsviçre Saatleri"></div>
+  </div>
+  <div class="hero-content">
+    <span class="hero-eyebrow reveal">Privé Watch · Est. 2019</span>
+    <h1 class="hero-title reveal d1">Zamansız<br><em>Zerafetin</em><br>Adresi</h1>
+    <p class="hero-sub reveal d2">Özgünlüğü belgelenmiş lüks saatler. Uzman ekspertiz, Chrono24 güvencesi.</p>
+    <div class="hero-ctas reveal d3">
+      <a href="#koleksiyon" class="btn btn-primary">
+        Koleksiyonu Keşfet
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+      </a>
+      <a href="https://wa.me/905320155199" target="_blank" rel="noopener" class="btn btn-ghost">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+    <a href="#" id="heroFeatured" target="_blank" rel="noopener" class="hero-featured reveal d4">
+      <div class="hf-thumb"><img id="hfThumb" src="https://img.chrono24.com/images/uhren/mexc6ywrofnm-1sfnifmkba692mej4pskd7kv-Square480.jpg" alt=""></div>
+      <div class="hf-meta">
+        <span class="hf-label">Öne çıkan parça</span>
+        <span class="hf-name" id="hfName">Rolex Submariner Date</span>
+      </div>
+      <svg class="hf-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+    </a>
+  </div>
+  <div class="hero-scroll-hint">
+    <div class="hero-scroll-hint-line"></div>
+    Keşfet
+  </div>
+  <div class="hero-dots" role="tablist">
+    <button class="hero-dot-wrap active" data-idx="0" aria-label="Slayt 1"><span class="hero-dot"></span></button>
+    <button class="hero-dot-wrap" data-idx="1" aria-label="Slayt 2"><span class="hero-dot"></span></button>
+    <button class="hero-dot-wrap" data-idx="2" aria-label="Slayt 3"><span class="hero-dot"></span></button>
+  </div>
+</section>
+
+<!-- ───── TRUST BAR ───── -->
+<section class="trust-bar">
+  <div class="container">
+    <div class="trust-bar-inner">
+      <div class="trust-item">
+        <div class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div><div class="trust-title">Orijinallik Belgesi</div><div class="trust-desc">Uzman Onaylı</div></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div><div class="trust-title">Chrono24 Güvencesi</div><div class="trust-desc">Alıcı Koruması</div></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+        <div><div class="trust-title">7/24 Kesintisiz</div><div class="trust-desc">Kişisel Danışmanlık</div></div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M7 8V6a5 5 0 0110 0v2"/></svg></div>
+        <div><div class="trust-title">Güvenli Teslimat</div><div class="trust-desc">Sigortalı Kargo</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───── COLLECTION ───── -->
+<section id="koleksiyon" class="section collection-section">
+  <div class="container">
+    <div class="collection-head reveal">
+      <div>
+        <span class="label" style="margin-bottom:16px;">Koleksiyon</span>
+        <h2 style="margin-top:16px;">Öne Çıkan<br><em>Parçalar</em></h2>
+      </div>
+      <p style="color:var(--text-soft); max-width:360px; font-size:14.5px;">
+        Her saat, teslimat öncesi uzman ekibimiz tarafından detaylı olarak incelenir.
+      </p>
+    </div>
+
+    <div class="collection-filters reveal d1" id="galleryFilters">
+      <button class="filter-btn active" data-filter="all">Yükleniyor...</button>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="gc-skeleton"></div>
+      <div class="gc-skeleton"></div>
+      <div class="gc-skeleton"></div>
+      <div class="gc-skeleton"></div>
+    </div>
+
+    <div class="show-more-wrap reveal" id="showMoreWrap" style="display:none;">
+      <button class="show-more-btn" id="showMoreBtn" onclick="toggleShowMore()">
+        <span id="showMoreLabel">Daha Fazla</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+
+    <div class="collection-cta reveal">
+      <div>
+        <h3>Her Parça <em>Titizlikle</em> İncelenmiş</h3>
+        <p>Orijinalliği belgelenmiş koleksiyonun tamamına Chrono24 üzerinden ulaşın.</p>
+      </div>
+      <div class="collection-cta-actions">
+        <a href="https://www.chrono24.com.tr/dealer/privewatch/index.htm" target="_blank" rel="noopener" class="btn btn-ghost">
+          Chrono24'te Gör
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
+        <a href="https://wa.me/905320155199" target="_blank" rel="noopener" class="btn btn-wa">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Teklif Al
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───── BRANDS MARQUEE ───── -->
+<section class="brands-section">
+  <div class="container">
+    <div class="brands-head reveal">
+      <span class="label" style="margin-bottom:16px;">Prestijli Markalar</span>
+      <h2 style="margin-top:16px;">Dünya Saat Sanatının <em>Usta</em> İsimleri</h2>
+    </div>
+  </div>
+  <div class="brands-track-wrap">
+    <div class="brands-track" id="brandsTrack">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ───── ABOUT ───── -->
+<section id="hakkimizda" class="section about-section">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img reveal">
+        <img src="brand_asset/about_premium.jpg" alt="Privé Watch Lüks Saat Koleksiyonu">
+      </div>
+      <div class="about-text">
+        <span class="label reveal" style="margin-bottom:20px;">Hakkımızda</span>
+        <h2 class="display reveal d1" style="margin-top:20px;">Güvenilir Saat Alımı</h2>
+        <p class="reveal d2">Privé Watch, dünyanın en prestijli saat markalarının özgün parçalarını seçkin müşterilerimizle buluşturmak için kurulmuştur. Her saat uzman ekibimiz tarafından detaylıca incelenerek orijinalliği belgelenir.</p>
+        <p class="reveal d3">Rolex, Patek Philippe, Audemars Piguet, Bulgari, Cartier ve daha fazlası — zamansız tasarımların ve üstün işçiliğin buluştuğu koleksiyon.</p>
+        <div class="about-stats reveal d4">
+          <div class="about-stat"><div class="about-stat-num">100%</div><div class="about-stat-label">Orijinal</div></div>
+          <div class="about-stat"><div class="about-stat-num">8+</div><div class="about-stat-label">Marka</div></div>
+          <div class="about-stat"><div class="about-stat-num">7/24</div><div class="about-stat-label">Destek</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───── FEATURES ───── -->
+<section class="section features-section">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="label" style="margin-bottom:18px;">Neden Privé Watch</span>
+      <h2 style="margin-top:18px;">Farkı <em>Hissedin</em></h2>
+      <p>Her adımda şeffaflık, güven ve uzmanlık.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        </div>
+        <h3 class="feature-title">Premium Seçki</h3>
+        <p class="feature-desc">Patek Philippe'ten Rolex'e, dünyanın en prestijli markalarından özenle seçilmiş her parça kapsamlı ekspertiz sürecinden geçer.</p>
+        <a href="#koleksiyon" class="feature-link">
+          Koleksiyona Bak
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
+      </div>
+      <div class="feature-card reveal d1">
+        <div class="feature-icon" style="background:rgba(37,211,102,.08);border-color:rgba(37,211,102,.25);color:var(--wa);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </div>
+        <h3 class="feature-title">WhatsApp Danışmanlık</h3>
+        <p class="feature-desc">Tek tıkla kişisel danışmanlık. Uzman ekibimiz her soru, her bütçe için hızla yanıt verir.</p>
+        <a href="https://wa.me/905320155199" target="_blank" rel="noopener" class="feature-link" style="color:var(--wa);">
+          Hemen Yaz
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
+      </div>
+      <div class="feature-card reveal d2">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3 class="feature-title">Chrono24 Güvencesi</h3>
+        <p class="feature-desc">Dünyanın en büyük lüks saat platformu üzerinden güvenle alışveriş yapın. Uluslararası alıcı koruma.</p>
+        <a href="https://www.chrono24.com.tr/dealer/privewatch/index.htm" target="_blank" rel="noopener" class="feature-link">
+          Mağazaya Git
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
+      </div>
+      <div class="feature-card reveal d3">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+        </div>
+        <h3 class="feature-title">Instagram'da Takip Et</h3>
+        <p class="feature-desc">Yeni gelen parçaları ve saat dünyasından ilham veren içerikleri keşfedin. @privewatches</p>
+        <a href="https://www.instagram.com/privewatches/" target="_blank" rel="noopener" class="feature-link">
+          @privewatches
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───── TESTIMONIALS ───── -->
+<section id="yorumlar" class="testi-section">
+  <div class="testi-header reveal">
+    <span class="label" style="display:inline-block; margin-bottom:18px;">Müşteri Yorumları</span>
+    <h2 style="margin-bottom:18px;">Müşterilerimiz Ne Diyor?</h2>
+    <p>Gerçek alıcılardan, gerçek deneyimler.</p>
+  </div>
+  <div class="testi-columns">
+    <div class="testi-col">
+      <div class="testi-col-inner">
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Bu nadide parça beklentilerimi aştı. Şeffaf süreç ve uzman desteği gerçekten güven vericiydi."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/1.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Briana Patton</div><div class="testi-role">Operations Manager</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Satın alma süreci çok pürüzsüzdü. Hızlı teslimat ve ekibin rehberliği sayesinde hiç zorluk çekmedim."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/2.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Bilal Ahmed</div><div class="testi-role">IT Manager</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Destek ekibi tek kelimeyle harika. Her sorumu yanıtladıkları ve orijinal belgeleri eksiksiz ulaştırdıkları için teşekkürler."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/3.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Saman Malik</div><div class="testi-role">Customer Support Lead</div></div></div></div>
+        <!-- duplicate for loop -->
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Bu nadide parça beklentilerimi aştı. Şeffaf süreç ve uzman desteği gerçekten güven vericiydi."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/1.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Briana Patton</div><div class="testi-role">Operations Manager</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Satın alma süreci çok pürüzsüzdü. Hızlı teslimat ve ekibin rehberliği sayesinde hiç zorluk çekmedim."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/2.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Bilal Ahmed</div><div class="testi-role">IT Manager</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Destek ekibi tek kelimeyle harika. Her sorumu yanıtladıkları ve orijinal belgeleri eksiksiz ulaştırdıkları için teşekkürler."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/3.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Saman Malik</div><div class="testi-role">Customer Support Lead</div></div></div></div>
+      </div>
+    </div>
+    <div class="testi-col" id="testiCol2">
+      <div class="testi-col-inner">
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Bu kusursuz koleksiyon, işime de stilime de ilham veriyor. Privé Watch'a sorunsuz alışveriş için teşekkürler."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/4.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Omar Raza</div><div class="testi-role">CEO</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Saatin kalitesi ve hızlı geri dönüşleri sayesinde bu deneyim çok daha özel bir hale geldi."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/5.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Zainab Hussain</div><div class="testi-role">Project Manager</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Tahmin ettiğimden çok daha iyi bir deneyimdi. Saat ekspertiz sürecinden geçerken saniye saniye bilgilendirildim."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/6.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Aliza Khan</div><div class="testi-role">Business Analyst</div></div></div></div>
+        <!-- duplicate for loop -->
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Bu kusursuz koleksiyon, işime de stilime de ilham veriyor. Privé Watch'a sorunsuz alışveriş için teşekkürler."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/4.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Omar Raza</div><div class="testi-role">CEO</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Saatin kalitesi ve hızlı geri dönüşleri sayesinde bu deneyim çok daha özel bir hale geldi."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/5.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Zainab Hussain</div><div class="testi-role">Project Manager</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Tahmin ettiğimden çok daha iyi bir deneyimdi. Saat ekspertiz sürecinden geçerken saniye saniye bilgilendirildim."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/6.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Aliza Khan</div><div class="testi-role">Business Analyst</div></div></div></div>
+      </div>
+    </div>
+    <div class="testi-col" id="testiCol3">
+      <div class="testi-col-inner">
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Geniş marka seçenekleri ve güven odaklı hizmet anlayışları gerçekten etkileyici."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/7.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Farhan Siddiqui</div><div class="testi-role">Marketing Director</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Tam olarak ihtiyaçlarımı anladılar. Beklentilerimin çok üzerinde lüks bir deneyim sundular."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/8.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Sana Sheikh</div><div class="testi-role">Sales Manager</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Farklı modelleri incelerken WhatsApp üzerinden verdikleri destek, karar vermemi çok kolaylaştırdı."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/9.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Hassan Ali</div><div class="testi-role">E-commerce Manager</div></div></div></div>
+        <!-- duplicate for loop -->
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Geniş marka seçenekleri ve güven odaklı hizmet anlayışları gerçekten etkileyici."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/7.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Farhan Siddiqui</div><div class="testi-role">Marketing Director</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Tam olarak ihtiyaçlarımı anladılar. Beklentilerimin çok üzerinde lüks bir deneyim sundular."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/women/8.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Sana Sheikh</div><div class="testi-role">Sales Manager</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Farklı modelleri incelerken WhatsApp üzerinden verdikleri destek, karar vermemi çok kolaylaştırdı."</p><div class="testi-person"><img src="https://randomuser.me/api/portraits/men/9.jpg" class="testi-avatar" alt=""><div><div class="testi-name">Hassan Ali</div><div class="testi-role">E-commerce Manager</div></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───── CONTACT ───── -->
+<section id="iletisim" class="section contact-section">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="label" style="margin-bottom:18px;">İletişim</span>
+      <h2 class="display" style="margin-top:18px;">Bize Ulaşın</h2>
+      <p>Uzman ekibimiz her soru ve her bütçe için buradadır.</p>
+    </div>
+    <div class="contact-grid">
+      <div>
+        <a href="https://wa.me/905320155199" target="_blank" rel="noopener" class="contact-card reveal">
+          <div class="c-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </div>
+          <div><div class="c-label">WhatsApp</div><div class="c-value">+90 532 015 51 99</div></div>
+        </a>
+        <a href="https://www.instagram.com/privewatches/" target="_blank" rel="noopener" class="contact-card reveal d1">
+          <div class="c-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </div>
+          <div><div class="c-label">Instagram</div><div class="c-value">@privewatches</div></div>
+        </a>
+        <a href="https://www.chrono24.com.tr/dealer/privewatch/index.htm" target="_blank" rel="noopener" class="contact-card reveal d2">
+          <div class="c-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div><div class="c-label">Chrono24 Mağazamız</div><div class="c-value">privewatch</div></div>
+        </a>
+        <div class="quick-cta reveal d3">
+          <div class="quick-cta-label">Hızlı Ulaşım</div>
+          <a href="https://wa.me/905320155199" target="_blank" rel="noopener" class="btn btn-wa">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp ile Mesaj Gönder
+          </a>
+          <div class="quick-cta-row">
+            <a href="https://www.instagram.com/privewatches/" target="_blank" rel="noopener" class="btn btn-ghost">Instagram</a>
+            <a href="https://www.chrono24.com.tr/dealer/privewatch/index.htm" target="_blank" rel="noopener" class="btn btn-ghost">Chrono24</a>
+          </div>
+        </div>
+      </div>
+      <div class="map-wrap reveal d2">
+        <iframe src="https://maps.google.com/maps?q=Priv%C3%A9+Watch+%C4%B0stanbul&output=embed&hl=tr&z=16" allowfullscreen loading="lazy" title="Privé Watch Konum"></iframe>
+        <div class="map-bar">
+          <span>Google İşletme Sayfamız</span>
+          <a href="https://share.google/KMC8bHjtPT6hcJrLF" target="_blank" rel="noopener">
+            Görüntüle
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left:4px;"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───── FOOTER ───── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div style="margin-bottom:18px;">
+          <img src="brand_asset/prive_extracted/Data/new_logo.png" alt="Privé Watch" class="footer-logo" style="height:48px;width:auto;mix-blend-mode:screen;filter:brightness(1.05);">
+        </div>
+        <p class="footer-desc">Seçkin lüks saat koleksiyonu. Orijinallik garantisi ile Rolex, Patek Philippe, Audemars Piguet ve daha fazlası.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/privewatches/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="https://wa.me/905320155199" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-title">Hızlı Erişim</div>
+        <div class="footer-links">
+          <a href="#koleksiyon">Koleksiyon</a>
+          <a href="#hakkimizda">Hakkımızda</a>
+          <a href="#yorumlar">Müşteri Yorumları</a>
+          <a href="#iletisim">İletişim</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-title">Platform</div>
+        <div class="footer-links">
+          <a href="https://www.chrono24.com.tr/dealer/privewatch/index.htm" target="_blank" rel="noopener">Chrono24 Mağazamız</a>
+          <a href="https://www.instagram.com/privewatches/" target="_blank" rel="noopener">@privewatches</a>
+          <a href="https://wa.me/905320155199" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-title">İletişim</div>
+        <div class="footer-links">
+          <a href="https://wa.me/905320155199" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            +90 532 015 51 99
+          </a>
+          <a href="https://share.google/KMC8bHjtPT6hcJrLF" target="_blank" rel="noopener" style="display:flex;align-items:flex-start;gap:8px;line-height:1.6;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:4px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span>Valikonağı Caddesi, No:32 Nişantaşı<br>Şişli / İstanbul</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Privé Watch. Tüm hakları saklıdır.</p>
+      <p class="footer-tagline">Zamansız Zerafetin Adresi</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ───── QUICKVIEW MODAL ───── -->
+<div class="qv-overlay" id="qvOverlay" role="dialog" aria-modal="true" aria-labelledby="qvModel">
+  <div class="qv-modal">
+    <button class="qv-close" onclick="closeQuickview()" aria-label="Kapat">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="qv-img" id="qvImg"></div>
+    <div class="qv-body">
+      <span class="qv-badge" id="qvBadge">Stokta</span>
+      <div class="qv-brand" id="qvBrand">Rolex</div>
+      <h3 class="qv-model" id="qvModel">Submariner Date</h3>
+      <div class="qv-ref" id="qvRef">Ref. 126610LV</div>
+      <div class="qv-divider"></div>
+      <p class="qv-desc" id="qvDesc"></p>
+      <div class="qv-specs" id="qvSpecs"></div>
+      <div class="qv-actions">
+        <a id="qvChrono" href="#" target="_blank" rel="noopener" class="btn btn-ghost">
+          Chrono24'te Gör
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+        </a>
+        <a id="qvWa" href="#" target="_blank" rel="noopener" class="btn btn-wa">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Teklif Al
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<button class="scroll-top" id="scrollTop" aria-label="Yukarı dön">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<script>
+  // ===== Nav scroll state (rAF-throttled for iOS reliability) =====
+  const nav = document.getElementById('nav');
+  const scrollTopBtn = document.getElementById('scrollTop');
+  let lastScrollY = Math.max(0, window.scrollY);
+  let scrollTicking = false;
+  function onScrollFrame() {
+    const y = Math.max(0, window.scrollY);
+    nav.classList.toggle('scrolled', y > 30);
+    if (scrollTopBtn) scrollTopBtn.classList.toggle('show', y > 800);
+
+    const mobNavEl = document.getElementById('mobNav');
+    const menuOpen = mobNavEl && mobNavEl.classList.contains('open');
+    if (!menuOpen && y > 140) {
+      const delta = y - lastScrollY;
+      if (delta > 4) nav.classList.add('nav-hidden');
+      else if (delta < -4) nav.classList.remove('nav-hidden');
+    } else {
+      nav.classList.remove('nav-hidden');
+    }
+    lastScrollY = y;
+    scrollTicking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!scrollTicking) {
+      window.requestAnimationFrame(onScrollFrame);
+      scrollTicking = true;
+    }
+  }, { passive: true });
+
+  document.getElementById('scrollTop').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ===== Mobile nav =====
+  const mobToggle = document.getElementById('mobToggle');
+  const mobNav = document.getElementById('mobNav');
+  mobToggle.addEventListener('click', () => {
+    const open = mobNav.classList.toggle('open');
+    mobToggle.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) nav.classList.remove('nav-hidden');
+  });
+  window.closeMob = () => {
+    mobNav.classList.remove('open');
+    mobToggle.classList.remove('open');
+    document.body.style.overflow = '';
+    lastScrollY = window.scrollY;
+  };
+
+  // ===== Active nav link on scroll =====
+  const sections = ['koleksiyon', 'hakkimizda', 'yorumlar', 'iletisim'].map(id => document.getElementById(id)).filter(Boolean);
+  const navLinks = document.querySelectorAll('.nav-links.desktop .nav-link');
+  function updateActiveNav() {
+    const y = window.scrollY + 120;
+    let active = null;
+    for (const s of sections) {
+      if (s.offsetTop <= y) active = s.id;
+    }
+    navLinks.forEach(a => {
+      const href = a.getAttribute('href').replace('#', '');
+      a.classList.toggle('active', href === active);
+    });
+  }
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  updateActiveNav();
+
+  // ===== Reveal on scroll =====
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  document.querySelectorAll('.hero .reveal').forEach((el, i) => setTimeout(() => el.classList.add('in'), 120 + i * 100));
+
+  // ===== Hero carousel =====
+  const heroData = [
+    { brand: 'Rolex', model: 'Submariner Date', link: 'https://www.chrono24.com.tr/rolex/submariner-date--id43515727.htm', img: 'https://img.chrono24.com/images/uhren/mexc6ywrofnm-1sfnifmkba692mej4pskd7kv-Square480.jpg' },
+    { brand: 'Rolex', model: 'Day-Date 40', link: 'https://www.chrono24.com.tr/rolex/day-date-40--id43516231.htm', img: 'https://img.chrono24.com/images/uhren/sqzn9r9jwz2w-xv8wwzh08q44cx8ujmc1uax6-Square480.jpg' },
+    { brand: 'Bulgari', model: 'Serpenti Tubogas', link: 'https://www.chrono24.com.tr/bulgari/serpenti-tubogas--id43516544.htm', img: 'https://img.chrono24.com/images/uhren/yvnatyefxbq1-777sotvfuyjwog9v2g2il9wl-Square480.jpg' }
+  ];
+  let heroIdx = 0, heroTimer;
+  const heroSlides = document.querySelectorAll('.hero-slide');
+  const heroDots = document.querySelectorAll('.hero-dot-wrap');
+  function goHero(idx) {
+    heroSlides[heroIdx].classList.remove('active');
+    heroDots[heroIdx].classList.remove('active');
+    heroIdx = idx;
+    heroSlides[heroIdx].classList.add('active');
+    // force reflow so the fillBar animation restarts
+    void heroDots[heroIdx].offsetWidth;
+    heroDots[heroIdx].classList.add('active');
+    const d = heroData[idx];
+    document.getElementById('hfName').textContent = `${d.brand} ${d.model}`;
+    document.getElementById('hfThumb').src = d.img;
+    document.getElementById('heroFeatured').href = d.link;
+    clearInterval(heroTimer);
+    heroTimer = setInterval(() => goHero((heroIdx + 1) % 3), 6500);
+  }
+  heroDots.forEach(d => d.addEventListener('click', () => goHero(parseInt(d.dataset.idx))));
+  heroTimer = setInterval(() => goHero((heroIdx + 1) % 3), 6500);
+  goHero(0);
+
+  // ===== Brands marquee =====
+  const brands = [
+    { name: 'Rolex', meta: 'İsviçre · 1905' },
+    { name: 'Patek Philippe', meta: 'Cenevre · 1839' },
+    { name: 'Audemars Piguet', meta: 'Le Brassus · 1875' },
+    { name: 'Bulgari', meta: 'Roma · 1884' },
+    { name: 'Cartier', meta: 'Paris · 1847' },
+    { name: 'IWC', meta: 'Schaffhausen · 1868' },
+    { name: 'Tudor', meta: 'Cenevre · 1926' },
+    { name: 'Omega', meta: 'Biel · 1848' },
+    { name: 'Vacheron Constantin', meta: 'Cenevre · 1755' }
+  ];
+  const bTrack = document.getElementById('brandsTrack');
+  const renderBrand = b => `<div class="brand-pill"><span class="brand-pill-name">${b.name}</span><span class="brand-pill-sep"></span><span class="brand-pill-meta">${b.meta}</span></div>`;
+  bTrack.innerHTML = [...brands, ...brands].map(renderBrand).join('');
+
+
+  // Favorites functionality removed
+
+  function openQuickview(idx) {
+    const w = watchData[idx];
+    const ov = document.getElementById('qvOverlay');
+    const imgWrap = document.getElementById('qvImg');
+    if (w.hasImg && w.img) {
+      imgWrap.innerHTML = `<img src="${w.img}" alt="${w.brand} ${w.model}" onerror="this.outerHTML='<div class=qv-img-placeholder><div style=font-family:var(--font-display);font-style:italic;font-size:38px;color:rgba(201,165,74,.7)>${w.brand}</div></div>'">`;
+    } else {
+      imgWrap.innerHTML = `<div class="qv-img-placeholder"><div style="font-family:var(--font-display);font-style:italic;font-size:38px;color:rgba(201,165,74,.7);z-index:1;position:relative;">${w.brand}</div><div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(201,165,74,.45);z-index:1;position:relative;">${w.model}</div></div>`;
+    }
+    document.getElementById('qvBadge').textContent = w.badge || 'Stokta';
+    document.getElementById('qvBrand').textContent = w.brand;
+    document.getElementById('qvModel').textContent = w.model;
+    document.getElementById('qvRef').textContent = w.ref || '';
+    document.getElementById('qvRef').style.display = w.ref ? '' : 'none';
+    const desc = w.desc || `Özgünlüğü belgelenmiş ${w.brand} ${w.model}. Her parça uzman ekibimiz tarafından detaylı olarak incelenir ve Chrono24 güvencesi ile teslim edilir.`;
+    document.getElementById('qvDesc').textContent = desc;
+
+    // Specs
+    const specs = [
+      { label: 'Marka', value: w.brand },
+      { label: 'Model', value: w.model },
+      { label: 'Referans', value: w.ref || '—' },
+      { label: 'Durum', value: 'Orijinal & Belgeli' }
+    ];
+    document.getElementById('qvSpecs').innerHTML = specs.map(s =>
+      `<div><div class="qv-spec-label">${s.label}</div><div class="qv-spec-value">${s.value}</div></div>`
+    ).join('');
+
+    const waMsg = encodeURIComponent(`Merhaba, ${w.brand} ${w.model} hakkında bilgi almak istiyorum.`);
+    document.getElementById('qvChrono').href = w.url;
+    document.getElementById('qvWa').href = `https://wa.me/905320155199?text=${waMsg}`;
+
+
+
+    ov.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeQuickview() {
+    document.getElementById('qvOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeQuickview();
+  });
+  // Click overlay background to close
+  document.addEventListener('DOMContentLoaded', () => {
+    const ov = document.getElementById('qvOverlay');
+    if (ov) ov.addEventListener('click', e => { if (e.target === ov) closeQuickview(); });
+  });
+
+  // ===== Gallery =====
+  let watchData = [];
+  let activeFilter = 'all';
+  let galleryExpanded = false;
+  const FIRST_PAGE = 4;
+
+  const EXT_SVG = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>';
+  const WA_SVG = '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
+
+  // Fallback data (used when API unavailable)
+  const fallbackWatches = [
+    { brand: 'Rolex', model: 'Submariner Date', ref: 'Ref. 126610LV', img: 'https://img.chrono24.com/images/uhren/mexc6ywrofnm-1sfnifmkba692mej4pskd7kv-Square480.jpg', url: 'https://www.chrono24.com.tr/rolex/submariner-date--id43515727.htm', hasImg: true, badge: 'Stokta' },
+    { brand: 'Rolex', model: 'Day-Date 40', ref: 'Ref. 228238', img: 'https://img.chrono24.com/images/uhren/sqzn9r9jwz2w-xv8wwzh08q44cx8ujmc1uax6-Square480.jpg', url: 'https://www.chrono24.com.tr/rolex/day-date-40--id43516231.htm', hasImg: true, badge: 'Stokta' },
+    { brand: 'Bulgari', model: 'Serpenti Tubogas', ref: 'Çelik & Altın', img: 'https://img.chrono24.com/images/uhren/yvnatyefxbq1-777sotvfuyjwog9v2g2il9wl-Square480.jpg', url: 'https://www.chrono24.com.tr/bulgari/serpenti-tubogas--id43516544.htm', hasImg: true, badge: 'Yeni' },
+    { brand: 'Audemars Piguet', model: 'Royal Oak', ref: 'Ref. 15500ST', url: 'https://www.chrono24.com.tr/dealer/privewatch/index.htm', hasImg: false, badge: 'Talebe Göre' },
+    { brand: 'Patek Philippe', model: 'Nautilus', ref: 'Ref. 5711/1A', url: 'https://www.chrono24.com.tr/dealer/privewatch/index.htm', hasImg: false, badge: 'Özel' },
+    { brand: 'Cartier', model: 'Santos', ref: 'Ref. WSSA0018', url: 'https://www.chrono24.com.tr/dealer/privewatch/index.htm', hasImg: false, badge: 'Stokta' },
+    { brand: 'IWC', model: 'Portugieser', ref: 'Chronograph', url: 'https://www.chrono24.com.tr/dealer/privewatch/index.htm', hasImg: false, badge: 'Stokta' },
+    { brand: 'Omega', model: 'Speedmaster', ref: 'Moonwatch', url: 'https://www.chrono24.com.tr/dealer/privewatch/index.htm', hasImg: false, badge: 'Stokta' },
+    { brand: 'Tudor', model: 'Black Bay 58', ref: 'Ref. M79030N', url: 'https://www.chrono24.com.tr/dealer/privewatch/index.htm', hasImg: false, badge: 'Stokta' },
+    { brand: 'Rolex', model: 'Datejust 41', ref: 'Ref. 126334', url: 'https://www.chrono24.com.tr/dealer/privewatch/index.htm', hasImg: false, badge: 'Stokta' }
+  ];
+
+  function buildCard(w, idx) {
+    const waMsg = encodeURIComponent(`Merhaba, ${w.brand} ${w.model} hakkında bilgi almak istiyorum.`);
+    const img = w.hasImg && w.img
+      ? `<img src="${w.img}" alt="${w.brand} ${w.model}" loading="lazy" onerror="this.outerHTML='<div class=gc-placeholder><div class=gc-ph-brand>${w.brand}</div><div class=gc-ph-model>${w.model}</div></div>'">`
+      : `<div class="gc-placeholder"><div class="gc-ph-brand">${w.brand}</div><div class="gc-ph-model">${w.model}</div></div>`;
+    const card = document.createElement('div');
+    card.className = 'gallery-card reveal';
+    card.dataset.brand = w.brand;
+    card.dataset.idx = idx;
+    card.innerHTML = `
+      <a href="https://wa.me/905320155199?text=${waMsg}" target="_blank" rel="noopener" class="gc-img-wrap">
+        ${img}
+      </a>
+      <div class="gc-body">
+        <span class="gc-brand">${w.brand}</span>
+        <div class="gc-model">${w.model}</div>
+        ${w.ref ? `<div class="gc-ref">${w.ref}</div>` : ''}
+        <div class="gc-actions">
+          <a href="${w.url}" target="_blank" rel="noopener" class="gc-btn chrono">${EXT_SVG} Chrono24</a>
+          <a href="https://wa.me/905320155199?text=${waMsg}" target="_blank" rel="noopener" class="gc-btn wa">${WA_SVG} Teklif</a>
+        </div>
+      </div>
+    `;
+    // Interaction handled by the anchor tag directly.
+    return card;
+  }
+
+  function buildFilters(watches) {
+    const counts = {};
+    watches.forEach(w => { counts[w.brand] = (counts[w.brand] || 0) + 1; });
+    const brands = Object.keys(counts).sort();
+    const container = document.getElementById('galleryFilters');
+    container.innerHTML = '';
+    function makeBtn(label, filter, count) {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn' + (filter === activeFilter ? ' active' : '');
+      btn.dataset.filter = filter;
+      btn.innerHTML = `${label} <span class="filter-count">${count}</span>`;
+      btn.addEventListener('click', () => {
+        activeFilter = filter;
+        galleryExpanded = false;
+        container.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderGallery();
+      });
+      return btn;
+    }
+    container.appendChild(makeBtn('Tümü', 'all', watches.length));
+    brands.forEach(b => container.appendChild(makeBtn(b, b, counts[b])));
+  }
+
+  function renderGallery() {
+    const grid = document.getElementById('galleryGrid');
+    const filtered = activeFilter === 'all' ? watchData : watchData.filter(w => w.brand === activeFilter);
+    const visible = galleryExpanded ? filtered : filtered.slice(0, FIRST_PAGE);
+    const smWrap = document.getElementById('showMoreWrap');
+    const smBtn = document.getElementById('showMoreBtn');
+    const smLabel = document.getElementById('showMoreLabel');
+    grid.innerHTML = '';
+    visible.forEach((w, i) => {
+      const realIdx = watchData.indexOf(w);
+      const c = buildCard(w, realIdx);
+      c.style.transitionDelay = (i * 40) + 'ms';
+      grid.appendChild(c);
+      requestAnimationFrame(() => c.classList.add('in'));
+    });
+    const hidden = filtered.length - visible.length;
+    if (hidden > 0) {
+      smWrap.style.display = '';
+      smLabel.textContent = `Daha Fazla (${hidden})`;
+      smBtn.classList.remove('open');
+    } else if (galleryExpanded && filtered.length > FIRST_PAGE) {
+      smWrap.style.display = '';
+      smLabel.textContent = 'Daha Az Göster';
+      smBtn.classList.add('open');
+    } else {
+      smWrap.style.display = 'none';
+    }
+  }
+
+  window.toggleShowMore = function () {
+    galleryExpanded = !galleryExpanded;
+    renderGallery();
+    if (!galleryExpanded) {
+      document.getElementById('koleksiyon').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  function initGallery(data) {
+    watchData = data;
+    buildFilters(watchData);
+    renderGallery();
+  }
+
+  // Try API, fall back to static data
+  fetch('/api/watches')
+    .then(r => r.ok ? r.json() : Promise.reject('bad'))
+    .then(json => {
+      if (json.watches && json.watches.length) {
+        initGallery(json.watches.map(w => ({ ...w, badge: w.badge || 'Stokta' })));
+      } else throw new Error('empty');
+    })
+    .catch(() => initGallery(fallbackWatches));
+
+
+</script>
+</body>
+</html>
